@@ -1,7 +1,8 @@
 import numpy as np
 import argparse
 import sys
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
 import os
 from threading import Thread
 import time
@@ -114,7 +115,7 @@ elif args.row_num == 3:
 ################## for initialization ###########################
 global log_file
 
-log_file = open(args.save_path + 'log.txt', 'w')
+log_file = open('./Results_33_random/log.txt', 'w')
 
 animal_density = generate_map(args)
 env = Env(args, animal_density, cell_length=None, canvas=None, gui=False)

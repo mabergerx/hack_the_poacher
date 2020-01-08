@@ -5,7 +5,8 @@ from replay_buffer import ReplayBuffer, PERMemory
 import numpy as np
 import argparse
 import sys
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
 import os
 from GUI_util import test_gui
 import warnings
