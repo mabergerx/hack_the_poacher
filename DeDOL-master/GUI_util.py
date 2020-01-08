@@ -9,7 +9,8 @@ import sys
 import time
 import numpy as np
 import argparse
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
 from tkinter import *
 from tkinter import Tk, Canvas
 from maps import Mountainmap, generate_map
