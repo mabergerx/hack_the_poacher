@@ -13,16 +13,11 @@ class Poacher(object):
             self.snare_num = self.args.snare_num
             self.batch_size = self.args.batch_size
             self.id_action = {
-                0: ['still', 0],
+                0: ['still', 1],
                 1: ['up', 0],
                 2: ['down', 0],
                 3: ['left', 0],
-                4: ['right', 0],
-                5: ['still', 1],
-                6: ['up', 1],
-                7: ['down', 1],
-                8: ['left', 1],
-                9: ['right', 1]
+                4: ['right', 0]
             }
             self.variables = []
 
