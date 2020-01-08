@@ -5,7 +5,8 @@ from env import Env
 from replay_buffer import ReplayBuffer
 import argparse
 import sys
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
 import os
 import warnings
 import time
