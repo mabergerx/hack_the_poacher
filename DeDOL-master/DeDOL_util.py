@@ -10,7 +10,7 @@ import os
 from GUI_util import test_gui
 import warnings
 import nashpy as nash
-# from cvxopt import matrix, solvers
+from cvxopt import matrix, solvers
 import time
 warnings.simplefilter('error', RuntimeWarning)
 
