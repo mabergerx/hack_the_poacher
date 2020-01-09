@@ -485,9 +485,9 @@ def readCommand( argv ):
 
     parser.add_option('-n', '--numGames', dest='numGames', type='int',
                       help=default('the number of GAMES to play'), metavar='GAMES', default=1)
-    parser.add_option('-l', '--layout', dest='layout',
-                      help=default('the LAYOUT_FILE from which to load the map layout'),
-                      metavar='LAYOUT_FILE', default='mediumClassic')
+    # parser.add_option('-l', '--layout', dest='layout',
+    #                   help=default('the LAYOUT_FILE from which to load the map layout'),
+    #                   metavar='LAYOUT_FILE', default='mediumClassic')
     parser.add_option('-p', '--pacman', dest='pacman',
                       help=default('the agent TYPE in the pacmanAgents module to use'),
                       metavar='TYPE', default='KeyboardAgent')
@@ -528,8 +528,8 @@ def readCommand( argv ):
     if options.fixRandomSeed: random.seed('cs188')
 
     # Choose a layout
-    args['layout'] = layout.getLayout( options.layout )
-    if args['layout'] == None: raise Exception("The layout " + options.layout + " cannot be found")
+    # args['layout'] = layout.getLayout( options.layout )
+    # if args['layout'] == None: raise Exception("The layout " + options.layout + " cannot be found")
 
     # Choose a Pacman agent
     noKeyboard = options.gameToReplay == None and (options.textGraphics or options.quietGraphics)
@@ -620,12 +620,29 @@ def replayGame( layout, actions, display ):
 
     display.finish()
 
-def runGames( layout, pacman, ghosts, display, numGames, record, numTraining = 0, catchExceptions=False, timeout=30 ):
+def runGames( pacman, ghosts, display, numGames, record, numTraining = 0, catchExceptions=False, timeout=30 ):
     import __main__
     __main__.__dict__['_display'] = display
 
     rules = ClassicGameRules(timeout)
     games = []
+    testLayout = ['%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%',
+        '%         %         %        %',
+        '%   %%%  %%                  %',
+        '%   %    ..         %        %',
+        '%%%%%               %%%      %',
+        '%                     %      %',
+        '%P          %%        %  %%%%%',
+        '%           .                %',
+        '%                 %         %%',
+        '%%%%%%%%%%  .      .       %%%',
+        '% .     .%         .    .   %%',
+        '%                %%         .%',
+        '%        %        %          %',
+        '%        %                   %',
+        '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%']
+    layoutA = layout.Layout(testLayout)    
+    print(layoutA)
 
     for i in range( numGames ):
         beQuiet = i < numTraining
@@ -637,7 +654,7 @@ def runGames( layout, pacman, ghosts, display, numGames, record, numTraining = 0
         else:
             gameDisplay = display
             rules.quiet = False
-        game = rules.newGame( layout, pacman, ghosts, gameDisplay, beQuiet, catchExceptions)
+        game = rules.newGame( layoutA, pacman, ghosts, gameDisplay, beQuiet, catchExceptions)
         game.run()
         if not beQuiet: games.append(game)
 
@@ -645,7 +662,7 @@ def runGames( layout, pacman, ghosts, display, numGames, record, numTraining = 0
             import time, cPickle
             fname = ('recorded-game-%d' % (i + 1)) +  '-'.join([str(t) for t in time.localtime()[1:6]])
             f = file(fname, 'w')
-            components = {'layout': layout, 'actions': game.moveHistory}
+            components = {'layout': layoutA, 'actions': game.moveHistory}
             cPickle.dump(components, f)
             f.close()
 
