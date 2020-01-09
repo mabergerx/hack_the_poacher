@@ -123,6 +123,8 @@ class Layout:
         elif layoutChar in  ['1', '2', '3', '4']:
             self.agentPositions.append( (int(layoutChar), (x,y)))
             self.numGhosts += 1
+
+
 def getLayout(name, back = 2):
     if name.endswith('.lay'):
         layout = tryToLoad('layouts/' + name)
@@ -136,6 +138,7 @@ def getLayout(name, back = 2):
         layout = getLayout(name, back -1)
         os.chdir(curdir)
     return layout
+
 
 def tryToLoad(fullname):
     if(not os.path.exists(fullname)): return None

@@ -43,6 +43,8 @@ from util import nearestPoint
 from util import manhattanDistance
 import util, layout
 import sys, types, time, random, os
+from layoutGenerator import populate_the_grid
+
 
 ###################################################
 # YOUR INTERFACE TO THE PACMAN WORLD: A GameState #
@@ -626,25 +628,11 @@ def runGames( pacman, ghosts, display, numGames, record, numTraining = 0, catchE
 
     rules = ClassicGameRules(timeout)
     games = []
-    testLayout = ['%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%',
-        '%         %         %        %',
-        '%   %%%  %%                  %',
-        '%   %    ..         %        %',
-        '%%%%%               %%%      %',
-        '%                     %      %',
-        '%P          %%        %  %%%%%',
-        '%           .                %',
-        '%                 %         %%',
-        '%%%%%%%%%%  .      .       %%%',
-        '% .     .%         .    .   %%',
-        '%                %%         .%',
-        '%        %        %          %',
-        '%        %                   %',
-        '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%']
-    layoutA = layout.Layout(testLayout)    
-    print(layoutA)
 
     for i in range( numGames ):
+        testLayout = populate_the_grid()
+        layoutA = layout.Layout(testLayout)
+        print(layoutA)
         beQuiet = i < numTraining
         if beQuiet:
                 # Suppress output and graphics
