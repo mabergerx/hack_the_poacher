@@ -36,7 +36,7 @@ def get_grid_position(x, y, grid):
 
 starting_locations_poacher = [
                       (11, 1),
-                      (14, 20),
+                      (13, 20),
                       (1, 14),
                       (3, 28)
                      ]
@@ -161,7 +161,7 @@ def place_animals_on_grid(grid, num_animals=5, biased=False):
     return new_grid
 
 
-def spawn_rangers(grid, num_rangers=3, max_number_rangers=4):
+def spawn_rangers(num_rangers=3, max_number_rangers=4):
     if num_rangers > max_number_rangers:
         num_rangers = max_number_rangers
         print("Maximum of 4 rangers exceeded! Generating 4 rangers instead...")
@@ -169,8 +169,6 @@ def spawn_rangers(grid, num_rangers=3, max_number_rangers=4):
     rangers_to_place = []
 
     # between 24 and 27
-
-    row = grid[1]
 
     for i in range(num_rangers):
         rangers_to_place.append((1, 28 - i))
@@ -180,7 +178,7 @@ def spawn_rangers(grid, num_rangers=3, max_number_rangers=4):
 
 def place_rangers_on_grid(grid, num_rangers=3):
 
-    ranger_positions = spawn_rangers(grid, num_rangers=num_rangers)
+    ranger_positions = spawn_rangers(num_rangers=num_rangers)
 
     new_grid = grid[:]
 
@@ -190,7 +188,6 @@ def place_rangers_on_grid(grid, num_rangers=3):
         new_grid[ranger_x] = modified_line
 
     return new_grid
-
 
 
 def place_poacher_on_grid(initial_grid, controlled=False):
