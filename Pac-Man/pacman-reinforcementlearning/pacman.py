@@ -356,7 +356,7 @@ class PacmanRules:
         x,y = position
         # Eat food
         if state.data.food[x][y]:
-            state.data.scoreChange += 10
+            state.data.scoreChange += 100
             state.data.food = state.data.food.copy()
             state.data.food[x][y] = False
             state.data._foodEaten = position
@@ -367,7 +367,7 @@ class PacmanRules:
                 state.data._win = True
         # Eat capsule
         if( position in state.getCapsules() ):
-            state.data.scoreChange += 50
+            state.data.scoreChange += 10
             state.data.capsules.remove( position )
             state.data._capsuleEaten = position
             # Reset all ghosts' scared timers

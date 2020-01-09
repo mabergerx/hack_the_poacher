@@ -209,7 +209,7 @@ def place_poacher_on_grid(initial_grid, controlled=False):
     return new_grid
 
 
-def populate_the_grid(num_rangers=3, num_animals=10,
+def populate_the_grid(num_rangers=3, num_animals=20,
                       biased_animals=True, controlled_poacher=True):
 
     # with open("Pac-Man/pacman-reinforcementlearning/layouts/baseGrid.lay") as f:
