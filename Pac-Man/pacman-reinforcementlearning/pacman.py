@@ -632,7 +632,7 @@ def runGames( pacman, ghosts, display, numGames, record, numTraining = 0, catchE
     for i in range( numGames ):
         testLayout = populate_the_grid()
         layoutA = layout.Layout(testLayout)
-        print(layoutA)
+        # print(layoutA)
         beQuiet = i < numTraining
         if beQuiet:
                 # Suppress output and graphics
