@@ -93,17 +93,27 @@ class PatrolGhost( DirectionalGhost ):
         self.target = self.loc[targetId]
     
     def getDistribution( self, state ):
+        # move to target
+        pacmanPos = state.getPacmanPosition()
         ghostPos = state.getGhostPosition( self.index )
-        same_location = self.target == ghostPos
-        # 5% chance he changes target
-        if same_location or random.randint(0,100) > 98:
-            if same_location:
-                print('Location ' + str(self.target) + 'reached')
-            else:
-                print('Random change')
-            rand_loc = random.randint(0,3)
-            self.target = self.loc[rand_loc]
-            print('move towards ' + str(self.target))
-            
-        dist = self.directionalGhostLogic(state, self.target)
+        # look if Pac-Man is nearby
+        nearby = False
+        X_dif = pacmanPos[0] - ghostPos[0]
+        Y_dif = pacmanPos[1] - ghostPos[1]
+        if X_dif <= 1 and X_dif >= -1 and Y_dif <= 1 and Y_dif >= -1: 
+            nearby = True
+
+        # handle direction
+        if nearby:
+            # kill pac-man
+            dist = self.directionalGhostLogic(state, pacmanPos)
+        else:
+            # go to target location or get a new one
+            same_location = self.target == ghostPos
+            # 5% chance he changes target
+            if same_location or random.randint(0,100) > 98:
+                rand_loc = random.randint(0,3)
+                self.target = self.loc[rand_loc]
+            dist = self.directionalGhostLogic(state, self.target)
+
         return dist
