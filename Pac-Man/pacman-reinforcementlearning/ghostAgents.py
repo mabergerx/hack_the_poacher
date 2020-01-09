@@ -46,6 +46,11 @@ class DirectionalGhost( GhostAgent ):
         self.prob_scaredFlee = prob_scaredFlee
 
     def getDistribution( self, state ):
+        pacmanPosition = state.getPacmanPosition()
+        dist = self.directionalGhostLogic(state, pacmanPosition)
+        return dist
+
+    def directionalGhostLogic( self, state, targetPos ):
         # Read variables from state
         ghostState = state.getGhostState( self.index )
         legalActions = state.getLegalActions( self.index )
@@ -57,10 +62,10 @@ class DirectionalGhost( GhostAgent ):
 
         actionVectors = [Actions.directionToVector( a, speed ) for a in legalActions]
         newPositions = [( pos[0]+a[0], pos[1]+a[1] ) for a in actionVectors]
-        pacmanPosition = state.getPacmanPosition()
+        
 
         # Select best actions given the state
-        distancesToPacman = [manhattanDistance( pos, pacmanPosition ) for pos in newPositions]
+        distancesToPacman = [manhattanDistance( pos, targetPos ) for pos in newPositions]
         if isScared:
             bestScore = max( distancesToPacman )
             bestProb = self.prob_scaredFlee
@@ -71,7 +76,44 @@ class DirectionalGhost( GhostAgent ):
 
         # Construct distribution
         dist = util.Counter()
-        for a in bestActions: dist[a] = bestProb / len(bestActions)
-        for a in legalActions: dist[a] += ( 1-bestProb ) / len(legalActions)
+        for a in bestActions: 
+            dist[a] = bestProb / len(bestActions)
+        for a in legalActions: 
+            dist[a] += ( 1-bestProb ) / len(legalActions)
         dist.normalize()
+        return dist
+
+class PatrolGhost( DirectionalGhost ):
+    def __init__( self, index, prob_attack=0.8, prob_scaredFlee=0.8, targetId=0):
+        self.index = index
+        self.prob_attack = prob_attack
+        self.prob_scaredFlee = prob_scaredFlee
+        # for grid 25x15
+        self.loc = [(3,3),(22,3),(3,12),(22,12)] 
+        self.target = self.loc[targetId]
+    
+    def getDistribution( self, state ):
+        # move to target
+        pacmanPos = state.getPacmanPosition()
+        ghostPos = state.getGhostPosition( self.index )
+        # look if Pac-Man is nearby
+        nearby = False
+        X_dif = pacmanPos[0] - ghostPos[0]
+        Y_dif = pacmanPos[1] - ghostPos[1]
+        if X_dif <= 1 and X_dif >= -1 and Y_dif <= 1 and Y_dif >= -1: 
+            nearby = True
+
+        # handle direction
+        if nearby:
+            # kill pac-man
+            dist = self.directionalGhostLogic(state, pacmanPos)
+        else:
+            # go to target location or get a new one
+            same_location = self.target == ghostPos
+            # 5% chance he changes target
+            if same_location or random.randint(0,100) > 98:
+                rand_loc = random.randint(0,3)
+                self.target = self.loc[rand_loc]
+            dist = self.directionalGhostLogic(state, self.target)
+
         return dist
