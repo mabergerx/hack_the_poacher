@@ -88,8 +88,8 @@ class PatrolGhost( DirectionalGhost ):
         self.index = index
         self.prob_attack = prob_attack
         self.prob_scaredFlee = prob_scaredFlee
-        # for grid 25x15
-        self.loc = [(3,3),(22,3),(3,12),(22,12)] 
+        # for grid 13x25
+        self.loc = [(2,2),(3,22),(10, 4),(10,22)]
         self.target = self.loc[targetId]
     
     def getDistribution( self, state ):

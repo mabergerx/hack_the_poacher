@@ -32,7 +32,7 @@ starting_locations_poacher = [
                       (9, 1),
                       (10, 20),
                       (1, 13),
-                      (2, 24)
+                      (2, 23)
                      ]
 
 
@@ -165,7 +165,7 @@ def spawn_rangers(num_rangers=3, max_number_rangers=4):
     # between 24 and 27
 
     for i in range(num_rangers):
-        rangers_to_place.append((1, 25 - i))
+        rangers_to_place.append((1, 23 - i))
 
     return rangers_to_place
 
@@ -203,7 +203,7 @@ def place_poacher_on_grid(initial_grid, controlled=False):
     return new_grid
 
 
-def populate_the_grid(num_rangers=3, num_animals=20,
+def populate_the_grid(num_rangers=3, num_animals=80,
                       biased_animals=True, controlled_poacher=True):
 
     # with open("Pac-Man/pacman-reinforcementlearning/layouts/baseGrid.lay") as f:
