@@ -163,6 +163,33 @@ class Poacher(object):
         if snare_flag and self.snare_num > 0:
             self.snare_num -= 1
 
+    def get_po_actions(self):
+        '''
+        For building game tree usage
+        '''
+        action = [('still', 0), ('up',0), ('down',0), ('left',0), ('right',0),
+                        ('still', 1), ('up',1), ('down',1), ('left',1), ('right',1)]
+        if self.po_loc[0] == 0:
+            action.remove(('up',0))
+            action.remove(('up',1))
+        if self.po_loc[0] == self.row_num - 1:
+            action.remove(('down',0))
+            action.remove(('down',1))
+        if self.po_loc[1] == 0:
+            action.remove(('left',0))
+            action.remove(('left',1))
+        if self.po_loc[1] == self.column_num - 1:
+            action.remove(('right',0))
+            action.remove(('right',1))
+        if self.poacher_snare_num == 0:
+            ret = []
+            for x in action:
+                if x[1] != 1:
+                    ret.append(x)
+        else:
+            ret = action
+        return ret
+
     def infer_action(self, sess, states, policy, epsilon=0.95):
         """
         :param states: a batch of states
@@ -172,6 +199,8 @@ class Poacher(object):
         """
         q_values = sess.run(self.output, {self.input_state: states})
         # print list(q_values[0])
+        print(states[0])
+
         argmax_actions = np.argmax(q_values, axis=1)
         assert len(argmax_actions) == 1
         argmax_action = argmax_actions[0]

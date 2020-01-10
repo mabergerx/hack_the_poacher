@@ -27,6 +27,14 @@ def generate_map(args):
     elif args.map_type == 'gauss':
         animal_density = Mountainmap(args.row_num, args.column_num, args.ani_den_seed)
         return animal_density
+    elif args.map_type == 'htp':
+        animal_density = Htp_map(args.row_num, args.column_num, args.ani_den_seed)
+        return animal_density
+
+def Htp_map(row, col, seed):
+    map0 = np.zeros((row,col))
+    return map0
+
 
 def Mountainmap(row, col, seed):
     np.random.seed(seed)
