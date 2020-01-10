@@ -198,7 +198,8 @@ class Poacher(object):
         :return: a batch of actions
         """
         q_values = sess.run(self.output, {self.input_state: states})
-        print list(q_values[0])
+        # print list(q_values[0])
+        print(self.po_loc)
 
         argmax_actions = np.argmax(q_values, axis=1)
         assert len(argmax_actions) == 1
