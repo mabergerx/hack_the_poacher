@@ -663,6 +663,11 @@ class Env(object):
         state = np.concatenate((state, ani_den), axis=2)
 
         coordinate = np.zeros([self.row_num, self.column_num])
+        coordinate[self.pa_loc[0], self.pa_loc[1]] = 1.
+        coordinate = np.expand_dims(coordinate, axis=2)
+        state = np.concatenate((state, coordinate), axis=2)
+
+        coordinate = np.zeros([self.row_num, self.column_num])
         coordinate[self.po_loc[0], self.po_loc[1]] = 1.
         coordinate = np.expand_dims(coordinate, axis=2)
         state = np.concatenate((state, coordinate), axis=2)
