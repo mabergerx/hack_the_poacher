@@ -424,6 +424,8 @@ class Env(object):
             self.po_visit_number[self.po_loc[0], self.po_loc[1]] += 1
             return self.po_loc, self.po_loc
 
+        self.snare_state.remove((self.po_loc[0], self.po_loc[1]))
+
         if action == 'up':
             new_row, new_col = self.po_loc[0] - 1, self.po_loc[1]
             if self.in_bound(new_row, new_col):

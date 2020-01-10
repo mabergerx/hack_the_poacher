@@ -48,7 +48,7 @@ argparser.add_argument('--pa_num_actions', type=int, default=5)
 ### Poacher CNN
 argparser.add_argument('--snare_num', type=int, default=6)
 argparser.add_argument('--po_state_size', type=int, default=22) # add self footprint to poacher
-argparser.add_argument('--po_num_actions', type=int, default=10)
+argparser.add_argument('--po_num_actions', type=int, default=5)
 
 ### Poacher Rule Base, parameters set following advice from domain experts
 argparser.add_argument('--po_act_den_w', type=float, default=3.)
