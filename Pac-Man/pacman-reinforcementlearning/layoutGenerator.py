@@ -6,27 +6,21 @@ def get_legal_places_on_line(line):
 
 # Obstacles
 
-river = [(9, 1), (9, 2), (9, 3), (9, 4), (9, 5), (9, 6), (9, 7), (9, 8), (9, 9),
-         (10, 9),
-         (12, 9),
-         (13, 9),
+river = [(7, 1), (7, 2), (7, 3), (7, 4), (7, 5), (7, 6), (7, 7),
+         (8, 7),
+         (10, 7),
          (1, 10),
-         (2, 10), (2, 9), (2, 7), (2, 6), (2, 5), (2, 4),
-         (3, 4),
-         (4, 4), (4, 3), (4, 2), (4, 1),
-         (1, 20),
-         (3, 20),
-         (4, 20), (4, 21), (4, 22),
-         (5, 22),
-         (6, 22), (6, 25), (6, 26), (6, 27), (6, 28)
+         (2, 10), (2, 9), (2, 6), (2, 5), (2, 4),
+         (3, 4), (3, 3), (3, 2), (3, 1),
+         (3, 16), (3, 17), (3, 18),
+         (4, 18),
+         (5, 18), (5, 20), (5, 21), (5, 22), (5, 23)
         ]
 
-trees = [(6, 12), (6, 13),
-         (8, 18), (8, 28),
-         (9, 27), (9, 28),
-         (10, 28),
-         (11, 17), (11, 18),
-         (12, 18)
+trees = [
+            (5, 7), (5, 8),
+            (6, 13),
+            (9, 14), (9, 15)
          ]
 
 def get_grid_position(x, y, grid):
@@ -35,10 +29,10 @@ def get_grid_position(x, y, grid):
 # Poachers
 
 starting_locations_poacher = [
-                      (11, 1),
-                      (13, 20),
-                      (1, 14),
-                      (3, 28)
+                      (9, 1),
+                      (10, 20),
+                      (1, 13),
+                      (2, 24)
                      ]
 
 
@@ -56,13 +50,13 @@ def generate_random_entry_at_walls(lines):
     chosen_point = random.choice(get_legal_places_on_line(chosen_line[0]))
 
     if chosen_line[1] == "b":
-        entry_point = (13, chosen_point)
+        entry_point = (11, chosen_point)
     elif chosen_line[1] == "u":
         entry_point = (1, chosen_point)
     elif chosen_line[1] == "l":
         entry_point = (chosen_point, 1)
     elif chosen_line[1] == "r":
-        entry_point = (chosen_point, 27)
+        entry_point = (chosen_point, 24)
     else:
         entry_point = (1, chosen_point)
 
@@ -171,7 +165,7 @@ def spawn_rangers(num_rangers=3, max_number_rangers=4):
     # between 24 and 27
 
     for i in range(num_rangers):
-        rangers_to_place.append((1, 28 - i))
+        rangers_to_place.append((1, 25 - i))
 
     return rangers_to_place
 
