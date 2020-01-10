@@ -104,7 +104,6 @@ class ValueIterationAgent(ValueEstimationAgent):
             return bestaction
 
 
-
     def getPolicy(self, state):
         return self.computeActionFromValues(state)
 

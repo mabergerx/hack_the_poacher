@@ -163,11 +163,11 @@ class GameState:
     def getScore( self ):
         return self.data.score
 
-    def getCapsules(self):
-        """
-        Returns a list of positions (x,y) of the remaining capsules.
-        """
-        return self.data.capsules
+    # def getCapsules(self):
+    #     """
+    #     Returns a list of positions (x,y) of the remaining capsules.
+    #     """
+    #     return self.data.capsules
 
     def getNumFood( self ):
         return self.data.food.count()
@@ -366,13 +366,13 @@ class PacmanRules:
                 state.data.scoreChange += 500
                 state.data._win = True
         # Eat capsule
-        if( position in state.getCapsules() ):
-            state.data.scoreChange += 10
-            state.data.capsules.remove( position )
-            state.data._capsuleEaten = position
-            # Reset all ghosts' scared timers
-            for index in range( 1, len( state.data.agentStates ) ):
-                state.data.agentStates[index].scaredTimer = SCARED_TIME
+        # if( position in state.getCapsules() ):
+        #     state.data.scoreChange += 10
+        #     state.data.capsules.remove( position )
+        #     state.data._capsuleEaten = position
+        #     # Reset all ghosts' scared timers
+        #     for index in range( 1, len( state.data.agentStates ) ):
+        #         state.data.agentStates[index].scaredTimer = SCARED_TIME
     consume = staticmethod( consume )
 
 class GhostRules:

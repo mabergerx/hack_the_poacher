@@ -25,7 +25,7 @@ class Layout:
         self.height= len(layoutText)
         self.walls = Grid(self.width, self.height, False)
         self.food = Grid(self.width, self.height, False)
-        self.capsules = []
+        # self.capsules = []
         self.agentPositions = []
         self.numGhosts = 0
         self.processLayoutText(layoutText)

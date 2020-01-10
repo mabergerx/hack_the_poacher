@@ -372,7 +372,7 @@ class GameStateData:
         """
         if prevState != None:
             self.food = prevState.food.shallowCopy()
-            self.capsules = prevState.capsules[:]
+            # self.capsules = prevState.capsules[:]
             self.agentStates = self.copyAgentStates( prevState.agentStates )
             self.layout = prevState.layout
             self._eaten = prevState._eaten
@@ -380,7 +380,7 @@ class GameStateData:
 
         self._foodEaten = None
         self._foodAdded = None
-        self._capsuleEaten = None
+        # self._capsuleEaten = None
         self._agentMoved = None
         self._lose = False
         self._win = False
@@ -393,7 +393,7 @@ class GameStateData:
         state._agentMoved = self._agentMoved
         state._foodEaten = self._foodEaten
         state._foodAdded = self._foodAdded
-        state._capsuleEaten = self._capsuleEaten
+        # state._capsuleEaten = self._capsuleEaten
         return state
 
     def copyAgentStates( self, agentStates ):
@@ -410,7 +410,7 @@ class GameStateData:
         # TODO Check for type of other
         if not self.agentStates == other.agentStates: return False
         if not self.food == other.food: return False
-        if not self.capsules == other.capsules: return False
+        # if not self.capsules == other.capsules: return False
         if not self.score == other.score: return False
         return True
 
@@ -424,7 +424,7 @@ class GameStateData:
             except TypeError, e:
                 print e
                 #hash(state)
-        return int((hash(tuple(self.agentStates)) + 13*hash(self.food) + 113* hash(tuple(self.capsules)) + 7 * hash(self.score)) % 1048575 )
+        return int((hash(tuple(self.agentStates)) + 13*hash(self.food) + 7 * hash(self.score)) % 1048575 )
 
     def __str__( self ):
         width, height = self.layout.width, self.layout.height
@@ -446,8 +446,8 @@ class GameStateData:
             else:
                 map[x][y] = self._ghostStr( agent_dir )
 
-        for x, y in self.capsules:
-            map[x][y] = 'o'
+        # for x, y in self.capsules:
+        #     map[x][y] = 'o'
 
         return str(map) + ("\nScore: %d\n" % self.score)
 
@@ -483,7 +483,7 @@ class GameStateData:
         Creates an initial game state from a layout array (see layout.py).
         """
         self.food = layout.food.copy()
-        self.capsules = layout.capsules[:]
+        # self.capsules = layout.capsules[:]
         self.layout = layout
         self.score = 0
         self.scoreChange = 0
