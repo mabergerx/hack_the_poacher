@@ -632,6 +632,44 @@ class Env(object):
     def update_po_memory(self):
         self.po_memory[self.po_loc[0], self.po_loc[1]] = self.pa_trace[tuple(self.po_loc)]
 
+    def blur_locations(in_field):
+        field = np.copy(in_field)
+        coords = np.argwhere(field==1)
+
+        for coord in coords:
+            not_orientations = set()
+            self.row_num, self.column_num = coord[0], coord[1]
+
+            if self.row_num== 0:
+                not_orientations.add(2)
+                not_orientations.add(3)
+            elif self.row_num == ROW - 1:
+                not_orientations.add(0)
+                not_orientations.add(1)
+
+            if self.column_num == 0:
+                not_orientations.add(1)
+                not_orientations.add(3)
+            elif self.column_num == COL - 1:
+                not_orientations.add(0)
+                not_orientations.add(2)
+
+            possible_orientations = {0, 1, 2, 3} - not_orientations
+            print(possible_orientations)
+            orientation = np.random.choice(list(possible_orientations))
+
+            if orientation == 0:
+                field[self.row_num:self.row_num+2, self.column_num:self.column_num+2] = 1
+            elif orientation == 1:
+                field[self.row_num:self.row_num+2, self.column_num-1:self.column_num+1] = 1
+            elif orientation == 2:
+                field[self.row_num-1:self.row_num+1, self.column_num:self.column_num+2] = 1
+            else:
+                field[self.row_num-1:self.row_num+1, self.column_num-1:self.column_num+1] = 1
+
+
+        return field
+
     def get_pa_state(self):
         state = self.pa_memory
 
@@ -647,6 +685,7 @@ class Env(object):
         rand_field = np.random.random(((self.row_num, self.column_num)) < NOISE_P)
         coordinate = np.logical_or(rand_field, coordinate).astype(int)
         coordinate = np.expand_dims(coordinate, axis=2)
+        coordinate = blur_locations(coordinate)
         state = np.concatenate((state, coordinate), axis=2)
 
         coordinate = np.zeros([self.row_num, self.column_num])
