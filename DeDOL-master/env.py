@@ -4,6 +4,9 @@ import time
 import copy
 from tkinter import *
 
+# noise parameter
+NOISE_P = 0.01
+PO_SCAN_RATE = 0.1
 
 class Env(object):
     def __init__(self, args, animal_density, cell_length, canvas, gui):
@@ -639,7 +642,10 @@ class Env(object):
         state = np.concatenate((state, ani_den), axis=2)
 
         coordinate = np.zeros([self.row_num, self.column_num])
-        coordinate[self.po_loc[0], self.po_loc[1]] = 1
+        if np.random.random() < PO_SCAN_RATE:
+            coordinate[self.po_loc[0], self.po_loc[1]] = 1
+        rand_field = np.random.random(((self.row_num, self.column_num)) < NOISE_P)
+        coordinate = np.logical_or(rand_field, coordinate).astype(int)
         coordinate = np.expand_dims(coordinate, axis=2)
         state = np.concatenate((state, coordinate), axis=2)
 
