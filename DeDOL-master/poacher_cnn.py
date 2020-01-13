@@ -190,7 +190,7 @@ class Poacher(object):
             ret = action
         return ret
 
-    def infer_action(self, sess, states, policy, epsilon=0.95, po_loc, animal_density):
+    def infer_action(self, sess, states, policy, po_loc, animal_density, epsilon=0.95, ):
         """
         :param states: a batch of states
         :param policy: "epsilon_greedy", "greedy"
