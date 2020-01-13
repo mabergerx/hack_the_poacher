@@ -632,7 +632,7 @@ class Env(object):
     def update_po_memory(self):
         self.po_memory[self.po_loc[0], self.po_loc[1]] = self.pa_trace[tuple(self.po_loc)]
 
-    def blur_locations(in_field):
+    def blur_locations(self, in_field):
         field = np.copy(in_field)
         coords = np.argwhere(field==1)
 
@@ -685,7 +685,7 @@ class Env(object):
         rand_field = np.random.random((self.row_num, self.column_num)) < NOISE_P
         coordinate = np.logical_or(rand_field, coordinate).astype(int)
         coordinate = np.expand_dims(coordinate, axis=2)
-        coordinate = blur_locations(coordinate)
+        coordinate = self.blur_locations(coordinate)
         state = np.concatenate((state, coordinate), axis=2)
 
         coordinate = np.zeros([self.row_num, self.column_num])
