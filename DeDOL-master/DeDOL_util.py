@@ -343,7 +343,7 @@ def calc_po_best_response_PER(poacher, target_poacher, po_copy_op, po_good_copy_
             ### Note that heuristic and DQN agent has different APIs
             if type == 'DQN':
                 pa_state = np.array([pa_state])  # Make it 2-D, i.e., [batch_size(1), state_size]
-                pa_action = patroller.infer_action(sess=sess, states=pa_state, policy="greedy")
+                pa_action = patroller.infer_action(sess=sess, states=pa_state, policy="greedy", po_loc=self.po_loc, animal_density=env.animal_density)
             elif type == 'PARAM':
                 pa_loc = env.pa_loc
                 pa_action = patroller.infer_action(pa_loc, env.get_local_po_trace(pa_loc), 1.5, -2.0, 8.0)

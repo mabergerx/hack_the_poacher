@@ -190,7 +190,7 @@ class Poacher(object):
             ret = action
         return ret
 
-    def infer_action(self, sess, states, policy, epsilon=0.95):
+    def infer_action(self, sess, states, policy, epsilon=0.95, po_loc, animal_density):
         """
         :param states: a batch of states
         :param policy: "epsilon_greedy", "greedy"
@@ -199,7 +199,10 @@ class Poacher(object):
         """
         q_values = sess.run(self.output, {self.input_state: states})
         # print list(q_values[0])
-        print(self.po_loc)
+        print("Location poacher: " + str(po_loc))
+        print("ANIMAL DENSITY MAP")
+        print(animal_density)
+
 
         argmax_actions = np.argmax(q_values, axis=1)
         assert len(argmax_actions) == 1
