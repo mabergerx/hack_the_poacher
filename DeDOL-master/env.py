@@ -682,7 +682,7 @@ class Env(object):
         coordinate = np.zeros([self.row_num, self.column_num])
         if np.random.random() < PO_SCAN_RATE:
             coordinate[self.po_loc[0], self.po_loc[1]] = 1
-        rand_field = np.random.random(((self.row_num, self.column_num)) < NOISE_P)
+        rand_field = np.random.random((self.row_num, self.column_num)) < NOISE_P
         coordinate = np.logical_or(rand_field, coordinate).astype(int)
         coordinate = np.expand_dims(coordinate, axis=2)
         coordinate = blur_locations(coordinate)
