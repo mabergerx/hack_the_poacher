@@ -647,12 +647,13 @@ def runGames( pacman, ghosts, display, numGames, record, numTraining = 0, catchE
         if not beQuiet: games.append(game)
 
         if record:
-            import time, cPickle
-            fname = ('./recorded-games/recorded-game-%d' % (i + 1)) +  '-'.join([str(t) for t in time.localtime()[1:6]])
-            f = file(fname, 'w')
-            components = {'layout': layoutA, 'actions': game.moveHistory}
-            cPickle.dump(components, f)
-            f.close()
+            if i % 1000 == 0:
+                import time, cPickle
+                fname = ('./recorded-games/recorded-game-%d' % (i + 1)) +  '-'.join([str(t) for t in time.localtime()[1:6]])
+                f = file(fname, 'w')
+                components = {'layout': layoutA, 'actions': game.moveHistory}
+                cPickle.dump(components, f)
+                f.close()
 
     if (numGames-numTraining) > 0:
         scores = [game.state.getScore() for game in games]

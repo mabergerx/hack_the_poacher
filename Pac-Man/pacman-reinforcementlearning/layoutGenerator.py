@@ -6,7 +6,8 @@ def get_legal_places_on_line(line):
 
 # Obstacles
 
-river = [(7, 1), (7, 2), (7, 3), (7, 4), (7, 5), (7, 6), (7, 7),
+river = [
+         (7, 1), (7, 2), (7, 3), (7, 4), (7, 5), (7, 6), (7, 7),
          (8, 7),
          (10, 7),
          (1, 10),
@@ -31,7 +32,6 @@ def get_grid_position(x, y, grid):
 starting_locations_poacher = [
                       (9, 1),
                       (10, 20),
-                      (1, 13),
                       (2, 23)
                      ]
 
