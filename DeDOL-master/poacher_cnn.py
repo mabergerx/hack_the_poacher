@@ -163,32 +163,39 @@ class Poacher(object):
         if snare_flag and self.snare_num > 0:
             self.snare_num -= 1
 
-    def get_po_actions(self):
+    def get_po_actions(self, animal_density, po_loc):
         '''
         For building game tree usage
         '''
-        action = [('still', 0), ('up',0), ('down',0), ('left',0), ('right',0),
-                        ('still', 1), ('up',1), ('down',1), ('left',1), ('right',1)]
-        if self.po_loc[0] == 0:
-            action.remove(('up',0))
-            action.remove(('up',1))
-        if self.po_loc[0] == self.row_num - 1:
-            action.remove(('down',0))
-            action.remove(('down',1))
-        if self.po_loc[1] == 0:
-            action.remove(('left',0))
-            action.remove(('left',1))
-        if self.po_loc[1] == self.column_num - 1:
-            action.remove(('right',0))
-            action.remove(('right',1))
-        if self.poacher_snare_num == 0:
-            ret = []
-            for x in action:
-                if x[1] != 1:
-                    ret.append(x)
-        else:
-            ret = action
-        return ret
+
+        q_value_map = [1,1,1,1,1,
+                        1,1,1,1,1]
+        
+        # check up
+        up = po_loc[1] + 1
+        if len(animal_density)-1 > up and animal_density[po_loc[0]][up] <= 0:
+            q_value_map[1] = 0
+            q_value_map[6] = 0
+            print('can\'t go up')
+        # check down
+        down = po_loc[1] - 1
+        if 0 <= down and animal_density[po_loc[0]][down] <= 0:
+            q_value_map[2] = 0
+            q_value_map[7] = 0
+            print('can\'t go down')
+        # check left
+        left = po_loc[0] - 1
+        if 0 <= left and animal_density[left, po_loc[1]] <= 0:
+            q_value_map[3] = 0
+            q_value_map[8] = 0
+            print('can\'t go left')
+        # check right
+        right = po_loc[0] + 1
+        if len(animal_density[0])-1 > right and animal_density[right, po_loc[1]] <= 0:
+            q_value_map[4] = 0
+            q_value_map[9] = 0
+            print('can\'t go right')
+        return q_value_map
 
     def infer_action(self, sess, states, policy, po_loc, animal_density, epsilon=0.95, ):
         """
@@ -199,10 +206,14 @@ class Poacher(object):
         """
         q_values = sess.run(self.output, {self.input_state: states})
         # print list(q_values[0])
-        print("Location poacher: " + str(po_loc))
-        print("ANIMAL DENSITY MAP")
-        print(animal_density)
-
+        print("Q-Values Pre:")
+        print(q_values)
+        q_multiplier = self.get_po_actions(animal_density, po_loc)
+        print("Q-multipliers:")
+        print(q_multiplier)
+        q_values *= q_multiplier
+        print("Q-Values After:")
+        print(q_values)
 
         argmax_actions = np.argmax(q_values, axis=1)
         assert len(argmax_actions) == 1
