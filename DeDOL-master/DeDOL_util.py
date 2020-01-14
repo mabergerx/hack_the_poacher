@@ -342,7 +342,7 @@ def calc_po_best_response_PER(poacher, target_poacher, po_copy_op, po_good_copy_
             ### Note that heuristic and DQN agent has different APIs
             if type == 'DQN':
                 pa_state = np.array([pa_state])  # Make it 2-D, i.e., [batch_size(1), state_size]
-                pa_action = patroller.infer_action(sess=sess, states=pa_state, policy="greedy", po_loc=self.po_loc, animal_density=env.animal_density)
+                pa_action = patroller.infer_action(sess=sess, states=pa_state, policy="greedy", pa_loc=env.pa_loc, animal_density=env.animal_density)
             elif type == 'PARAM':
                 pa_loc = env.pa_loc
                 pa_action = patroller.infer_action(pa_loc, env.get_local_po_trace(pa_loc), 1.5, -2.0, 8.0)
@@ -531,7 +531,7 @@ def calc_pa_best_response_PER(patroller, target_patroller, pa_copy_op, pa_good_c
             if type == 'DQN':
                 if not env.catch_flag and not env.home_flag: # if poacher is not caught, it can still do actions
                     po_state = np.array([po_state])
-                    snare_flag, po_action = poacher.infer_action(sess=sess, states=po_state, policy="greedy", pa_loc=env.pa_loc, animal_density=env.animal_density)
+                    snare_flag, po_action = poacher.infer_action(sess=sess, states=po_state, policy="greedy", po_loc=env.po_loc, animal_density=env.animal_density)
                 else: ### however, if it is caught, just make it stay still and does nothing
                     snare_flag = 0
                     po_action = 'still'
