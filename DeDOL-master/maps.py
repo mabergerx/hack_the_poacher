@@ -1,4 +1,5 @@
 import numpy as np
+from random import uniform
 
 dy = [0,1,1,1]
 dx = [-1,-1,0,1]
