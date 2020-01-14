@@ -37,6 +37,8 @@ class Patroller_CNN(object):
                     filter_shape = [3, 3, self.in_channel, 16]
                 elif self.args.row_num == 3:
                     filter_shape = [2, 2, self.in_channel, 16]
+                elif self.args.row_num == 10:
+                    filter_shape = [5, 5, self.in_channel, 16]
                 self.W0 = tf.get_variable(name='weights',
                                           initializer=tf.truncated_normal(filter_shape, stddev=0.001))
                 self.b0 = tf.get_variable(name='bias', initializer=tf.zeros([16]))
