@@ -576,7 +576,8 @@ class Env(object):
         # return pa_reward, -pa_reward
 
     def delete_snare(self, loc):
-        self.snare_state.remove((loc[0], loc[1]))
+        if (loc[0], loc[1]) in self.snare_state:
+            self.snare_state.remove((loc[0], loc[1]))
         if self.gui:
             rec = self.canvas.create_rectangle(loc[1] * self.cell_length,
                                                loc[0] * self.cell_length,
