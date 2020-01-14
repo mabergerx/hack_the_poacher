@@ -29,7 +29,7 @@ def generate_map(args):
         animal_density = Mountainmap(args.row_num, args.column_num, args.ani_den_seed)
         return animal_density
     elif args.map_type == 'poacher':
-        ad = np.zeros([10,23])
+        ad = np.zeros([args.row_num, args.column_num])
         obstacles = [(0,9),(0,15),(1,3),(1,4),(1,5),(1,8),(1,9),(2,0),(2,1),(2,2),(2,3),
                      (2,15),(2,16),(2,17),(3,17),(4,6),(4,7),(4,17),(4,19),(4,20),(4,21),
                      (4,22),(5,12),(6,0),(6,1),(6,2),(6,3),(6,4),(6,5),(6,6),
