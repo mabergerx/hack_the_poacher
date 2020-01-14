@@ -29,6 +29,9 @@ class Poacher(object):
             self.learning_rate = tf.placeholder(tf.float32)
             self.loss_weight = tf.placeholder(tf.float32) # 1-D, [batch_size] the weight of the loss in PER
 
+            kernal_X = 5
+            kernal_Y = 5
+
             # Build Graph
             with tf.variable_scope('conv-maxpool-0'):
                 if self.args.row_num == 7:
@@ -37,6 +40,8 @@ class Poacher(object):
                     filter_shape = [3, 3, self.in_channel, 16]
                 elif self.args.row_num == 3:
                     filter_shape = [2, 2, self.in_channel, 16]
+                elif self.args.row_num == 10:
+                    filter_shape = [kernal_X, kernal_Y, self.in_channel, 16]
                 self.W0 = tf.get_variable(name='weights',
                                           initializer=tf.truncated_normal(filter_shape, stddev=0.001))
                 self.b0 = tf.get_variable(name='bias', initializer=tf.zeros([16]))
@@ -74,6 +79,10 @@ class Poacher(object):
                     self.Wf0 = tf.get_variable(name='weights',
                                            initializer=tf.truncated_normal([2 * 2 * 32, 64], stddev=0.001))
                     self.fc0 = tf.reshape(self.conv1, [-1, 2 * 2 * 32])
+                elif self.args.row_num == 10:
+                    self.Wf0 = tf.get_variable(name='weights',
+                                           initializer=tf.truncated_normal([kernal_X * kernal_Y * 32, 64], stddev=0.001))
+                    self.fc0 = tf.reshape(self.conv1, [-1, kernal_X * kernal_Y * 32])
                 self.bf0 = tf.get_variable(name='bias', initializer=tf.zeros([64]))
                 self.fc0 = tf.add(tf.matmul(self.fc0, self.Wf0), self.bf0)
                 self.fc0 = tf.nn.relu(self.fc0)
@@ -158,7 +167,37 @@ class Poacher(object):
         if snare_flag and self.snare_num > 0:
             self.snare_num -= 1
 
-    def infer_action(self, sess, states, policy, epsilon=0.95):
+    def get_po_actions(self, animal_density, po_loc):
+        '''
+        For building game tree usage
+        '''
+
+        q_value_map = [1,1,1,1,1,
+                        1,1,1,1,1]
+        
+        # check up
+        up = po_loc[1] + 1
+        if len(animal_density)-1 > up and animal_density[po_loc[0]][up] <= 0:
+            q_value_map[1] = 0
+            q_value_map[6] = 0
+        # check down
+        down = po_loc[1] - 1
+        if 0 <= down and animal_density[po_loc[0]][down] <= 0:
+            q_value_map[2] = 0
+            q_value_map[7] = 0
+        # check left
+        left = po_loc[0] - 1
+        if 0 <= left and animal_density[left, po_loc[1]] <= 0:
+            q_value_map[3] = 0
+            q_value_map[8] = 0
+        # check right
+        right = po_loc[0] + 1
+        if len(animal_density[0])-1 > right and animal_density[right, po_loc[1]] <= 0:
+            q_value_map[4] = 0
+            q_value_map[9] = 0
+        return q_value_map
+
+    def infer_action(self, sess, states, policy, po_loc, animal_density, epsilon=0.95, ):
         """
         :param states: a batch of states
         :param policy: "epsilon_greedy", "greedy"
@@ -167,6 +206,10 @@ class Poacher(object):
         """
         q_values = sess.run(self.output, {self.input_state: states})
         # print list(q_values[0])
+        q_multiplier = self.get_po_actions(animal_density, po_loc)
+        q_values *= q_multiplier
+
+
         argmax_actions = np.argmax(q_values, axis=1)
         assert len(argmax_actions) == 1
         argmax_action = argmax_actions[0]

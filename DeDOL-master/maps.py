@@ -1,4 +1,5 @@
 import numpy as np
+from random import uniform
 
 dy = [0,1,1,1]
 dx = [-1,-1,0,1]
@@ -27,6 +28,26 @@ def generate_map(args):
     elif args.map_type == 'gauss':
         animal_density = Mountainmap(args.row_num, args.column_num, args.ani_den_seed)
         return animal_density
+    elif args.map_type == 'poacher':
+        ad = np.zeros([args.row_num, args.column_num])
+        obstacles = [(0,5),(0,8),(1,2),(1,3),(1,6),(2,0),(2,1),(2,2),(2,7),(2,8),(2,9),
+                     (3,9),(4,0),(4,4),(4,7),(4,8),(4,9),(5,9),(6,0),(6,1),(6,2),(6,3),(6,9),
+                     (7,0),(7,6),(8,0),(8,9),(9,4)]
+        potentials = [(0,1),(0,2),(0,4),(0,9),(1,0),(1,5),(1,7),(1,9),(2,3),(2,6),(3,0),
+                      (3,1),(3,3),(3,5),(3,6),(3,8),(4,3),(4,6),(5,0),(5,1),(5,3),(5,4),
+                      (5,5),(5,7),(5,8),(6,5),(6,6),(6,7),(7,2),(7,3),(7,5),(7,9),(8,4),
+                      (8,5),(8,7),(8,8),(9,3),(9,5),(9,6),(9,9)]
+        for i in range(ad.shape[0]):
+            for x in range(ad.shape[1]):
+                index = (i,x)
+                if index in obstacles:
+                    ad[i,x] = -1
+                elif index in potentials:
+                    ad[i,x] = uniform(0.4, 0.7)
+                else:
+                    ad[i,x] = uniform(0.1, 0.2)
+        return ad
+
 
 def Mountainmap(row, col, seed):
     np.random.seed(seed)

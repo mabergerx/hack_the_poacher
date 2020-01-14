@@ -97,6 +97,17 @@ argparser.add_argument('--reward_shaping', type = bool, default = False, help = 
 #########################################################################################
 args = argparser.parse_args()
 
+if args.row_num == 10:
+    args.column_num = 10
+    args.max_time = 75
+    args.pa_initial_lr = 1e-4
+    args.po_initial_lr = 5e-5
+    args.pa_replay_buffer_size = 200000
+    args.po_replay_buffer_size = 100000
+    if args.po_location is not None:
+        args.pa_episode_num = 200000
+        args.po_episode_num = 200000
+
 if args.row_num == 7:
     args.column_num = 7
     args.max_time = 75
