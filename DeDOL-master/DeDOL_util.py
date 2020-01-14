@@ -531,7 +531,7 @@ def calc_pa_best_response_PER(patroller, target_patroller, pa_copy_op, pa_good_c
             if type == 'DQN':
                 if not env.catch_flag and not env.home_flag: # if poacher is not caught, it can still do actions
                     po_state = np.array([po_state])
-                    snare_flag, po_action = poacher.infer_action(sess=sess, states=po_state, policy="greedy")
+                    snare_flag, po_action = poacher.infer_action(sess=sess, states=po_state, policy="greedy", pa_loc=env.pa_loc, animal_density=env.animal_density)
                 else: ### however, if it is caught, just make it stay still and does nothing
                     snare_flag = 0
                     po_action = 'still'
@@ -551,7 +551,7 @@ def calc_pa_best_response_PER(patroller, target_patroller, pa_copy_op, pa_good_c
 
             ### patroller chooses an action
             pa_state = np.array([pa_state])
-            pa_action = patroller.infer_action(sess=sess, states=pa_state, policy="epsilon_greedy", epsilon=epsilon)
+            pa_action = patroller.infer_action(sess=sess, states=pa_state, policy="epsilon_greedy", epsilon=epsilon, pa_loc=env.pa_loc, animal_density=env.animal_density)
 
             ### transition adds action
             transition.append(action_id[pa_action])

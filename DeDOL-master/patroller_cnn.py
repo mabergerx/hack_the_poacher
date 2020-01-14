@@ -169,7 +169,7 @@ class Patroller_CNN(object):
             q_value_map[4] = 0
         return q_value_map
 
-    def infer_action(self, sess, states, policy, epsilon=0.95):
+    def infer_action(self, sess, states, policy, animal_density, pa_loc, epsilon=0.95):
         """
         :param states: a batch of states
         :param policy: "epsilon_greedy", "greedy"
@@ -177,7 +177,7 @@ class Patroller_CNN(object):
         :return: a batch of actions
         """
         q_values = sess.run(self.output, {self.input_state: states})
-        q_multiplier = self.get_po_actions(animal_density, po_loc)
+        q_multiplier = self.get_pa_actions(animal_density, pa_loc)
         q_values *= q_multiplier
 
         argmax_actions = np.argmax(q_values, axis=1)
