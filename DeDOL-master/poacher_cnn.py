@@ -185,25 +185,25 @@ class Poacher(object):
         if len(animal_density)-1 > up and animal_density[po_loc[0]][up] <= 0:
             q_value_map[1] = 0
             q_value_map[6] = 0
-            print('can\'t go up')
+            print('cant go up')
         # check down
         down = po_loc[1] - 1
         if 0 <= down and animal_density[po_loc[0]][down] <= 0:
             q_value_map[2] = 0
             q_value_map[7] = 0
-            print('can\'t go down')
+            print('cant go down')
         # check left
         left = po_loc[0] - 1
         if 0 <= left and animal_density[left, po_loc[1]] <= 0:
             q_value_map[3] = 0
             q_value_map[8] = 0
-            print('can\'t go left')
+            print('cant go left')
         # check right
         right = po_loc[0] + 1
         if len(animal_density[0])-1 > right and animal_density[right, po_loc[1]] <= 0:
             q_value_map[4] = 0
             q_value_map[9] = 0
-            print('can\'t go right')
+            print('cant go right')
         return q_value_map
 
     def infer_action(self, sess, states, policy, po_loc, animal_density, epsilon=0.95, ):
