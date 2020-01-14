@@ -98,7 +98,7 @@ argparser.add_argument('--reward_shaping', type = bool, default = False, help = 
 args = argparser.parse_args()
 
 if args.row_num == 10:
-    args.column_num = 23
+    args.column_num = 10
     args.max_time = 75
     args.pa_initial_lr = 1e-4
     args.po_initial_lr = 5e-5
