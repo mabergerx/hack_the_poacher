@@ -967,20 +967,15 @@ class Env(object):
         '''
         For building game tree usage
         '''
-        action = [('still', 0), ('up',0), ('down',0), ('left',0), ('right',0),
-                        ('still', 1), ('up',1), ('down',1), ('left',1), ('right',1)]
+        action = [('still', 1), ('up',0), ('down',0), ('left',0), ('right',0)]
         if self.po_loc[0] == 0:
             action.remove(('up',0))
-            action.remove(('up',1))
         if self.po_loc[0] == self.row_num - 1:
             action.remove(('down',0))
-            action.remove(('down',1))
         if self.po_loc[1] == 0:
             action.remove(('left',0))
-            action.remove(('left',1))
         if self.po_loc[1] == self.column_num - 1:
             action.remove(('right',0))
-            action.remove(('right',1))
         if self.poacher_snare_num == 0:
             ret = []
             for x in action:
