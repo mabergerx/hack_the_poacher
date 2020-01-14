@@ -49,13 +49,13 @@ argparser.add_argument('--ani_den_seed', type=int, default=66)
 argparser.add_argument('--max_time', type=int, default=4)
 
 ### Patroller
-argparser.add_argument('--pa_state_size', type=int, default=20)
+argparser.add_argument('--pa_state_size', type=int, default=21)
 argparser.add_argument('--pa_num_actions', type=int, default=5)
 
 ### Poacher CNN
 argparser.add_argument('--snare_num', type=int, default=6)
 argparser.add_argument('--po_state_size', type=int, default=22) #yf: add self footprint to poacher
-argparser.add_argument('--po_num_actions', type=int, default=10)
+argparser.add_argument('--po_num_actions', type=int, default=5)
 
 ### Poacher Rule Base
 argparser.add_argument('--po_act_den_w', type=float, default=3.)

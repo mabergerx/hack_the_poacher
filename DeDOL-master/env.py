@@ -4,6 +4,9 @@ import time
 import copy
 from tkinter import *
 
+# noise parameter
+NOISE_P = 0.01
+PO_SCAN_RATE = 0.1
 
 class Env(object):
     def __init__(self, args, animal_density, cell_length, canvas, gui):
@@ -145,6 +148,10 @@ class Env(object):
         if snare_flag and self.poacher_snare_num > 0:
             self.place_snare(self.po_loc)
             self.poacher_snare_num -= 1
+
+        else:
+            self.delete_snare(self.po_loc)
+            self.poacher_snare_num += 1
 
         # Update the position and traces of poacher and patroller
         po_ori_loc, po_new_loc = self.update_po_loc(po_action)
@@ -568,6 +575,19 @@ class Env(object):
 
         # return pa_reward, -pa_reward
 
+    def delete_snare(self, loc):
+        if (loc[0], loc[1]) in self.snare_state:
+            self.snare_state.remove((loc[0], loc[1]))
+        if self.gui:
+            rec = self.canvas.create_rectangle(loc[1] * self.cell_length,
+                                               loc[0] * self.cell_length,
+                                               loc[1] * self.cell_length + self.quarter_cell,
+                                               loc[0] * self.cell_length + self.quarter_cell, fill="white")
+
+            if (loc[0], loc[1]) not in self.snare_object:
+                self.snare_object[(loc[0], loc[1])] = [rec]
+            else:
+                self.snare_object[(loc[0], loc[1])].append(rec)
 
     def place_snare(self, loc):
         self.snare_state.append((loc[0], loc[1]))
@@ -629,6 +649,43 @@ class Env(object):
     def update_po_memory(self):
         self.po_memory[self.po_loc[0], self.po_loc[1]] = self.pa_trace[tuple(self.po_loc)]
 
+    def blur_locations(self, in_field):
+        field = np.copy(in_field)
+        coords = np.argwhere(field==1)
+
+        for coord in coords:
+            not_orientations = set()
+            i_row_num, i_column_num = coord[0], coord[1]
+
+            if i_row_num == 0:
+                not_orientations.add(2)
+                not_orientations.add(3)
+            elif i_row_num == self.row_num - 1:
+                not_orientations.add(0)
+                not_orientations.add(1)
+
+            if i_column_num == 0:
+                not_orientations.add(1)
+                not_orientations.add(3)
+            elif i_column_num == self.column_num - 1:
+                not_orientations.add(0)
+                not_orientations.add(2)
+
+            possible_orientations = {0, 1, 2, 3} - not_orientations
+            orientation = np.random.choice(list(possible_orientations))
+
+            if orientation == 0:
+                field[i_row_num:i_row_num+2, i_column_num:i_column_num+2] = 1
+            elif orientation == 1:
+                field[i_row_num:i_row_num+2, i_column_num-1:i_column_num+1] = 1
+            elif orientation == 2:
+                field[i_row_num-1:i_row_num+1, i_column_num:i_column_num+2] = 1
+            else:
+                field[i_row_num-1:i_row_num+1, i_column_num-1:i_column_num+1] = 1
+
+
+        return field
+
     def get_pa_state(self):
         state = self.pa_memory
 
@@ -637,6 +694,15 @@ class Env(object):
 
         ani_den = np.expand_dims(self.animal_density, axis=2)
         state = np.concatenate((state, ani_den), axis=2)
+
+        coordinate = np.zeros([self.row_num, self.column_num])
+        if np.random.random() < PO_SCAN_RATE:
+            coordinate[self.po_loc[0], self.po_loc[1]] = 1
+        rand_field = np.random.random((self.row_num, self.column_num)) < NOISE_P
+        coordinate = np.logical_or(rand_field, coordinate).astype(int)
+        coordinate = np.expand_dims(coordinate, axis=2)
+        coordinate = self.blur_locations(coordinate)
+        state = np.concatenate((state, coordinate), axis=2)
 
         coordinate = np.zeros([self.row_num, self.column_num])
         coordinate[self.pa_loc[0], self.pa_loc[1]] = 1
@@ -901,20 +967,15 @@ class Env(object):
         '''
         For building game tree usage
         '''
-        action = [('still', 0), ('up',0), ('down',0), ('left',0), ('right',0),
-                        ('still', 1), ('up',1), ('down',1), ('left',1), ('right',1)]
+        action = [('still', 1), ('up',0), ('down',0), ('left',0), ('right',0)]
         if self.po_loc[0] == 0:
             action.remove(('up',0))
-            action.remove(('up',1))
         if self.po_loc[0] == self.row_num - 1:
             action.remove(('down',0))
-            action.remove(('down',1))
         if self.po_loc[1] == 0:
             action.remove(('left',0))
-            action.remove(('left',1))
         if self.po_loc[1] == self.column_num - 1:
             action.remove(('right',0))
-            action.remove(('right',1))
         if self.poacher_snare_num == 0:
             ret = []
             for x in action:

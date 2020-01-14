@@ -42,7 +42,7 @@ argparser.add_argument('--column_num', type=int, default=3)
 argparser.add_argument('--ani_den_seed', type=int, default=66)
 
 ### Patroller
-argparser.add_argument('--pa_state_size', type=int, default=20)
+argparser.add_argument('--pa_state_size', type=int, default=21)
 argparser.add_argument('--pa_num_actions', type=int, default=5)
 
 ### Poacher CNN

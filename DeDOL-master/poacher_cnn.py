@@ -185,8 +185,7 @@ class Poacher(object):
         self.snare_num = self.args.snare_num
 
     def random_action(self):
-        return np.random.choice([(0, 'still'), (0, 'up'), (0, 'down'), (0, 'left'), (0, 'right'),
-                                 (1, 'still'), (1, 'up'), (1, 'down'), (1, 'left'), (1, 'right')])
+        return np.random.choice([(1, 'still'), (0, 'up'), (0, 'down'), (0, 'left'), (0, 'right')])
     
 
     def get_max_q(self, sess, states):
