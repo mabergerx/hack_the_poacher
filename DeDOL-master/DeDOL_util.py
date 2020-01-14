@@ -180,7 +180,7 @@ def test_(patroller, poacher, env, sess, args, iteration = None, grand_episode =
                 ### the poacher can take actions only if he is not caught yet/has not returned home
                 if not env.catch_flag and not env.home_flag: 
                     po_state = np.array([po_state])
-                    snare_flag, po_action = poacher.infer_action(sess=sess, states=po_state, policy="greedy")
+                    snare_flag, po_action = poacher.infer_action(sess=sess, states=po_state, policy="greedy", po_loc=self.po_loc, animal_density=env.animal_density)
                 else:
                     snare_flag = 0
                     po_action = 'still' 
