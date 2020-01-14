@@ -34,6 +34,9 @@ class Poacher(object):
             self.learning_rate = tf.placeholder(tf.float32)
             self.loss_weight = tf.placeholder(tf.float32) # 1-D, [batch_size] the weight of the loss in PER
 
+            kernal_X = 5
+            kernal_Y = 5
+
             # Build Graph
             with tf.variable_scope('conv-maxpool-0'):
                 if self.args.row_num == 7:
@@ -43,7 +46,7 @@ class Poacher(object):
                 elif self.args.row_num == 3:
                     filter_shape = [2, 2, self.in_channel, 16]
                 elif self.args.row_num == 10:
-                    filter_shape = [4, 4, self.in_channel, 16]
+                    filter_shape = [kernal_X, kernal_Y, self.in_channel, 16]
                 self.W0 = tf.get_variable(name='weights',
                                           initializer=tf.truncated_normal(filter_shape, stddev=0.001))
                 self.b0 = tf.get_variable(name='bias', initializer=tf.zeros([16]))
@@ -83,8 +86,8 @@ class Poacher(object):
                     self.fc0 = tf.reshape(self.conv1, [-1, 2 * 2 * 32])
                 elif self.args.row_num == 10:
                     self.Wf0 = tf.get_variable(name='weights',
-                                           initializer=tf.truncated_normal([4 * 4 * 32, 64], stddev=0.001))
-                    self.fc0 = tf.reshape(self.conv1, [-1, 4 * 4 * 32])
+                                           initializer=tf.truncated_normal([kernal_X * kernal_Y * 32, 64], stddev=0.001))
+                    self.fc0 = tf.reshape(self.conv1, [-1, kernal_X * kernal_Y * 32])
                 self.bf0 = tf.get_variable(name='bias', initializer=tf.zeros([64]))
                 self.fc0 = tf.add(tf.matmul(self.fc0, self.Wf0), self.bf0)
                 self.fc0 = tf.nn.relu(self.fc0)
