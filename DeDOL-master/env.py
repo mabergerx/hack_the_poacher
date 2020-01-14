@@ -149,6 +149,10 @@ class Env(object):
             self.place_snare(self.po_loc)
             self.poacher_snare_num -= 1
 
+        else:
+            self.delete_snare(self.po_loc)
+            self.poacher_snare_num += 1
+
         # Update the position and traces of poacher and patroller
         po_ori_loc, po_new_loc = self.update_po_loc(po_action)
         pa_ori_loc, pa_new_loc = self.update_pa_loc(pa_action)
@@ -571,6 +575,18 @@ class Env(object):
 
         # return pa_reward, -pa_reward
 
+    def delete_snare(self, loc):
+        self.snare_state.remove((loc[0], loc[1]))
+        if self.gui:
+            rec = self.canvas.create_rectangle(loc[1] * self.cell_length,
+                                               loc[0] * self.cell_length,
+                                               loc[1] * self.cell_length + self.quarter_cell,
+                                               loc[0] * self.cell_length + self.quarter_cell, fill="white")
+
+            if (loc[0], loc[1]) not in self.snare_object:
+                self.snare_object[(loc[0], loc[1])] = [rec]
+            else:
+                self.snare_object[(loc[0], loc[1])].append(rec)
 
     def place_snare(self, loc):
         self.snare_state.append((loc[0], loc[1]))
