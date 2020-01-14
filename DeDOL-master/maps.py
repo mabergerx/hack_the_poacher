@@ -27,13 +27,28 @@ def generate_map(args):
     elif args.map_type == 'gauss':
         animal_density = Mountainmap(args.row_num, args.column_num, args.ani_den_seed)
         return animal_density
-    elif args.map_type == 'htp':
-        animal_density = Htp_map(args.row_num, args.column_num, args.ani_den_seed)
-        return animal_density
-
-def Htp_map(row, col, seed):
-    map0 = np.zeros((row,col))
-    return map0
+   elif args.map_type == 'poacher':
+        ad = np.zeros([10,23])
+        obstacles = [(0,9),(0,15),(1,3),(1,4),(1,5),(1,8),(1,9),(2,0),(2,1),(2,2),(2,3),
+                     (2,15),(2,16),(2,17),(3,17),(4,6),(4,7),(4,17),(4,19),(4,20),(4,21),
+                     (4,22),(5,12),(6,0),(6,1),(6,2),(6,3),(6,4),(6,5),(6,6),
+                     (6,21),(6,22),(7,6),(7,22),(8,13),(8,14),(9,6)]
+        potentials = [(0,0),(0,2),(0,3),(0,6),(0,7),(0,8),(0,12),(0,16),(1,0),(1,1),(1,7),(1,10),(1,16),(1,17),
+                      (1,18),(1,21),(2,4),(2,5),(2,6),(2,9),(3,0),(3,1),(3,2),(3,3),(3,5),(3,6),(3,7),(3,12),
+                      (3,14),(3,15),(3,16),(3,18),(3,20),(3,21),(3,22),(4,5),(4,13),(4,14),(4,15),(4,16),(4,18),
+                      (5,0),(5,2),(5,4),(5,5),(5,6),(5,7),(5,8),(5,10),(5,11),(5,13),(5,14),(5,15),(5,16),(5,19),
+                      (6,7),(6,8),(6,10),(6,11),(6,13),(6,15),(6,18),(7,1),(7,2),(7,5),(7,8),(7,12),(7,13),(7,15),
+                      (7,18),(8,7),(8,8),(8,15),(9,5),(9,7),(9,8),(9,11),(9,12),(9,13),(9,15)]
+        for i in range(ad.shape[0]):
+            for x in range(ad.shape[1]):
+                index = (i,x)
+                if index in obstacles:
+                    ad[i,x] = -1
+                elif index in potentials:
+                    ad[i,x] = uniform(0.4, 0.7)
+                else:
+                    ad[i,x] = uniform(0.1, 0.2)
+        return ad
 
 
 def Mountainmap(row, col, seed):
