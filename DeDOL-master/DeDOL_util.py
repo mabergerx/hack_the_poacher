@@ -198,7 +198,7 @@ def test_(patroller, poacher, env, sess, args, iteration = None, grand_episode =
             ### patroller take actions
             if patroller_type == 'DQN':
                 pa_state = np.array([pa_state])
-                pa_action = patroller.infer_action(sess=sess, states=pa_state, policy="greedy")
+                pa_action = patroller.infer_action(sess=sess, states=pa_state, policy="greedy", pa_loc=env.pa_loc, animal_density=env.animal_density)
             elif patroller_type == 'PARAM':
                 pa_loc = env.pa_loc
                 pa_action = patroller.infer_action(pa_loc, env.get_local_po_trace(pa_loc), 1.5, -2, 5.5)
