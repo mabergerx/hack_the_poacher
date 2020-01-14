@@ -291,16 +291,11 @@ def calc_po_best_response_PER(poacher, target_poacher, po_copy_op, po_good_copy_
     learning_rate = args.po_initial_lr
     global_step = 0
     action_id = {
-        ('still', 0): 0,
+        ('still', 1): 0,
         ('up', 0): 1,
         ('down', 0): 2,
         ('left', 0): 3,
-        ('right', 0): 4,
-        ('still', 1): 5,
-        ('up', 1): 6,
-        ('down', 1): 7,
-        ('left', 1): 8,
-        ('right', 1): 9
+        ('right', 0): 4
     }
 
     sess.run(po_copy_op)

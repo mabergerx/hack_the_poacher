@@ -209,7 +209,12 @@ class Poacher(object):
             logits = 1. * logits / self.po_act_temp
             prob = np.exp(logits) / np.sum(np.exp(logits))
             action = np.random.choice(['up', 'down', 'left', 'right'], p=prob)
-
+        
+        if action == 'still':
+            snare_flag = 1
+        else:
+            snare_flag = 0
+            
         return snare_flag, action
 
     def reset_snare_num(self):
