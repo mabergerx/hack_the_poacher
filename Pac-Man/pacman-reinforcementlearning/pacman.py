@@ -629,9 +629,12 @@ def runGames( pacman, ghosts, display, numGames, record, numTraining = 0, catchE
     rules = ClassicGameRules(timeout)
     games = []
 
+    testLayout = populate_the_grid()
+    layoutA = layout.Layout(testLayout)
+
     for i in range( numGames ):
-        testLayout = populate_the_grid()
-        layoutA = layout.Layout(testLayout)
+
+        # layoutA = layout.Layout(testLayout)
         # print(layoutA)
         beQuiet = i < numTraining
         if beQuiet:
