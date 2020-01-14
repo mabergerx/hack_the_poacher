@@ -144,6 +144,31 @@ class Patroller_CNN(object):
                 gradients, _ = tf.clip_by_global_norm(gradients, 2.0)
                 self.train_op = optimizer.apply_gradients(zip(gradients, variables))
 
+    def get_pa_actions(self, animal_density, po_loc):
+        '''
+        For building game tree usage
+        '''
+
+        q_value_map = [1,1,1,1,1]
+        
+        # check up
+        up = po_loc[1] + 1
+        if len(animal_density)-1 > up and animal_density[po_loc[0]][up] <= 0:
+            q_value_map[1] = 0
+        # check down
+        down = po_loc[1] - 1
+        if 0 <= down and animal_density[po_loc[0]][down] <= 0:
+            q_value_map[2] = 0
+        # check left
+        left = po_loc[0] - 1
+        if 0 <= left and animal_density[left, po_loc[1]] <= 0:
+            q_value_map[3] = 0
+        # check right
+        right = po_loc[0] + 1
+        if len(animal_density[0])-1 > right and animal_density[right, po_loc[1]] <= 0:
+            q_value_map[4] = 0
+        return q_value_map
+
     def infer_action(self, sess, states, policy, epsilon=0.95):
         """
         :param states: a batch of states
@@ -152,7 +177,9 @@ class Patroller_CNN(object):
         :return: a batch of actions
         """
         q_values = sess.run(self.output, {self.input_state: states})
-        # print list(q_values[0])
+        q_multiplier = self.get_po_actions(animal_density, po_loc)
+        q_values *= q_multiplier
+
         argmax_actions = np.argmax(q_values, axis=1)
         if policy == "greedy":
             if len(argmax_actions) == 1:

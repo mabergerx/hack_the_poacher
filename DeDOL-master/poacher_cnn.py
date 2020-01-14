@@ -185,29 +185,21 @@ class Poacher(object):
         if len(animal_density)-1 > up and animal_density[po_loc[0]][up] <= 0:
             q_value_map[1] = 0
             q_value_map[6] = 0
-            print('UP OBSTACLE')
-            print(po_loc)
         # check down
         down = po_loc[1] - 1
         if 0 <= down and animal_density[po_loc[0]][down] <= 0:
             q_value_map[2] = 0
             q_value_map[7] = 0
-            print('DOWN OBSTACLE')
-            print(po_loc)
         # check left
         left = po_loc[0] - 1
         if 0 <= left and animal_density[left, po_loc[1]] <= 0:
             q_value_map[3] = 0
             q_value_map[8] = 0
-            print('LEFT OBSTACLE')
-            print(po_loc)
         # check right
         right = po_loc[0] + 1
         if len(animal_density[0])-1 > right and animal_density[right, po_loc[1]] <= 0:
             q_value_map[4] = 0
             q_value_map[9] = 0
-            print('RIGHT OBSTACLE')
-            print(po_loc)
         return q_value_map
 
     def infer_action(self, sess, states, policy, po_loc, animal_density, epsilon=0.95, ):
@@ -219,14 +211,9 @@ class Poacher(object):
         """
         q_values = sess.run(self.output, {self.input_state: states})
         # print list(q_values[0])
-        print("Q-Values Pre:")
-        print(q_values)
         q_multiplier = self.get_po_actions(animal_density, po_loc)
-        print("Q-multipliers:")
-        print(q_multiplier)
         q_values *= q_multiplier
-        print("Q-Values After:")
-        print(q_values)
+
 
         argmax_actions = np.argmax(q_values, axis=1)
         assert len(argmax_actions) == 1
