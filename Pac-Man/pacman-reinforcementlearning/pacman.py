@@ -652,7 +652,7 @@ def runGames( pacman, ghosts, display, numGames, record, numTraining = 0, catchE
         if record:
             if i % 1000 == 0:
                 import time, cPickle
-                fname = ('./recorded-games/recorded-game-%d' % (i + 1)) +  '-'.join([str(t) for t in time.localtime()[1:6]])
+                fname = ('./recorded-games-qlearning-1grid/recorded-game-%d' % (i + 1)) +  '-'.join([str(t) for t in time.localtime()[1:6]])
                 f = file(fname, 'w')
                 components = {'layout': layoutA, 'actions': game.moveHistory}
                 cPickle.dump(components, f)
