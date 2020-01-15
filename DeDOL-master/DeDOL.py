@@ -105,8 +105,8 @@ if args.row_num == 10:
     args.pa_replay_buffer_size = 200000
     args.po_replay_buffer_size = 100000
     if args.po_location is not None:
-        args.pa_episode_num = 200000
-        args.po_episode_num = 200000
+        args.pa_episode_num = 2000
+        args.po_episode_num = 2000
 
 if args.row_num == 7:
     args.column_num = 7
