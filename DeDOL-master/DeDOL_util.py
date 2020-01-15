@@ -328,7 +328,7 @@ def calc_po_best_response_PER(poacher, target_poacher, po_copy_op, po_good_copy_
                 po_state = np.array([po_state])
                 snare_flag, po_action = poacher.infer_action(sess=sess, states=po_state, policy="epsilon_greedy", epsilon=epsilon, po_loc=env.po_loc, animal_density=env.animal_density)
             else:
-                snare_flag = False
+                snare_flag = TRUE
                 po_action = 'still'
             
             transition.append(action_id[(po_action, snare_flag)])
