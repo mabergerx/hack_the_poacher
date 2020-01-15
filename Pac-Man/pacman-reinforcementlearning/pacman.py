@@ -388,8 +388,8 @@ class GhostRules:
         conf = state.getGhostState( ghostIndex ).configuration
         possibleActions = Actions.getPossibleActions( conf, state.data.layout.walls )
         reverse = Actions.reverseDirection( conf.direction )
-        if Directions.STOP in possibleActions:
-            possibleActions.remove( Directions.STOP )
+        # if Directions.STOP in possibleActions:
+        #     possibleActions.remove( Directions.STOP )
         if reverse in possibleActions and len( possibleActions ) > 1:
             possibleActions.remove( reverse )
         return possibleActions
@@ -629,7 +629,7 @@ def runGames( pacman, ghosts, display, numGames, record, numTraining = 0, catchE
     rules = ClassicGameRules(timeout)
     games = []
 
-    testLayout = populate_the_grid()
+    testLayout = populate_the_grid(num_rangers=2, num_animals=10)
     layoutA = layout.Layout(testLayout)
     print(layoutA)
 

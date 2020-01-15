@@ -110,7 +110,7 @@ class PatrolGhost( DirectionalGhost ):
         else:
             # go to target location or get a new one
             same_location = self.target == ghostPos
-            # 5% chance he changes target
+            # 2% chance he changes target
             if same_location or random.randint(0,100) > 98:
                 rand_loc = random.randint(0,3)
                 self.target = self.loc[rand_loc]

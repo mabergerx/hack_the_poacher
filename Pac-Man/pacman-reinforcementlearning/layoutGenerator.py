@@ -5,23 +5,29 @@ def get_legal_places_on_line(line):
     return [index for index, place in enumerate(line) if place == " "]
 
 # Obstacles
+#
+# river = [
+#          (7, 1), (7, 2), (7, 3), (7, 4), (7, 5), (7, 6), (7, 7),
+#          (8, 7),
+#          (10, 7),
+#          (1, 10),
+#          (2, 10), (2, 9), (2, 6), (2, 5), (2, 4),
+#          (3, 4), (3, 3), (3, 2), (3, 1),
+#          (3, 16), (3, 17), (3, 18),
+#          (4, 18),
+#          (5, 18), (5, 20), (5, 21), (5, 22), (5, 23)
+#         ]
 
 river = [
-         (7, 1), (7, 2), (7, 3), (7, 4), (7, 5), (7, 6), (7, 7),
-         (8, 7),
-         (10, 7),
-         (1, 10),
-         (2, 10), (2, 9), (2, 6), (2, 5), (2, 4),
-         (3, 4), (3, 3), (3, 2), (3, 1),
-         (3, 16), (3, 17), (3, 18),
-         (4, 18),
-         (5, 18), (5, 20), (5, 21), (5, 22), (5, 23)
-        ]
+    (3, 1), (3, 2),
+    (1, 2),
+    (2, 4), (2, 5)
+]
 
 trees = [
-            (5, 7), (5, 8),
-            (6, 13),
-            (9, 14), (9, 15)
+            (5, 4), (5, 5),
+            (4, 2)
+            # (9, 14), (9, 15)
          ]
 
 def get_grid_position(x, y, grid):
@@ -30,9 +36,8 @@ def get_grid_position(x, y, grid):
 # Poachers
 
 starting_locations_poacher = [
-                      (9, 1),
-                      (10, 20),
-                      (2, 23)
+                      (5, 3),
+                      (3, 5)
                      ]
 
 
@@ -41,7 +46,7 @@ def generate_random_entry_at_walls(lines):
     bottom_line = (lines[-2], "b")
     upper_line = (lines[1], "u")
     left_line = ([l[1] for l in lines], "l")
-    right_line = ([l[28] for l in lines], "r")
+    right_line = ([l[5] for l in lines], "r")
 
     # First, select a line.
     chosen_line = random.choice([bottom_line, upper_line, left_line, right_line])
@@ -50,13 +55,13 @@ def generate_random_entry_at_walls(lines):
     chosen_point = random.choice(get_legal_places_on_line(chosen_line[0]))
 
     if chosen_line[1] == "b":
-        entry_point = (11, chosen_point)
+        entry_point = (5, chosen_point)
     elif chosen_line[1] == "u":
         entry_point = (1, chosen_point)
     elif chosen_line[1] == "l":
         entry_point = (chosen_point, 1)
     elif chosen_line[1] == "r":
-        entry_point = (chosen_point, 24)
+        entry_point = (chosen_point, 5)
     else:
         entry_point = (1, chosen_point)
 
@@ -165,7 +170,7 @@ def spawn_rangers(num_rangers=3, max_number_rangers=4):
     # between 24 and 27
 
     for i in range(num_rangers):
-        rangers_to_place.append((1, 23 - i))
+        rangers_to_place.append((1, 5 - i))
 
     return rangers_to_place
 
@@ -209,7 +214,8 @@ def populate_the_grid(num_rangers=3, num_animals=80,
     # with open("Pac-Man/pacman-reinforcementlearning/layouts/baseGrid.lay") as f:
     #     lines = [line.strip() for line in f]
 
-    f = open("layouts/baseGrid.lay")
+    # f = open("layouts/baseGrid.lay")
+    f = open("layouts/baseGridSmall.lay")
     try:
         lines = [line.strip() for line in f]
     finally:
