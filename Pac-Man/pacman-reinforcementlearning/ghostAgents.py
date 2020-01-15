@@ -40,7 +40,7 @@ class RandomGhost( GhostAgent ):
 
 class DirectionalGhost( GhostAgent ):
     "A ghost that prefers to rush Pacman, or flee when scared."
-    def __init__( self, index, prob_attack=0.8, prob_scaredFlee=0.8 ):
+    def __init__( self, index, prob_attack=0.6, prob_scaredFlee=0.8 ):
         self.index = index
         self.prob_attack = prob_attack
         self.prob_scaredFlee = prob_scaredFlee
@@ -84,12 +84,11 @@ class DirectionalGhost( GhostAgent ):
         return dist
 
 class PatrolGhost( DirectionalGhost ):
-    def __init__( self, index, prob_attack=0.8, prob_scaredFlee=0.8, targetId=0):
+    def __init__( self, index, prob_attack=0.6, prob_scaredFlee=0.8, targetId=0):
         self.index = index
         self.prob_attack = prob_attack
         self.prob_scaredFlee = prob_scaredFlee
-        # for grid 13x25
-        self.loc = [(2,2),(3,22),(10, 4),(10,22)]
+        self.loc = [(1, 2),(1, 8),(8, 2),(8,8)]
         self.target = self.loc[targetId]
     
     def getDistribution( self, state ):
