@@ -257,7 +257,7 @@ class GameState:
 
 SCARED_TIME = 40    # Moves ghosts are scared
 COLLISION_TOLERANCE = 0.7 # How close ghosts must be to Pacman to kill
-TIME_PENALTY = 10 # Number of points lost each round
+TIME_PENALTY = 1 # Number of points lost each round
 
 class ClassicGameRules:
     """
@@ -363,7 +363,7 @@ class PacmanRules:
             # TODO: cache numFood?
             numFood = state.getNumFood()
             if numFood == 0 and not state.data._lose:
-                state.data.scoreChange += 1000 # This is important for discount!
+                state.data.scoreChange += 500 # This is important for discount!
                 state.data._win = True
         # Eat capsule
         # if( position in state.getCapsules() ):
@@ -629,9 +629,10 @@ def runGames( pacman, ghosts, display, numGames, record, numTraining = 0, catchE
     rules = ClassicGameRules(timeout)
     games = []
 
-    testLayout = populate_the_grid(num_rangers=2, num_animals=20)
+    testLayout = populate_the_grid(num_rangers=1, num_animals=20)
     layoutA = layout.Layout(testLayout)
     print(layoutA)
+
 
     for i in range( numGames ):
         # testLayout = populate_the_grid(num_rangers=2, num_animals=20)
@@ -652,7 +653,7 @@ def runGames( pacman, ghosts, display, numGames, record, numTraining = 0, catchE
         if record:
             if i % 1000 == 0:
                 import time, cPickle
-                fname = ('./recorded-games-qlearning-smallgrid2/recorded-game-%d' % (i + 1) + "score:" + str(game.state.getScore()))
+                fname = ('./recorded-games-qlearning-smallgrid3/recorded-game-%d' % (i + 1) + "score:" + str(game.state.getScore()))
                 f = file(fname, 'w')
                 components = {'layout': layoutA, 'actions': game.moveHistory}
                 cPickle.dump(components, f)
