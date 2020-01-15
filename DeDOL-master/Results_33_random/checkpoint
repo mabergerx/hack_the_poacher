@@ -1,2 +1,0 @@
-model_checkpoint_path: "iteration_1_epoch_499_pa_model.ckpt"
-all_model_checkpoint_paths: "iteration_1_epoch_499_pa_model.ckpt"
