@@ -84,7 +84,7 @@ class DirectionalGhost( GhostAgent ):
         return dist
 
 class PatrolGhost( DirectionalGhost ):
-    def __init__( self, index, prob_attack=0.6, prob_scaredFlee=0.8, targetId=0):
+    def __init__( self, index, prob_attack=0.8, prob_scaredFlee=0.8, targetId=0):
         self.index = index
         self.prob_attack = prob_attack
         self.prob_scaredFlee = prob_scaredFlee

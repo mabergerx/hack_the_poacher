@@ -363,7 +363,7 @@ class PacmanRules:
             # TODO: cache numFood?
             numFood = state.getNumFood()
             if numFood == 0 and not state.data._lose:
-                state.data.scoreChange += 10000 # This is important for discount!
+                state.data.scoreChange += 1000 # This is important for discount!
                 state.data._win = True
         # Eat capsule
         # if( position in state.getCapsules() ):
@@ -439,7 +439,7 @@ class GhostRules:
             state.data._eaten[agentIndex] = True
         else:
             if not state.data._win:
-                state.data.scoreChange -= 1000
+                state.data.scoreChange -= 500
                 state.data._lose = True
     collide = staticmethod( collide )
 
