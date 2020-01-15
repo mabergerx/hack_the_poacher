@@ -18,16 +18,21 @@ def get_legal_places_on_line(line):
 #          (5, 18), (5, 20), (5, 21), (5, 22), (5, 23)
 #         ]
 
+# river = [
+#     (3, 1), (3, 2),
+#     (1, 2),
+#     (2, 4), (2, 5)
+# ]
 river = [
-    (3, 1), (3, 2),
-    (1, 2),
-    (2, 4), (2, 5)
+    (1, 4), (2, 4), (2, 6), (3, 6), (3, 8), (4, 8)
 ]
 
 trees = [
-            (5, 4), (5, 5),
-            (4, 2)
-            # (9, 14), (9, 15)
+            (7, 8), (6, 7), (6, 8),
+            (5, 5),
+            (5, 1),
+            (4, 1), (4, 2),
+            (2,2)
          ]
 
 def get_grid_position(x, y, grid):
@@ -36,8 +41,8 @@ def get_grid_position(x, y, grid):
 # Poachers
 
 starting_locations_poacher = [
-                      (5, 3),
-                      (3, 5)
+                      (8, 7),
+                      (6, 1)
                      ]
 
 
@@ -46,7 +51,7 @@ def generate_random_entry_at_walls(lines):
     bottom_line = (lines[-2], "b")
     upper_line = (lines[1], "u")
     left_line = ([l[1] for l in lines], "l")
-    right_line = ([l[5] for l in lines], "r")
+    right_line = ([l[8] for l in lines], "r")
 
     # First, select a line.
     chosen_line = random.choice([bottom_line, upper_line, left_line, right_line])
@@ -55,13 +60,13 @@ def generate_random_entry_at_walls(lines):
     chosen_point = random.choice(get_legal_places_on_line(chosen_line[0]))
 
     if chosen_line[1] == "b":
-        entry_point = (5, chosen_point)
+        entry_point = (8, chosen_point)
     elif chosen_line[1] == "u":
         entry_point = (1, chosen_point)
     elif chosen_line[1] == "l":
         entry_point = (chosen_point, 1)
     elif chosen_line[1] == "r":
-        entry_point = (chosen_point, 5)
+        entry_point = (chosen_point, 8)
     else:
         entry_point = (1, chosen_point)
 
@@ -170,7 +175,7 @@ def spawn_rangers(num_rangers=3, max_number_rangers=4):
     # between 24 and 27
 
     for i in range(num_rangers):
-        rangers_to_place.append((1, 5 - i))
+        rangers_to_place.append((1, 8 - i))
 
     return rangers_to_place
 
