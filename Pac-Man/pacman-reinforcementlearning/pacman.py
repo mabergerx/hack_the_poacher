@@ -363,7 +363,7 @@ class PacmanRules:
             # TODO: cache numFood?
             numFood = state.getNumFood()
             if numFood == 0 and not state.data._lose:
-                state.data.scoreChange += 500
+                state.data.scoreChange += 500 # This is important for discount!
                 state.data._win = True
         # Eat capsule
         # if( position in state.getCapsules() ):
@@ -607,7 +607,7 @@ def loadAgent(pacman, nographics):
 def replayGame( layout, actions, display ):
     import pacmanAgents, ghostAgents
     rules = ClassicGameRules()
-    agents = [pacmanAgents.GreedyAgent()] + [ghostAgents.DirectionalGhost(i+1) for i in range(layout.getNumGhosts())]
+    agents = [pacmanAgents.GreedyAgent()] + [ghostAgents.PatrolGhost(i+1) for i in range(layout.getNumGhosts())]
     game = rules.newGame( layout, agents[0], agents[1:], display )
     state = game.state
     display.initialize(state.data)
@@ -629,9 +629,10 @@ def runGames( pacman, ghosts, display, numGames, record, numTraining = 0, catchE
     rules = ClassicGameRules(timeout)
     games = []
 
-    testLayout = populate_the_grid(num_rangers=2, num_animals=20)
+    testLayout = populate_the_grid(num_rangers=1, num_animals=20)
     layoutA = layout.Layout(testLayout)
     print(layoutA)
+
 
     for i in range( numGames ):
         # testLayout = populate_the_grid(num_rangers=2, num_animals=20)
@@ -652,7 +653,7 @@ def runGames( pacman, ghosts, display, numGames, record, numTraining = 0, catchE
         if record:
             if i % 1000 == 0:
                 import time, cPickle
-                fname = ('./recorded-games-qlearning-smallgrid-higherlr/recorded-game-%d' % (i + 1) + "score:" + str(game.state.getScore()))
+                fname = ('./recorded-games-approximateqlearning/recorded-game-%d' % (i + 1) + "score:" + str(game.state.getScore()))
                 f = file(fname, 'w')
                 components = {'layout': layoutA, 'actions': game.moveHistory}
                 cPickle.dump(components, f)
