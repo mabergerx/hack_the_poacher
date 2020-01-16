@@ -1,0 +1,8 @@
+pa_payoff:
+[[0.1584]]
+po_payoff:
+[[-0.1584]]
+pa_strat:
+[1]
+po_strat:
+[1]
