@@ -735,9 +735,9 @@ class Env(object):
 
     def place_radar_rec(self, loc, color):
         self.canvas.create_rectangle(loc[1] * self.cell_length,
-                                     loc[0] * self.cell_length,
+                                     loc[0] * self.cell_length + 3 * self.quarter_cell,
                                      loc[1] * self.cell_length + self.quarter_cell,
-                                     loc[0] * self.cell_length, fill=color)
+                                     loc[0] * self.cell_length + self.cell_length, fill=color)
 
     def get_po_state(self):
         snare_num = self.poacher_snare_num
