@@ -1,9 +1,9 @@
-row_num 10 
+row_num 7 
 snare_num 6 
 max_time 75 
 animal density seed 66 
-pa_initial_episode_num 2000 
-po_initial_episode_num 2000 
+pa_initial_episode_num 500 
+po_initial_episode_num 500 
 epi_num_incr 0 
 final_incr_iter 10 
 pa_replay_buffer_size 200000 

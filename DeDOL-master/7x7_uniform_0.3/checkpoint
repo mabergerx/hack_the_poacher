@@ -1,0 +1,2 @@
+model_checkpoint_path: "7x7_uniform_0.3iteration_2_epoch_499_po_model.ckpt"
+all_model_checkpoint_paths: "7x7_uniform_0.3iteration_2_epoch_499_po_model.ckpt"

@@ -3,6 +3,7 @@ import numpy as np
 import time
 import copy
 from tkinter import *
+from math import floor
 
 class Env(object):
     def __init__(self, args, animal_density, cell_length, canvas, gui):
@@ -59,6 +60,8 @@ class Env(object):
         for row in range(self.args.row_num):
             for col in range(self.args.column_num):
                 color = hex_string(int(255 - 255 * self.animal_density[row, col]))  # Black means high density
+                if self.animal_density[row,col] <= 0:
+                    color = '#854400'
                 self.canvas.create_rectangle(col * self.cell_length + 3 * self.quarter_cell,
                                              row * self.cell_length + 3 * self.quarter_cell,
                                              col * self.cell_length + self.cell_length,
@@ -285,6 +288,7 @@ class Env(object):
     def _update_po_trace(self, ori_loc, new_loc, action):
         ori_loc = tuple(ori_loc)
         new_loc = tuple(new_loc)
+
         if action == 'up':
             self.po_trace[ori_loc][4] = 1
             self.po_trace[new_loc][1] = 1
@@ -706,6 +710,8 @@ class Env(object):
             if self.filter_bleeb:
                 coordinate = self.blur_locations(coordinate)
             coordinate = np.expand_dims(coordinate, axis=2)
+        if self.canvas:
+            self.show_Filter_In_Grid(coordinate)
             state = np.concatenate((state, coordinate), axis=2)
 
         coordinate = np.zeros([self.row_num, self.column_num])
@@ -721,6 +727,22 @@ class Env(object):
         state = np.concatenate((state, time_left), axis=2)
         assert state.shape == (self.row_num, self.column_num, self.args.pa_state_size)
         return state
+
+    def show_Filter_In_Grid(self, ohe_coord):
+        for y, row in enumerate(ohe_coord):
+            for x, i in enumerate(row):
+                if i[0] == 0:
+                    self.place_radar_rec((y, x), "white");
+
+                else:
+                    self.place_radar_rec((y, x), "red");
+
+
+    def place_radar_rec(self, loc, color):
+        self.canvas.create_rectangle(loc[1] * self.cell_length,
+                                     loc[0] * self.cell_length + 3 * self.quarter_cell,
+                                     loc[1] * self.cell_length + self.quarter_cell,
+                                     loc[0] * self.cell_length + self.cell_length, fill=color)
 
     def get_po_state(self):
         snare_num = self.poacher_snare_num

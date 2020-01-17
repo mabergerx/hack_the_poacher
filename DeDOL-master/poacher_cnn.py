@@ -170,27 +170,36 @@ class Poacher(object):
     def get_po_actions(self, animal_density, po_loc):
         '''
         For building game tree usage
-        '''
 
+        '''
+        printing = False
+        if printing: print("poacher")
         q_value_map = [1,1,1,1,1]
-        
+        if printing: print(q_value_map)
         # check up
-        up = po_loc[1] + 1
-        if len(animal_density)-1 > up and animal_density[po_loc[0]][up] <= 0:
+        up = po_loc[1] - 1
+        if 0 <= up and animal_density[po_loc[0]][up] <= 0:
+            if printing: print("up")
             q_value_map[1] = 0
         # check down
-        down = po_loc[1] - 1
-        if 0 <= down and animal_density[po_loc[0]][down] <= 0:
+        down = po_loc[1] + 1
+        
+        if len(animal_density)-1 > down and animal_density[po_loc[0]][down] <= 0:
+            if printing: print("down")
             q_value_map[2] = 0
         # check left
         left = po_loc[0] - 1
         if 0 <= left and animal_density[left, po_loc[1]] <= 0:
+            if printing: print("left")
             q_value_map[3] = 0
         # check right
         right = po_loc[0] + 1
         if len(animal_density[0])-1 > right and animal_density[right, po_loc[1]] <= 0:
+            if printing: print("right")
             q_value_map[4] = 0
+        if printing: print(q_value_map)
         return q_value_map
+
 
     def infer_action(self, sess, states, policy, po_loc, animal_density, epsilon=0.95, ):
         """
