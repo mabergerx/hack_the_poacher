@@ -749,7 +749,7 @@ class Env(object):
         state = self.po_self_memory
         
         # yf: add self footprint memory as state
-        if self.footprints:
+        if self.footsteps:
             state = np.concatenate((state, self.po_memory), axis = 2)
         
         ani_den = np.expand_dims(self.animal_density, axis=2)
