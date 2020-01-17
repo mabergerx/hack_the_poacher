@@ -148,32 +148,32 @@ class Patroller_CNN(object):
         '''
         For building game tree usage
         '''
-
+        printing = False
         q_value_map = [1,1,1,1,1]
-        print("patroller")
-        print(q_value_map)
+        if printing: print("patroller")
+        if printing: print(q_value_map)
         # check up
         up = po_loc[1] - 1
         if 0 <= up and animal_density[po_loc[0]][up] <= 0:
             q_value_map[1] = 0
-            print("up")
+            if printing: print("up")
         # check down
         down = po_loc[1] + 1
         
         if len(animal_density)-1 > down and animal_density[po_loc[0]][down] <= 0:
             q_value_map[2] = 0
-            print("down")
+            if printing: print("down")
         # check left
         left = po_loc[0] - 1
         if 0 <= left and animal_density[left, po_loc[1]] <= 0:
             q_value_map[3] = 0
-            print("left")
+            if printing: print("left")
         # check right
         right = po_loc[0] + 1
         if len(animal_density[0])-1 > right and animal_density[right, po_loc[1]] <= 0:
             q_value_map[4] = 0
-            print("right")
-        print(q_value_map)
+            if printing: print("right")
+        if printing: print(q_value_map)
         return q_value_map
 
     def infer_action(self, sess, states, policy, animal_density, pa_loc, epsilon=0.95):
