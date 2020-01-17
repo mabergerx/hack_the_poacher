@@ -149,7 +149,7 @@ if args.load:
     poachers[1].load(sess, args.po_load_path)
     patrollers[1].load(sess, args.pa_load_path)
 
-    test_gui(poachers[0], patrollers[1], sess, args, pa_type = 'DQN', po_type = 'PARAM')
+    test_gui(poachers[1], patrollers[1], sess, args, pa_type = 'DQN', po_type = 'DQN')
 
 ### test the random sweeping patroller and the heuristic poacher
 else:

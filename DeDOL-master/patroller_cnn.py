@@ -6,6 +6,7 @@ import random
 
 class Patroller_CNN(object):
     def __init__(self, args, scope):
+        print("wel cnn????")
         with tf.variable_scope(scope):
             self.args = args
             self.row_num = self.args.row_num
@@ -148,7 +149,7 @@ class Patroller_CNN(object):
         '''
         For building game tree usage
         '''
-        printing = False
+        printing = True
         q_value_map = [1,1,1,1,1]
         if printing: print("patroller")
         if printing: print(q_value_map)

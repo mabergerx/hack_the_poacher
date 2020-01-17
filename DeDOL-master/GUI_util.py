@@ -66,7 +66,7 @@ def test_gui(poacher, patroller, sess, args, pa_type, po_type):
             # the poacher can take actions only if he is not caught yet/has not returned home
             if not TestEnv.catch_flag and not TestEnv.home_flag: 
                 po_state = np.array([po_state])
-                snare_flag, po_action = poacher.infer_action(sess=sess, states=po_state, policy="greedy")
+                snare_flag, po_action = poacher.infer_action(sess=sess, states=po_state, policy="greedy", animal_density=animal_density, po_loc=TestEnv.po_loc)
             else:
                 snare_flag = 0
                 po_action = 'still' 

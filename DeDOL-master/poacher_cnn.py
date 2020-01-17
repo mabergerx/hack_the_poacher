@@ -172,7 +172,7 @@ class Poacher(object):
         For building game tree usage
 
         '''
-        printing = False
+        printing = True
         if printing: print("poacher")
         q_value_map = [1,1,1,1,1]
         if printing: print(q_value_map)

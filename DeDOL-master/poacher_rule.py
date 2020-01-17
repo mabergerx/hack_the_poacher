@@ -4,6 +4,7 @@ import random
 
 class Poacher(object):
     def __init__(self, args, animal_density):
+        print("kk poacker")
         self.args = args
         self.row_num = self.args.row_num
         self.column_num = self.args.column_num
