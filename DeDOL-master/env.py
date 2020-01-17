@@ -58,6 +58,8 @@ class Env(object):
         for row in range(self.args.row_num):
             for col in range(self.args.column_num):
                 color = hex_string(int(255 - 255 * self.animal_density[row, col]))  # Black means high density
+                if self.animal_density[row,col] <= 0:
+                    color = '#854400'
                 self.canvas.create_rectangle(col * self.cell_length + 3 * self.quarter_cell,
                                              row * self.cell_length + 3 * self.quarter_cell,
                                              col * self.cell_length + self.cell_length,
