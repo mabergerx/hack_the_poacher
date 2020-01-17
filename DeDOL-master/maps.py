@@ -48,9 +48,9 @@ def generate_map(args):
                 if index in obstacles:
                     ad[i,x] = -1
                 elif index in potentials:
-                    ad[i,x] = uniform(0.0, 0.4)
+                    ad[i,x] = uniform(0.0, 0.33)
                 else:
-                    ad[i,x] = uniform(0.0, 0.1)
+                    ad[i,x] = uniform(0.0, 0.05)
         animal_density = ad
         return animal_density
 
