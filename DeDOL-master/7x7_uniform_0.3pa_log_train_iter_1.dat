@@ -1,0 +1,10 @@
+0	episode	0	length	75	total_reward	0.0	average_reward	0.0
+50	episode	50	length	75	total_reward	0.0	average_reward	0.0
+100	episode	100	length	75	total_reward	0.0	average_reward	0.0
+150	episode	150	length	75	total_reward	0.0	average_reward	0.0
+200	episode	200	length	75	total_reward	0.0	average_reward	0.0
+250	episode	250	length	75	total_reward	0.0	average_reward	0.0
+300	episode	300	length	75	total_reward	8.0	average_reward	0.10666666666666667
+350	episode	350	length	75	total_reward	0.0	average_reward	0.0
+400	episode	400	length	13	total_reward	16.0	average_reward	1.2307692307692308
+450	episode	450	length	75	total_reward	0.0	average_reward	0.0

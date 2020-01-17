@@ -1,0 +1,10 @@
+0	episode	0	length	14	total_reward	-11.932432967183061	average_reward	-0.8523166405130758
+50	episode	50	length	44	total_reward	-11.931047681071597	average_reward	-0.271160174569809
+100	episode	100	length	8	total_reward	-11.42842712474619	average_reward	-1.4285533905932737
+150	episode	150	length	75	total_reward	-20.284523520434362	average_reward	-0.2704603136057915
+200	episode	200	length	75	total_reward	-4.790028408751407	average_reward	-0.06386704545001877
+250	episode	250	length	75	total_reward	50.22763312190666	average_reward	0.6697017749587555
+300	episode	300	length	75	total_reward	59.90513033230371	average_reward	0.7987350710973828
+350	episode	350	length	75	total_reward	10.725197047158618	average_reward	0.14300262729544824
+400	episode	400	length	23	total_reward	7.297278087323113	average_reward	0.3172729603183962
+450	episode	450	length	45	total_reward	1.712888893456507	average_reward	0.03806419763236682
