@@ -735,7 +735,7 @@ class Env(object):
                     self.place_radar_rec((y, x), "white");
 
                 else:
-                    self.place_radar_rec((y, x), "red");
+                    self.place_radar_rec((y, x), "yellow");
 
 
     def place_radar_rec(self, loc, color):
