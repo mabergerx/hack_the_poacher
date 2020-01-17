@@ -3,6 +3,7 @@ import numpy as np
 import time
 import copy
 from tkinter import *
+from math import floor
 
 # noise parameter
 NOISE_P = 0.01
@@ -286,6 +287,7 @@ class Env(object):
     def _update_po_trace(self, ori_loc, new_loc, action):
         ori_loc = tuple(ori_loc)
         new_loc = tuple(new_loc)
+
         if action == 'up':
             self.po_trace[ori_loc][4] = 1
             self.po_trace[new_loc][1] = 1
@@ -704,6 +706,7 @@ class Env(object):
         coordinate = np.logical_or(rand_field, coordinate).astype(int)
         coordinate = np.expand_dims(coordinate, axis=2)
         coordinate = self.blur_locations(coordinate)
+        self.show_Filter_In_Grid(coordinate)
         state = np.concatenate((state, coordinate), axis=2)
 
         coordinate = np.zeros([self.row_num, self.column_num])
@@ -719,6 +722,22 @@ class Env(object):
         state = np.concatenate((state, time_left), axis=2)
         assert state.shape == (self.row_num, self.column_num, self.args.pa_state_size)
         return state
+
+    def show_Filter_In_Grid(self, ohe_coord):
+        for i, c in enumerate(ohe_coord):
+            r_loc = floor(i / self.row_num)
+            c_loc = i % self.column_num - 1
+            if c == 0:
+                self.place_radar_rec((r_loc, c_loc), "white");
+            else:
+                self.place_radar_dot((r_loc, c_loc), "red");
+
+
+    def place_radar_dot(self, loc, color):
+        self.canvas.create_rectangle(loc[1],
+                                     loc[0],
+                                     loc[1] * self.cell_length + self.quarter_cell,
+                                     loc[0] * self.cell_length + self.quarter_cell, fill=color)
 
     def get_po_state(self):
         snare_num = self.poacher_snare_num
