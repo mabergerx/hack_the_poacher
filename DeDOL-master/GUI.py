@@ -36,6 +36,14 @@ pa_strat_num, po_strat_num = 0, 0
 
 argparser = argparse.ArgumentParser()
 ########################################################################################
+###Changes by us
+argparser.add_argument('--footsteps', type=bool, default=False)
+argparser.add_argument('--po_bleeb', type=bool, default=False)
+argparser.add_argument('--filter_bleeb', type=bool, default=False)
+
+argparser.add_argument('--tourist_noise', type=float, default=0.01)
+argparser.add_argument('--po_scan_rate', type=float, default=0.10)
+
 ### Test parameters
 argparser.add_argument('--pa_load_path', type=str, default='./Results5x5/')
 argparser.add_argument('--po_load_path', type=str, default='./Results5x5/')
@@ -99,6 +107,9 @@ argparser.add_argument('--reward_shaping', type = bool, default = False)
 argparser.add_argument('--PER', type = bool, default = False)
 #########################################################################################
 args = argparser.parse_args()
+
+if not args.po_bleeb and args.filter_bleeb:
+    raise ValueError('filter_bleeb cannot be true, while po_bleeb is false')
 
 if args.row_num == 7:
     args.column_num = 7

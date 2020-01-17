@@ -4,10 +4,6 @@ import time
 import copy
 from tkinter import *
 
-# noise parameter
-NOISE_P = 0.01
-PO_SCAN_RATE = 0.1
-
 class Env(object):
     def __init__(self, args, animal_density, cell_length, canvas, gui):
         '''
@@ -20,6 +16,11 @@ class Env(object):
             GUI: bool, whether to show GUI.
         '''
         self.args = args
+        self.footsteps = self.args.footsteps
+        self.po_bleeb = self.args.po_bleeb
+        self.filter_bleeb = self.args.filter_bleeb
+        self.tourist_noise = self.args.tourist_noise
+        self.po_scan_rate = self.args.po_scan_rate
         self.row_num = self.args.row_num
         self.column_num = self.args.column_num
         self.animal_density = animal_density
@@ -687,22 +688,25 @@ class Env(object):
         return field
 
     def get_pa_state(self):
-        state = self.pa_memory
+        state = self.pa_self_memory
 
         # yf: add self footprint memory as state
-        state = np.concatenate((state, self.pa_self_memory), axis = 2)
+        if self.footsteps:
+            state = np.concatenate((state, self.pa_memory), axis = 2)
 
         ani_den = np.expand_dims(self.animal_density, axis=2)
         state = np.concatenate((state, ani_den), axis=2)
 
-        coordinate = np.zeros([self.row_num, self.column_num])
-        if np.random.random() < PO_SCAN_RATE:
-            coordinate[self.po_loc[0], self.po_loc[1]] = 1
-        rand_field = np.random.random((self.row_num, self.column_num)) < NOISE_P
-        coordinate = np.logical_or(rand_field, coordinate).astype(int)
-        coordinate = np.expand_dims(coordinate, axis=2)
-        coordinate = self.blur_locations(coordinate)
-        state = np.concatenate((state, coordinate), axis=2)
+        if self.po_bleeb:
+            coordinate = np.zeros([self.row_num, self.column_num])
+            if np.random.random() < self.po_scan_rate:
+                coordinate[self.po_loc[0], self.po_loc[1]] = 1
+            rand_field = np.random.random((self.row_num, self.column_num)) < self.tourist_noise
+            coordinate = np.logical_or(rand_field, coordinate).astype(int)
+            if self.filter_bleeb:
+                coordinate = self.blur_locations(coordinate)
+            coordinate = np.expand_dims(coordinate, axis=2)
+            state = np.concatenate((state, coordinate), axis=2)
 
         coordinate = np.zeros([self.row_num, self.column_num])
         coordinate[self.pa_loc[0], self.pa_loc[1]] = 1
@@ -720,10 +724,11 @@ class Env(object):
 
     def get_po_state(self):
         snare_num = self.poacher_snare_num
-        state = self.po_memory
+        state = self.po_self_memory
         
         # yf: add self footprint memory as state
-        state = np.concatenate((state, self.po_self_memory), axis = 2)
+        if self.footprints:
+            state = np.concatenate((state, self.po_memory), axis = 2)
         
         ani_den = np.expand_dims(self.animal_density, axis=2)
         state = np.concatenate((state, ani_den), axis=2)
