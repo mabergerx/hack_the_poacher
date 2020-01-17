@@ -724,20 +724,20 @@ class Env(object):
         return state
 
     def show_Filter_In_Grid(self, ohe_coord):
-        for i, c in enumerate(ohe_coord):
-            r_loc = floor(i / self.row_num)
-            c_loc = i % self.column_num - 1
-            if c == 0:
-                self.place_radar_rec((r_loc, c_loc), "white");
-            else:
-                self.place_radar_dot((r_loc, c_loc), "red");
+        for y, row in enumerate(ohe_coord):
+            for x, i in enumerate(row):
+                if i[0] == 0:
+                    self.place_radar_rec((y, x), "white");
+
+                else:
+                    self.place_radar_rec((y, x), "red");
 
 
-    def place_radar_dot(self, loc, color):
-        self.canvas.create_rectangle(loc[1],
-                                     loc[0],
+    def place_radar_rec(self, loc, color):
+        self.canvas.create_rectangle(loc[1] * self.cell_length,
+                                     loc[0] * self.cell_length,
                                      loc[1] * self.cell_length + self.quarter_cell,
-                                     loc[0] * self.cell_length + self.quarter_cell, fill=color)
+                                     loc[0] * self.cell_length, fill=color)
 
     def get_po_state(self):
         snare_num = self.poacher_snare_num
