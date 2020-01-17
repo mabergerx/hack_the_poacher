@@ -212,7 +212,7 @@ class Poacher(object):
         # print list(q_values[0])
         q_multiplier = self.get_po_actions(animal_density, po_loc)
         q_values *= q_multiplier
-
+        print("poacher", q_values)
 
         argmax_actions = np.argmax(q_values, axis=1)
         assert len(argmax_actions) == 1

@@ -187,7 +187,7 @@ class Patroller_CNN(object):
         q_values = sess.run(self.output, {self.input_state: states})
         q_multiplier = self.get_pa_actions(animal_density, pa_loc)
         q_values *= q_multiplier
-
+        print("patroller", q_values)
         argmax_actions = np.argmax(q_values, axis=1)
         if policy == "greedy":
             if len(argmax_actions) == 1:
