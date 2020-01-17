@@ -706,7 +706,8 @@ class Env(object):
         coordinate = np.logical_or(rand_field, coordinate).astype(int)
         coordinate = np.expand_dims(coordinate, axis=2)
         coordinate = self.blur_locations(coordinate)
-        self.show_Filter_In_Grid(coordinate)
+        if self.canvas:
+            self.show_Filter_In_Grid(coordinate)
         state = np.concatenate((state, coordinate), axis=2)
 
         coordinate = np.zeros([self.row_num, self.column_num])
