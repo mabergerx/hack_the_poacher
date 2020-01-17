@@ -83,8 +83,9 @@ def test_gui(poacher, patroller, sess, args, pa_type, po_type):
 
         # patroller take actions
         if pa_type == 'DQN':
+            pa_loc = TestEnv.pa_loc
             pa_state = np.array([pa_state])
-            pa_action = patroller.infer_action(sess=sess, states=pa_state, policy="greedy")
+            pa_action = patroller.infer_action(sess=sess, animal_density=animal_density, states=pa_state, pa_loc=pa_loc, policy="greedy")
         elif pa_type == 'PARAM':
             pa_loc = TestEnv.pa_loc
             pa_action = patroller.infer_action(pa_loc, TestEnv.get_local_po_trace(pa_loc), 1.5, -2.0, 8.0)
