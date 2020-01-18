@@ -167,36 +167,48 @@ class Poacher(object):
         if snare_flag and self.snare_num > 0:
             self.snare_num -= 1
 
-    def get_po_actions(self, animal_density, po_loc):
+    def get_po_actions(self, animal_density, po_loc, q_values):
         '''
         For building game tree usage
 
         '''
+        #print("Po location: ", po_loc)
         printing = False
-        if printing: print("poacher")
+        if printing: print("No legal PO options: ")
         q_value_map = [1,1,1,1,1]
-        if printing: print(q_value_map)
-        # check up
-        up = po_loc[1] - 1
-        if 0 <= up and animal_density[po_loc[0]][up] <= 0:
+  # check up
+        up = po_loc[0] - 1
+        if 0 <= up and animal_density[up][po_loc[1]] <= 0:
             if printing: print("up")
-            q_value_map[1] = 0
+            if q_values[0][1] >= 0:
+                q_value_map[1] = float("-inf")
+            else:
+                q_value_map[1] = float("inf")
         # check down
-        down = po_loc[1] + 1
+        down = po_loc[0] + 1
         
-        if len(animal_density)-1 > down and animal_density[po_loc[0]][down] <= 0:
+        if len(animal_density)-1 > down and animal_density[down][po_loc[1]] <= 0:
             if printing: print("down")
-            q_value_map[2] = 0
+            if q_values[0][2] >= 0:
+                q_value_map[2] = float("-inf")
+            else:
+                q_value_map[2] = float("inf")
         # check left
-        left = po_loc[0] - 1
-        if 0 <= left and animal_density[left, po_loc[1]] <= 0:
+        left = po_loc[1] - 1
+        if 0 <= left and animal_density[po_loc[0]][left] <= 0:
             if printing: print("left")
-            q_value_map[3] = 0
+            if q_values[0][3] >= 0:
+                q_value_map[3] = float("-inf")
+            else:
+                q_value_map[3] = float("inf")
         # check right
-        right = po_loc[0] + 1
-        if len(animal_density[0])-1 > right and animal_density[right, po_loc[1]] <= 0:
+        right = po_loc[1] + 1
+        if len(animal_density[0])-1 > right and animal_density[po_loc[0]][right] <= 0:
             if printing: print("right")
-            q_value_map[4] = 0
+            if q_values[0][4] >= 0:
+                q_value_map[4] = float("-inf")
+            else:
+                q_value_map[4] = float("inf")
         if printing: print(q_value_map)
         return q_value_map
 
@@ -208,9 +220,11 @@ class Poacher(object):
         :param epsilon: exploration parameter for epsilon_greedy
         :return: a batch of actions
         """
+        #print("_____________________")
         q_values = sess.run(self.output, {self.input_state: states})
+        #print("PO Q values: ", q_values)
         # print list(q_values[0])
-        q_multiplier = self.get_po_actions(animal_density, po_loc)
+        q_multiplier = self.get_po_actions(animal_density, po_loc, q_values)
         q_values *= q_multiplier
         print("poacher", q_values)
 

@@ -181,6 +181,7 @@ def test_(patroller, poacher, env, sess, args, iteration = None, grand_episode =
                 if not env.catch_flag and not env.home_flag: 
                     po_state = np.array([po_state])
                     snare_flag, po_action = poacher.infer_action(sess=sess, states=po_state, policy="greedy", po_loc=env.po_loc, animal_density=env.animal_density)
+                    print("POACH:",po_action)
                 else:
                     snare_flag = 0
                     po_action = 'still' 
@@ -199,6 +200,7 @@ def test_(patroller, poacher, env, sess, args, iteration = None, grand_episode =
             if patroller_type == 'DQN':
                 pa_state = np.array([pa_state])
                 pa_action = patroller.infer_action(sess=sess, states=pa_state, policy="greedy", pa_loc=env.pa_loc, animal_density=env.animal_density)
+                print("PATR:", pa_action)
             elif patroller_type == 'PARAM':
                 pa_loc = env.pa_loc
                 pa_action = patroller.infer_action(pa_loc, env.get_local_po_trace(pa_loc), 1.5, -2, 5.5)

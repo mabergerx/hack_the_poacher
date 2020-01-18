@@ -189,6 +189,8 @@ class Env(object):
         return self.get_pa_state(), pa_reward, self.get_po_state(), po_reward, self.end_game
 
     def update_po_loc(self, action):
+        #print("_____________________")
+        #print("Action PO: ", action)
         if action == 'still':
             self.po_visit_number[self.po_loc[0], self.po_loc[1]] += 1
             return self.po_loc, self.po_loc
@@ -229,7 +231,7 @@ class Env(object):
                     self.canvas.move(self.po_ball, 0, self.cell_length)
                 elif action == 'left':
                     self.canvas.move(self.po_ball, -self.cell_length, 0)
-                elif action == 'right':
+                elif action == 'right ':
                     self.canvas.move(self.po_ball, self.cell_length, 0)
 
             self._update_po_trace(original_loc, self.po_loc, action)
@@ -238,6 +240,9 @@ class Env(object):
         return original_loc, self.po_loc
 
     def update_pa_loc(self, action):
+
+        #print("Action PA: ", action)
+        #print("_____________________")
         if action == 'still':
             self.pa_visit_number[self.pa_loc[0], self.pa_loc[1]] += 1
             return self.pa_loc, self.pa_loc
