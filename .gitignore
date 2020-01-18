@@ -27,6 +27,7 @@ MANIFEST
 .DS_Store
 */.DS_Store
 .idea/
+.Rhistory
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -108,4 +109,4 @@ venv.bak/
 
 
 #notebooks 
-.ipynb
+*.ipynb
