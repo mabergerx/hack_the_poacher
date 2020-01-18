@@ -731,10 +731,10 @@ class Env(object):
         time_left = np.ones([self.row_num, self.column_num]) * float(self.time) / (self.args.max_time / 2.)
         time_left = np.expand_dims(time_left, axis=2)
         state = np.concatenate((state, time_left), axis=2)
-        print("State shape")
-        print(state.shape)
-        print("Tupel")
-        print((self.row_num, self.column_num, self.args.pa_state_size))
+        # print("State shape")
+        # print(state.shape)
+        # print("Tupel")
+        # print((self.row_num, self.column_num, self.args.pa_state_size))
         assert state.shape == (self.row_num, self.column_num, self.args.pa_state_size)
         return state
 
