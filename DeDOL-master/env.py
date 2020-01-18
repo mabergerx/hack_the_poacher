@@ -708,6 +708,7 @@ class Env(object):
         state = np.concatenate((state, ani_den), axis=2)
 
         if self.po_bleeb:
+            print("in po_bleeb")
             coordinate = np.zeros([self.row_num, self.column_num])
             if np.random.random() < self.po_scan_rate:
                 coordinate[self.po_loc[0], self.po_loc[1]] = 1
@@ -716,6 +717,8 @@ class Env(object):
             if self.filter_bleeb:
                 coordinate = self.blur_locations(coordinate)
             coordinate = np.expand_dims(coordinate, axis=2)
+        else:
+            print("not in po_bleeb")
         if self.canvas:
             self.show_Filter_In_Grid(coordinate)
             state = np.concatenate((state, coordinate), axis=2)
