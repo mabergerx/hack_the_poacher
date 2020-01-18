@@ -3,7 +3,6 @@ import numpy as np
 
 class Patroller_Rule(object):
     def __init__(self, args, animal_density):
-        print("doet verkeerde!!!!!")
         self.args = args
         self.row_num = self.args.row_num
         self.column_num = self.args.column_num

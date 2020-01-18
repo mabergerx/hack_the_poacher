@@ -2,11 +2,11 @@ import tensorflow.compat.v1 as tf
 tf.disable_v2_behavior()
 import numpy as np
 import random
+import sys
 
 
 class Patroller_CNN(object):
     def __init__(self, args, scope):
-        print("wel cnn????")
         with tf.variable_scope(scope):
             self.args = args
             self.row_num = self.args.row_num
@@ -145,35 +145,47 @@ class Patroller_CNN(object):
                 gradients, _ = tf.clip_by_global_norm(gradients, 2.0)
                 self.train_op = optimizer.apply_gradients(zip(gradients, variables))
 
-    def get_pa_actions(self, animal_density, po_loc):
+    def get_pa_actions(self, animal_density, po_loc, q_values):
         '''
         For building game tree usage
         '''
-        printing = True
+        #print("Pa location: ", po_loc)
+        printing = False
         q_value_map = [1,1,1,1,1]
-        if printing: print("patroller")
-        if printing: print(q_value_map)
-        # check up
-        up = po_loc[1] - 1
-        if 0 <= up and animal_density[po_loc[0]][up] <= 0:
-            q_value_map[1] = 0
+        if printing: print("No legal PA options: ")
+  # check up
+        up = po_loc[0] - 1
+        if 0 <= up and animal_density[up][po_loc[1]] <= 0:
             if printing: print("up")
+            if q_values[0][1] >= 0:
+                q_value_map[1] = float("-inf")
+            else:
+                q_value_map[1] = float("inf")
         # check down
-        down = po_loc[1] + 1
+        down = po_loc[0] + 1
         
-        if len(animal_density)-1 > down and animal_density[po_loc[0]][down] <= 0:
-            q_value_map[2] = 0
+        if len(animal_density)-1 > down and animal_density[down][po_loc[1]] <= 0:
             if printing: print("down")
+            if q_values[0][2] >= 0:
+                q_value_map[2] = float("-inf")
+            else:
+                q_value_map[2] = float("inf")
         # check left
-        left = po_loc[0] - 1
-        if 0 <= left and animal_density[left, po_loc[1]] <= 0:
-            q_value_map[3] = 0
+        left = po_loc[1] - 1
+        if 0 <= left and animal_density[po_loc[0]][left] <= 0:
             if printing: print("left")
+            if q_values[0][3] >= 0:
+                q_value_map[3] = float("-inf")
+            else:
+                q_value_map[3] = float("inf")
         # check right
-        right = po_loc[0] + 1
-        if len(animal_density[0])-1 > right and animal_density[right, po_loc[1]] <= 0:
-            q_value_map[4] = 0
+        right = po_loc[1] + 1
+        if len(animal_density[0])-1 > right and animal_density[po_loc[0]][right] <= 0:
             if printing: print("right")
+            if q_values[0][4] >= 0:
+                q_value_map[4] = float("-inf")
+            else:
+                q_value_map[4] = float("inf")
         if printing: print(q_value_map)
         return q_value_map
 
@@ -184,10 +196,12 @@ class Patroller_CNN(object):
         :param epsilon: exploration parameter for epsilon_greedy
         :return: a batch of actions
         """
+        #print("____________")
         q_values = sess.run(self.output, {self.input_state: states})
-        q_multiplier = self.get_pa_actions(animal_density, pa_loc)
+        #print("PA Q values: ", q_values)
+        q_multiplier = self.get_pa_actions(animal_density, pa_loc, q_values)
         q_values *= q_multiplier
-        print("patroller", q_values)
+        
         argmax_actions = np.argmax(q_values, axis=1)
         if policy == "greedy":
             if len(argmax_actions) == 1:
