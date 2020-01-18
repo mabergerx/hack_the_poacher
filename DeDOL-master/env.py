@@ -182,7 +182,8 @@ class Env(object):
 
         if (self.catch_flag and len(self.snare_state) == 0) or (self.home_flag and len(self.snare_state) == 0):
             self.end_game = True
-            self.canvas.create_text(100,10,fill="darkblue",font="Times 20 italic bold",text="END GAME2")
+            if self.canvas:
+                self.canvas.create_text(100,10,fill="darkblue",font="Times 20 italic bold",text="END GAME2")
         else:
             self.end_game = False
 
