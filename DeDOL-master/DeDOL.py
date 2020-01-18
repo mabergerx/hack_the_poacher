@@ -239,8 +239,7 @@ pa_payoff = np.zeros((1,1))
 po_payoff = np.zeros((1,1))
 length= np.zeros((1,1))
   
-pa_payoff[0, 0], po_payoff[0, 0], _ = simulate_payoff(patrollers, poachers, 0, 0, env_pa, sess, 
-args, pa_type = pa_type[0], po_type = po_type[0])
+pa_payoff[0, 0], po_payoff[0, 0], _ = simulate_payoff(patrollers, poachers, 0, 0, env_pa, sess, args, pa_type = pa_type[0], po_type = po_type[0])
 
 pa_strategy, po_strategy = np.array([1]), np.array([1])
 
