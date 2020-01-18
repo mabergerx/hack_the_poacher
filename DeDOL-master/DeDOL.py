@@ -102,6 +102,8 @@ argparser.add_argument('--mix_every_episode', type=int, default=250)
 argparser.add_argument('--epsilon_decrease', type=float, default=0.05, help = 'decrease of the epsilon exploration rate in DQN') 
 argparser.add_argument('--PER', type = bool, default = False, help = 'wheter to use prioterized experience replay')
 argparser.add_argument('--reward_shaping', type = bool, default = False, help = 'whether to use reward shaping in training')
+
+argparser.add_argument('--max_time', type=int, default=100)
 #########################################################################################
 args = argparser.parse_args()
 
