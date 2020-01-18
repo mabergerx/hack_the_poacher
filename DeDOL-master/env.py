@@ -194,7 +194,7 @@ class Env(object):
         if action == 'still':
             self.po_visit_number[self.po_loc[0], self.po_loc[1]] += 1
             return self.po_loc, self.po_loc
-
+            
         if action == 'up':
             new_row, new_col = self.po_loc[0] - 1, self.po_loc[1]
             if self.in_bound(new_row, new_col):
@@ -231,7 +231,7 @@ class Env(object):
                     self.canvas.move(self.po_ball, 0, self.cell_length)
                 elif action == 'left':
                     self.canvas.move(self.po_ball, -self.cell_length, 0)
-                elif action == 'right ':
+                elif action == 'right':
                     self.canvas.move(self.po_ball, self.cell_length, 0)
 
             self._update_po_trace(original_loc, self.po_loc, action)
@@ -240,7 +240,7 @@ class Env(object):
         return original_loc, self.po_loc
 
     def update_pa_loc(self, action):
-
+    
         #print("Action PA: ", action)
         #print("_____________________")
         if action == 'still':
@@ -717,6 +717,8 @@ class Env(object):
                 coordinate = self.blur_locations(coordinate)
             coordinate = np.expand_dims(coordinate, axis=2)
         if self.canvas:
+            print(self.canvas)
+            print(type(self.canvas))
             self.show_Filter_In_Grid(coordinate)
             state = np.concatenate((state, coordinate), axis=2)
 
