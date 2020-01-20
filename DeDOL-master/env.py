@@ -453,7 +453,7 @@ class Env(object):
             for row, col in self.snare_state:
                 if random.random() < (self.animal_density[row, col]):
                     kill_list.append([row, col])
-                    print("-------killed an animal--------")
+                    # print("-------killed an animal--------")
                     self.poacher_snare_num -= 1
             return kill_list
         else:
