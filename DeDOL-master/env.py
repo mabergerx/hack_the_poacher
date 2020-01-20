@@ -33,6 +33,8 @@ class Env(object):
         self.canvas = None
         self.end_game = False
 
+        self.radar_objs = {}
+
         if self.gui:
             self.canvas = canvas
             self.canvas_width = args.column_num * cell_length
@@ -156,6 +158,12 @@ class Env(object):
         else:
             self.delete_snare(self.po_loc)
             self.poacher_snare_num += 1
+
+        if self.gui:
+            for y in range(0, self.column_num - 1):
+                for x in range(0, self.row_num - 1):
+                    if (y,x) in self.canvas.keys():
+                        self.canvas.delete(self.radar_objs[(y,x)])
 
         # Update the position and traces of poacher and patroller
         po_ori_loc, po_new_loc = self.update_po_loc(po_action)
@@ -750,10 +758,11 @@ class Env(object):
 
 
     def place_radar_rec(self, loc, color):
-        self.canvas.create_rectangle(loc[1] * self.cell_length,
+        rec = self.canvas.create_rectangle(loc[1] * self.cell_length,
                                      loc[0] * self.cell_length + 3 * self.quarter_cell,
                                      loc[1] * self.cell_length + self.quarter_cell,
                                      loc[0] * self.cell_length + self.cell_length, fill=color)
+        self.radar_objs[loc] = rec
 
     def get_po_state(self):
         snare_num = self.poacher_snare_num
