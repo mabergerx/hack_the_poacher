@@ -112,20 +112,23 @@ class Env(object):
                 self.pa_trace[(row, col)] = np.zeros(8)
                 self.po_trace[(row, col)] = np.zeros(8)
 
+                
         if self.gui:
             self.canvas.delete("all")
             self.canvas['bg'] = 'white'
             self.make_grid()
-            self.pa_ball = self.canvas.create_oval(self.pa_loc[1] * self.cell_length + self.quarter_cell,
-                                                   self.pa_loc[0] * self.cell_length + self.quarter_cell,
-                                                   (self.pa_loc[1] + 1) * self.cell_length - self.quarter_cell,
-                                                   (self.pa_loc[0] + 1) * self.cell_length - self.quarter_cell,
-                                                   outline="blue", fill="blue", tags="ball")
-            self.po_ball = self.canvas.create_oval(self.po_loc[1] * self.cell_length + self.quarter_cell,
-                                                   self.po_loc[0] * self.cell_length + self.quarter_cell,
-                                                   (self.po_loc[1] + 1) * self.cell_length - self.quarter_cell,
-                                                   (self.po_loc[0] + 1) * self.cell_length - self.quarter_cell,
-                                                   outline="red", fill="red", tags="ball")
+            
+            img = PhotoImage(file=r'po.png')
+            self.canvas.img = img
+            self.po_ball = self.canvas.create_image((((self.po_loc[1] + 1) * self.cell_length - self.quarter_cell)-(self.po_loc[1] * self.cell_length + self.quarter_cell))/2+(self.po_loc[1] * self.cell_length + self.quarter_cell),
+            
+            ((self.po_loc[0] * self.cell_length + self.quarter_cell)-((self.po_loc[0] + 1) * self.cell_length - self.quarter_cell))/2+((self.po_loc[0] + 1) * self.cell_length - self.quarter_cell), image=img, tags="ball")
+            
+            img1 = PhotoImage(file=r'pa.png')
+            self.canvas.img1 = img1
+            self.pa_ball = self.canvas.create_image((((self.pa_loc[1] + 1) * self.cell_length - self.quarter_cell)-(self.pa_loc[1] * self.cell_length + self.quarter_cell))/2+(self.pa_loc[1] * self.cell_length + self.quarter_cell),
+            
+            ((self.pa_loc[0] * self.cell_length + self.quarter_cell)-((self.pa_loc[0] + 1) * self.cell_length - self.quarter_cell))/2+((self.pa_loc[0] + 1) * self.cell_length - self.quarter_cell), image=img1, tags="ball")
 
         return self.get_pa_state(), self.get_po_state()
 
@@ -193,10 +196,12 @@ class Env(object):
         
         self.update_time()
 
+        if (self.catch_flag and len(self.snare_state) == 0):
+            txt = self.canvas.create_text(270,280,fill='#%02x%02x%02x' % (255, 111, 0),font='System 30 bold',text='Poacher caught')
+        if (self.home_flag and len(self.snare_state) == 0):
+            self.canvas.create_text(260,280,fill='#%02x%02x%02x' % (255, 111, 0),font='System 30 bold',text='Poacher went home')
         if (self.catch_flag and len(self.snare_state) == 0) or (self.home_flag and len(self.snare_state) == 0):
             self.end_game = True
-            if self.canvas:
-                self.canvas.create_text(100,10,fill="darkblue",font="Times 20 italic bold",text="END GAME2")
         else:
             self.end_game = False
 

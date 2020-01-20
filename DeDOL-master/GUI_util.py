@@ -110,8 +110,10 @@ def test_gui(poacher, patroller, sess, args, pa_type, po_type):
         # accmulate the reward
         pa_episode_reward += pa_reward
         po_episode_reward += po_reward
-
-        # the game ends if the end_game condition is true, or the maximum time step is achieved
+       
+        if (t == args.max_time - 1) and not end_game:
+            canvas.create_text(280,280,fill='#%02x%02x%02x' % (255, 111, 0),font='System 30 bold',text='Time is up')
+        #the game ends if the end_game condition is true, or the maximum time step is achieved
         if end_game or (t == args.max_time - 1):
             info = "episode\t%s\tlength\t%s\tpatroller_total_reward\t%s\tpoacher_total_reward\t%s" % \
                    (e, t + 1, pa_episode_reward, po_episode_reward)
