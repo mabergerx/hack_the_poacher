@@ -181,9 +181,9 @@ class Env(object):
         self.update_time()
 
         if (self.catch_flag and len(self.snare_state) == 0):
-            self.canvas.create_text(300,10,fill='darkblue',font='Times 20 italic bold',text='Poacher cathed')
+            self.canvas.create_text(250,10,fill='darkblue',font='Times 20 italic bold',text='Poacher cathed')
         if (self.home_flag and len(self.snare_state) == 0):
-            self.canvas.create_text(300,10,fill='darkblue',font='Times 20 italic bold',text='Poatcher went home')
+            self.canvas.create_text(240,10,fill='darkblue',font='Times 20 italic bold',text='Poatcher went home')
         if (self.catch_flag and len(self.snare_state) == 0) or (self.home_flag and len(self.snare_state) == 0):
             self.end_game = True
         else:
