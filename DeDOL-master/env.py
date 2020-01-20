@@ -109,7 +109,7 @@ class Env(object):
             self.make_grid()
             img = PhotoImage(file=r'po.png', width=200, height=200)
             self.canvas.img = img
-            self.po_ball = self.canvas.create_image(self.po_loc[1] * self.cell_length + 5.6*self.quarter_cell, (self.po_loc[1] + 1) * self.cell_length + 1.5*self.quarter_cell, image=img, tags="ball")
+            self.po_ball = self.canvas.create_image(self.po_loc[1] * self.cell_length + 5.7*self.quarter_cell, (self.po_loc[1] + 1) * self.cell_length + 1.5*self.quarter_cell, image=img, tags="ball")
             
             img1 = PhotoImage(file=r'pa.png', width=200, height=200)
             self.canvas.img1 = img1
