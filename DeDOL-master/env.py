@@ -109,11 +109,11 @@ class Env(object):
             self.make_grid()
             img = PhotoImage(file=r'po.png', width=200, height=200)
             self.canvas.img = img
-            self.po_ball = self.canvas.create_image(self.po_loc[1] * self.cell_length + 5.7*self.quarter_cell, (self.po_loc[1] + 1) * self.cell_length + 1.5*self.quarter_cell, image=img, tags="ball")
+            self.po_ball = self.canvas.create_image(self.po_loc[1] * self.cell_length + 5.6*self.quarter_cell, (self.po_loc[1] + 1) * self.cell_length + 1.5*self.quarter_cell, image=img, tags="ball")
             
             img1 = PhotoImage(file=r'pa.png', width=200, height=200)
             self.canvas.img1 = img1
-            self.pa_ball = self.canvas.create_image(self.pa_loc[1] * self.cell_length + 5.8*self.quarter_cell, (self.pa_loc[1] + 1) * self.cell_length + 1.3*self.quarter_cell, image=img1, tags="ball")
+            self.pa_ball = self.canvas.create_image(self.pa_loc[1] * self.cell_length + 5.9*self.quarter_cell, (self.pa_loc[1] + 1) * self.cell_length + 1.8*self.quarter_cell, image=img1, tags="ball")
 
         return self.get_pa_state(), self.get_po_state()
 
@@ -178,7 +178,7 @@ class Env(object):
         self.update_time()
 
         if (self.catch_flag and len(self.snare_state) == 0):
-            self.canvas.create_text(270,50,fill='#%02x%02x%02x' % (255, 111, 0),font='System 30 bold',text='Poacher cathed')
+            self.canvas.create_text(270,280,fill='#%02x%02x%02x' % (255, 111, 0),font='System 30 bold',text='Poacher cathed')
         if (self.home_flag and len(self.snare_state) == 0):
             self.canvas.create_text(260,280,fill='#%02x%02x%02x' % (255, 111, 0),font='System 30 bold',text='Poatcher went home')
         if (self.catch_flag and len(self.snare_state) == 0) or (self.home_flag and len(self.snare_state) == 0):
