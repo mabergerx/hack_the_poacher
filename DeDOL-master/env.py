@@ -103,17 +103,23 @@ class Env(object):
                 self.pa_trace[(row, col)] = np.zeros(8)
                 self.po_trace[(row, col)] = np.zeros(8)
 
+                
         if self.gui:
             self.canvas.delete("all")
             self.canvas['bg'] = 'white'
             self.make_grid()
-            img = PhotoImage(file=r'po.png', width=200, height=200)
-            self.canvas.img = img
-            self.po_ball = self.canvas.create_image(self.po_loc[1] * self.cell_length + 5.7*self.quarter_cell, (self.po_loc[1] + 1) * self.cell_length + 1.5*self.quarter_cell, image=img, tags="ball")
             
-            img1 = PhotoImage(file=r'pa.png', width=200, height=200)
+            img = PhotoImage(file=r'po.png')
+            self.canvas.img = img
+            self.po_ball = self.canvas.create_image((((self.po_loc[1] + 1) * self.cell_length - self.quarter_cell)-(self.po_loc[1] * self.cell_length + self.quarter_cell))/2+(self.po_loc[1] * self.cell_length + self.quarter_cell),
+            
+            ((self.po_loc[0] * self.cell_length + self.quarter_cell)-((self.po_loc[0] + 1) * self.cell_length - self.quarter_cell))/2+((self.po_loc[0] + 1) * self.cell_length - self.quarter_cell), image=img, tags="ball")
+            
+            img1 = PhotoImage(file=r'pa.png')
             self.canvas.img1 = img1
-            self.pa_ball = self.canvas.create_image(self.pa_loc[1] * self.cell_length + 5.9*self.quarter_cell, (self.pa_loc[1] + 1) * self.cell_length + 1.8*self.quarter_cell, image=img1, tags="ball")
+            self.pa_ball = self.canvas.create_image((((self.pa_loc[1] + 1) * self.cell_length - self.quarter_cell)-(self.pa_loc[1] * self.cell_length + self.quarter_cell))/2+(self.pa_loc[1] * self.cell_length + self.quarter_cell),
+            
+            ((self.pa_loc[0] * self.cell_length + self.quarter_cell)-((self.pa_loc[0] + 1) * self.cell_length - self.quarter_cell))/2+((self.pa_loc[0] + 1) * self.cell_length - self.quarter_cell), image=img1, tags="ball")
 
         return self.get_pa_state(), self.get_po_state()
 
