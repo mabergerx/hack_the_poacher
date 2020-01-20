@@ -57,12 +57,12 @@ argparser.add_argument('--ani_den_seed', type=int, default=66)
 argparser.add_argument('--max_time', type=int, default=4)
 
 ### Patroller
-argparser.add_argument('--pa_state_size', type=int, default=21)
+argparser.add_argument('--pa_state_size', type=int, default=-1)
 argparser.add_argument('--pa_num_actions', type=int, default=5)
 
 ### Poacher CNN
 argparser.add_argument('--snare_num', type=int, default=6)
-argparser.add_argument('--po_state_size', type=int, default=22) #yf: add self footprint to poacher
+argparser.add_argument('--po_state_size', type=int, default=-1) #yf: add self footprint to poacher
 argparser.add_argument('--po_num_actions', type=int, default=5)
 
 ### Poacher Rule Base
@@ -110,6 +110,12 @@ args = argparser.parse_args()
 
 if not args.po_bleeb and args.filter_bleeb:
     raise ValueError('filter_bleeb cannot be true, while po_bleeb is false')
+
+if args.po_state_size == -1:
+    args.po_state_size = 14 + (8 * args.footsteps)
+
+if args.pa_state_size == -1:
+    args.pa_state_size = 12 + (8 * args.footsteps) + (1 * args.po_bleeb)
 
 if args.row_num == 7:
     args.column_num = 7
