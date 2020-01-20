@@ -152,10 +152,10 @@ if args.load:
     poachers[0] = Poacher_h(args,animal_density)
     patrollers[0] = Patroller_h(args, animal_density)
 
-    poachers[1].load(sess, args.po_load_path)
-    patrollers[1].load(sess, args.pa_load_path)
+    poachers[2].load(sess, args.po_load_path)
+    patrollers[2].load(sess, args.pa_load_path)
 
-    test_gui(poachers[1], patrollers[1], sess, args, pa_type = 'DQN', po_type = 'DQN')
+    test_gui(poachers[2], patrollers[2], sess, args, pa_type = 'DQN', po_type = 'DQN')
 
 ### test the random sweeping patroller and the heuristic poacher
 else:
