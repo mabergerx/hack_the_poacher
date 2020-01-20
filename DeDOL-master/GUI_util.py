@@ -55,6 +55,8 @@ def test_gui(poacher, patroller, sess, args, pa_type, po_type):
         global e, t, pa_total_reward, po_total_reward, game_len, pa_episode_reward, po_episode_reward
         global pa_state, po_state, pa_action
 
+        time.sleep(0.5)
+
         if t == 0:
             print('reset')
             poacher.reset_snare_num()
