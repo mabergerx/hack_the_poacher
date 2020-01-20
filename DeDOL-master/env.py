@@ -84,9 +84,16 @@ class Env(object):
         self.catch_flag = False
         self.po_initial_loc = self.get_po_initial_loc(self.args.po_location)
         if mode is not None:
-            self.po_initial_loc = self.get_po_initial_loc(mode)
+            if self.row_num == 7:
+                self.po_initial_loc = self.po_initial_loc(mode, poacher_map = True)
+            else:
+                self.po_initial_loc = self.get_po_initial_loc(mode)
         self.po_loc = self.po_initial_loc
-        self.pa_loc = self.pa_initial_loc = [self.row_num //2, self.column_num // 2]
+
+        if self.row_num == 7:
+            self.pa_loc = [0, 6]
+        else:
+            self.pa_loc = self.pa_initial_loc = [self.row_num //2, self.column_num // 2]
         self.pa_trace = {}
         self.po_trace = {}  # pos -> [(E, W, S, N)_0, (E, W, S, N)_1]
         self.snare_state = []
@@ -816,8 +823,11 @@ class Env(object):
         return row >= 0 and row <= (self.row_num - 1) and col >= 0 and col <= (self.column_num - 1)
 
 
-    def get_po_initial_loc(self, idx = None):
-        candidate = [[0, 0], [0, self.column_num - 1], [self.row_num - 1, self.column_num - 1], [self.row_num - 1, 0]]
+    def get_po_initial_loc(self, idx = None, poacher_map = False):
+        if poacher_map:
+            candidate = [[0, 0], [3, 0], [6, 0], [6,6]]
+        else:
+            candidate = [[0, 0], [0, self.column_num - 1], [self.row_num - 1, self.column_num - 1], [self.row_num - 1, 0]]
 
         if idx is not None:
             return candidate[idx]
