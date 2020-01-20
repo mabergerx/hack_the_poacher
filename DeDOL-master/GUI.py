@@ -61,7 +61,7 @@ argparser.add_argument('--pa_state_size', type=int, default=-1)
 argparser.add_argument('--pa_num_actions', type=int, default=5)
 
 ### Poacher CNN
-argparser.add_argument('--snare_num', type=int, default=3)
+argparser.add_argument('--snare_num', type=int, default=1)
 argparser.add_argument('--po_state_size', type=int, default=-1) #yf: add self footprint to poacher
 argparser.add_argument('--po_num_actions', type=int, default=5)
 
