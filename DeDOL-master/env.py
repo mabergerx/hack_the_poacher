@@ -151,11 +151,9 @@ class Env(object):
         # Place the snare by the poacher
         if snare_flag and self.poacher_snare_num > 0:
             self.place_snare(self.po_loc)
-            self.poacher_snare_num -= 1
 
         else:
             self.delete_snare(self.po_loc)
-            self.poacher_snare_num += 1
 
         # Update the position and traces of poacher and patroller
         po_ori_loc, po_new_loc = self.update_po_loc(po_action)
@@ -190,8 +188,8 @@ class Env(object):
         return self.get_pa_state(), pa_reward, self.get_po_state(), po_reward, self.end_game
 
     def update_po_loc(self, action):
-        print("_____________________")
-        print("Action PO: ", action)
+        # print("_____________________")
+        # print("Action PO: ", action)
         if action == 'still':
             self.po_visit_number[self.po_loc[0], self.po_loc[1]] += 1
             return self.po_loc, self.po_loc
@@ -432,8 +430,10 @@ class Env(object):
         if number is None:
             kill_list = []
             for row, col in self.snare_state:
-                if random.random() < (self.animal_density[row, col] / 5.):
+                if random.random() < (self.animal_density[row, col]):
                     kill_list.append([row, col])
+                    print("-------killed an animal--------")
+                    self.poacher_snare_num -= 1
             return kill_list
         else:
             kill_list = []
@@ -874,7 +874,6 @@ class Env(object):
 
         if snare_flag and self.poacher_snare_num > 0:
             self.place_snare(self.po_loc)
-            self.poacher_snare_num -= 1
 
         _, _ = self.update_po_loc(po_action)
 
