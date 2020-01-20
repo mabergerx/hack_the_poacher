@@ -129,6 +129,7 @@ def test_gui(poacher, patroller, sess, args, pa_type, po_type):
    
 
     run_step()
+    time.sleep(1)
     master.mainloop()
     
     #print(np.mean(ret_total_reward), np.mean(ret_average_reward), np.mean(ret_length))

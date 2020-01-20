@@ -61,7 +61,7 @@ argparser.add_argument('--pa_state_size', type=int, default=-1)
 argparser.add_argument('--pa_num_actions', type=int, default=5)
 
 ### Poacher CNN
-argparser.add_argument('--snare_num', type=int, default=6)
+argparser.add_argument('--snare_num', type=int, default=3)
 argparser.add_argument('--po_state_size', type=int, default=-1) #yf: add self footprint to poacher
 argparser.add_argument('--po_num_actions', type=int, default=5)
 
@@ -152,10 +152,10 @@ if args.load:
     poachers[0] = Poacher_h(args,animal_density)
     patrollers[0] = Patroller_h(args, animal_density)
 
-    poachers[2].load(sess, args.po_load_path)
-    patrollers[2].load(sess, args.pa_load_path)
+    poachers[1].load(sess, args.po_load_path)
+    patrollers[1].load(sess, args.pa_load_path)
 
-    test_gui(poachers[2], patrollers[2], sess, args, pa_type = 'DQN', po_type = 'DQN')
+    test_gui(poachers[1], patrollers[1], sess, args, pa_type = 'DQN', po_type = 'DQN')
 
 ### test the random sweeping patroller and the heuristic poacher
 else:

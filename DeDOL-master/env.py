@@ -190,8 +190,8 @@ class Env(object):
         return self.get_pa_state(), pa_reward, self.get_po_state(), po_reward, self.end_game
 
     def update_po_loc(self, action):
-        #print("_____________________")
-        #print("Action PO: ", action)
+        print("_____________________")
+        print("Action PO: ", action)
         if action == 'still':
             self.po_visit_number[self.po_loc[0], self.po_loc[1]] += 1
             return self.po_loc, self.po_loc
@@ -242,8 +242,9 @@ class Env(object):
 
     def update_pa_loc(self, action):
     
-        #print("Action PA: ", action)
-        #print("_____________________")
+        # print("Action PA: ", action)
+        # print("_____________________")
+
         if action == 'still':
             self.pa_visit_number[self.pa_loc[0], self.pa_loc[1]] += 1
             return self.pa_loc, self.pa_loc
@@ -360,6 +361,8 @@ class Env(object):
     def _update_pa_trace(self, ori_loc, new_loc, action):
         ori_loc = tuple(ori_loc)
         new_loc = tuple(new_loc)
+
+
         if action == 'up':
             self.pa_trace[ori_loc][4] = 1
             self.pa_trace[new_loc][1] = 1
@@ -602,7 +605,8 @@ class Env(object):
                 self.snare_object[(loc[0], loc[1])].append(rec)
 
     def place_snare(self, loc):
-        self.snare_state.append((loc[0], loc[1]))
+        if (loc[0], loc[1]) not in self.snare_state:
+            self.snare_state.append((loc[0], loc[1]))
         if self.gui:
             rec = self.canvas.create_rectangle(loc[1] * self.cell_length,
                                                loc[0] * self.cell_length,
@@ -743,10 +747,10 @@ class Env(object):
         for y, row in enumerate(ohe_coord):
             for x, i in enumerate(row):
                 if i[0] == 0:
-                    self.place_radar_rec((y, x), "white");
+                    self.place_radar_rec((y, x), "white")
 
                 else:
-                    self.place_radar_rec((y, x), "yellow");
+                    self.place_radar_rec((y, x), "yellow")
 
 
     def place_radar_rec(self, loc, color):
