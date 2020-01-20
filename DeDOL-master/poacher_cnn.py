@@ -187,7 +187,7 @@ class Poacher(object):
         # check down
         down = po_loc[0] + 1
         
-        if len(animal_density)-1 > down and animal_density[down][po_loc[1]] <= 0:
+        if len(animal_density) > down and animal_density[down][po_loc[1]] <= 0:
             if printing: print("down")
             if q_values[0][2] >= 0:
                 q_value_map[2] = float("-inf")
@@ -203,7 +203,7 @@ class Poacher(object):
                 q_value_map[3] = float("inf")
         # check right
         right = po_loc[1] + 1
-        if len(animal_density[0])-1 > right and animal_density[po_loc[0]][right] <= 0:
+        if len(animal_density[0]) > right and animal_density[po_loc[0]][right] <= 0:
             if printing: print("right")
             if q_values[0][4] >= 0:
                 q_value_map[4] = float("-inf")
