@@ -85,7 +85,7 @@ class Env(object):
         self.po_initial_loc = self.get_po_initial_loc(self.args.po_location)
         if mode is not None:
             if self.row_num == 7:
-                self.po_initial_loc = self.po_initial_loc(mode, poacher_map = True)
+                self.po_initial_loc = self.get_po_initial_loc(mode, poacher_map = True)
             else:
                 self.po_initial_loc = self.get_po_initial_loc(mode)
         self.po_loc = self.po_initial_loc
