@@ -5,6 +5,7 @@ import copy
 from tkinter import *
 from math import floor
 
+
 class Env(object):
     def __init__(self, args, animal_density, cell_length, canvas, gui):
         '''
@@ -117,14 +118,14 @@ class Env(object):
             self.canvas.delete("all")
             self.canvas['bg'] = 'white'
             self.make_grid()
-            
-            img = PhotoImage(file=r'po.png')
+
+            img = PhotoImage(file='po.png')
             self.canvas.img = img
             self.po_ball = self.canvas.create_image((((self.po_loc[1] + 1) * self.cell_length - self.quarter_cell)-(self.po_loc[1] * self.cell_length + self.quarter_cell))/2+(self.po_loc[1] * self.cell_length + self.quarter_cell),
             
             ((self.po_loc[0] * self.cell_length + self.quarter_cell)-((self.po_loc[0] + 1) * self.cell_length - self.quarter_cell))/2+((self.po_loc[0] + 1) * self.cell_length - self.quarter_cell), image=img, tags="ball")
             
-            img1 = PhotoImage(file=r'pa.png')
+            img1 = PhotoImage(file='pa.png')
             self.canvas.img1 = img1
             self.pa_ball = self.canvas.create_image((((self.pa_loc[1] + 1) * self.cell_length - self.quarter_cell)-(self.pa_loc[1] * self.cell_length + self.quarter_cell))/2+(self.pa_loc[1] * self.cell_length + self.quarter_cell),
             
