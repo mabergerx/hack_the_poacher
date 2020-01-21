@@ -502,7 +502,7 @@ class Env(object):
 
         # print("Home:", self.home_flag)
 
-        if self.home_flag and not self.catch_flag:
+        if self.home_flag and not self.catch_flag and self.poacher_snare_num == 0:
             # print("Before:", po_reward)
             po_reward += 20
             # print("After:", po_reward)
