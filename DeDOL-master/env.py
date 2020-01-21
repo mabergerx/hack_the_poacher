@@ -730,6 +730,7 @@ class Env(object):
         
         if dist==1:
             coordinate[target_coords] = 1
+            print(obs_coords, coordinate)
         return coordinate
         
     
@@ -763,7 +764,7 @@ class Env(object):
         state = np.concatenate((state, coordinate), axis=2)
         
         if self.see_surrounding:
-            coordinate = self.observation_grid(self.pa_loc, self.po_loc)
+            coordinate = self.observation_grid(tuple(i for i in self.pa_loc), tuple(i for i in self.po_loc))
             coordinate = np.expand_dims(coordinate, axis=2)
             state = np.concatenate((state, coordinate), axis=2)
                                     
@@ -824,9 +825,10 @@ class Env(object):
         time_left = np.expand_dims(time_left, axis=2)
         state = np.concatenate((state, time_left), axis=2)
         
-        coordinate = self.observation_grid(self.po_loc, self.pa_loc)
-        coordinate = np.expand_dims(coordinate, axis=2)
-        state = np.concatenate((state, coordinate), axis=2)
+        if self.see_surrounding:
+            coordinate = self.observation_grid(tuple(i for i in self.po_loc), tuple(i for i in self.pa_loc))
+            coordinate = np.expand_dims(coordinate, axis=2)
+            state = np.concatenate((state, coordinate), axis=2)
 
         initial_loc = np.zeros([self.row_num, self.column_num])
         initial_loc[self.po_initial_loc[0], self.po_initial_loc[1]] = 1.
