@@ -196,9 +196,9 @@ class Patroller_CNN(object):
         :param epsilon: exploration parameter for epsilon_greedy
         :return: a batch of actions
         """
-        #print("____________")
+        # print("____________")
         q_values = sess.run(self.output, {self.input_state: states})
-        #print("PA Q values: ", q_values)
+        # print("PA Q values: ", q_values)
         q_multiplier = self.get_pa_actions(animal_density, pa_loc, q_values)
         q_values *= q_multiplier
         

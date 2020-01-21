@@ -164,7 +164,6 @@ class Env(object):
         # Place the snare by the poacher
         if snare_flag and self.poacher_snare_num > 0:
             self.place_snare(self.po_loc)
-
         else:
             self.delete_snare(self.po_loc)
 
@@ -191,7 +190,7 @@ class Env(object):
         # Calculate reward for both sides
         # this process includes remove snares and kill animals
         if train:
-            pa_reward, po_reward = self.get_reward_train(po_ori_loc, po_new_loc, pa_ori_loc, pa_new_loc) 
+            pa_reward, po_reward = self.get_reward_train()
         else:
             pa_reward, po_reward = self.get_reward_test()
         
@@ -467,36 +466,47 @@ class Env(object):
             return kill_list
 
 
-    def get_reward_train(self, po_ori_loc, po_new_loc, pa_ori_loc, pa_new_loc, cfr = False):
+    def get_reward_train(self):
         pa_reward, po_reward = 0.0, 0.0
 
         # from removing snares
-        remove_num = 0
-        if (self.pa_loc[0], self.pa_loc[1]) in self.snare_state:
-            while (self.pa_loc[0], self.pa_loc[1]) in self.snare_state:
-                pa_reward += 2
-                remove_num += 1
-                self.snare_state.remove((self.pa_loc[0], self.pa_loc[1]))
-
-            if self.gui:
-                for snare_obj in self.snare_object[(self.pa_loc[0], self.pa_loc[1])]:
-                    self.canvas.delete(snare_obj)
-                del self.snare_object[(self.pa_loc[0], self.pa_loc[1])]
+        # remove_num = 0
+        # if (self.pa_loc[0], self.pa_loc[1]) in self.snare_state:
+        #     while (self.pa_loc[0], self.pa_loc[1]) in self.snare_state:
+        #         pa_reward += 2
+        #         remove_num += 1
+        #         print("par:", pa_reward)
+        #         self.snare_state.remove((self.pa_loc[0], self.pa_loc[1]))
+        #
+        #     if self.gui:
+        #         for snare_obj in self.snare_object[(self.pa_loc[0], self.pa_loc[1])]:
+        #             self.canvas.delete(snare_obj)
+        #         del self.snare_object[(self.pa_loc[0], self.pa_loc[1])]
         
         # from killing animals
         kill_list = self.kill_animal()
-        for row, col in kill_list:
-            self.snare_state.remove((row, col))
-            if self.gui:
-                assert (row, col) in self.snare_object and len(self.snare_object[(row, col)]) > 0
-                self.canvas.delete(self.snare_object[(row, col)][0])
-                self.snare_object[(row, col)].pop(0)
-                if len(self.snare_object[(row, col)]) == 0:
-                    del self.snare_object[(row, col)]
+        # for row, col in kill_list:
+        #     # self.snare_state.remove((row, col))
+        #     if self.gui:
+        #         assert (row, col) in self.snare_object and len(self.snare_object[(row, col)]) > 0
+        #         self.canvas.delete(self.snare_object[(row, col)][0])
+        #         self.snare_object[(row, col)].pop(0)
+        #         if len(self.snare_object[(row, col)]) == 0:
+        #             del self.snare_object[(row, col)]
 
         # poacher gets killing reward if it has not returned home, or has not been caught
         if not self.home_flag and not self.catch_flag: 
             po_reward += 2 * len(kill_list)
+            pa_reward -= po_reward
+
+
+        # print("Home:", self.home_flag)
+
+        if self.home_flag and not self.catch_flag:
+            # print("Before:", po_reward)
+            po_reward += 20
+            # print("After:", po_reward)
+            pa_reward -= 10
 
         # from catch poachers
         # Only get catching reward when catch the poacher for the first time
@@ -504,48 +514,49 @@ class Env(object):
         if not self.catch_flag and not self.home_flag:  
             if list(self.pa_loc) == list(self.po_loc):
                 self.catch_flag = 1
-                pa_reward += 8.
-                po_reward -= 8.
+                pa_reward += 20.
+                po_reward -= 20.
                 if self.gui:
                     self.canvas.delete(self.po_ball)
 
         # Reward shaping
-        po_ori_loc = np.array(po_ori_loc)
-        po_new_loc = np.array(po_new_loc)
-        pa_ori_loc = np.array(pa_ori_loc)
-        pa_new_loc = np.array(pa_new_loc)
-        po_initial_loc = np.array(self.po_initial_loc)
+        # po_ori_loc = np.array(po_ori_loc)
+        # po_new_loc = np.array(po_new_loc)
+        # pa_ori_loc = np.array(pa_ori_loc)
+        # pa_new_loc = np.array(pa_new_loc)
+        # po_initial_loc = np.array(self.po_initial_loc)
 
-        if self.args.reward_shaping:
-             # patroller reward shaping: the distance change to the poacher
-            if not self.catch_flag and not self.home_flag:
-                pa_reward += np.sqrt(np.sum(np.square(pa_ori_loc - po_ori_loc))) - \
-                            np.sqrt(np.sum(np.square(pa_new_loc - po_new_loc)))
+        # if self.args.reward_shaping:
+        #      # patroller reward shaping: the distance change to the poacher
+        #     if not self.catch_flag and not self.home_flag:
+        #         pa_reward += np.sqrt(np.sum(np.square(pa_ori_loc - po_ori_loc))) - \
+        #                     np.sqrt(np.sum(np.square(pa_new_loc - po_new_loc)))
+        #         print("par:", pa_reward)
 
              # patroller reward shaping: weighted distance change to the snares
-            if len(self.snare_state) > 0:
-                snare_pos = np.array(self.snare_state)
-                snare_weight = np.array([self.animal_density[i, j] for i, j in self.snare_state]) / 0.6
-
-                pa_reward += np.mean(
-                    snare_weight * (
-                        np.sqrt(np.sum(np.square(pa_ori_loc - snare_pos), axis=1)) -
-                        np.sqrt(np.sum(np.square(pa_new_loc - snare_pos), axis=1))
-                    )
-                )
+            # if len(self.snare_state) > 0:
+            #     snare_pos = np.array(self.snare_state)
+            #     snare_weight = np.array([self.animal_density[i, j] for i, j in self.snare_state]) / 0.6
+            #
+            #     pa_reward += np.mean(
+            #         snare_weight * (
+            #             np.sqrt(np.sum(np.square(pa_ori_loc - snare_pos), axis=1)) -
+            #             np.sqrt(np.sum(np.square(pa_new_loc - snare_pos), axis=1))
+            #         )
+            #     )
 
         # Go away from patroller
-        if not self.catch_flag and not self.home_flag:
-            far_pa_reward = np.sqrt(np.sum(np.square(pa_new_loc - po_new_loc))) - \
-                            np.sqrt(np.sum(np.square(pa_ori_loc - po_ori_loc)))
-            if far_pa_reward < 0:
-                po_reward += far_pa_reward
+        # if not self.catch_flag and not self.home_flag:
+        #     far_pa_reward = np.sqrt(np.sum(np.square(pa_new_loc - po_new_loc))) - \
+        #                     np.sqrt(np.sum(np.square(pa_ori_loc - po_ori_loc)))
+        #     if far_pa_reward < 0:
+        #         po_reward += far_pa_reward
 
         # poacher reward shaping: get weighted reward from putted snares 
-        if not self.catch_flag and not self.home_flag:
-            if len(self.snare_state) > 0:
-               snare_weight = np.array([self.animal_density[i, j] for i, j in self.snare_state]) * 0.6
-               po_reward += np.sum(snare_weight)
+        # if not self.catch_flag and not self.home_flag:
+        #     if len(self.snare_state) > 0:
+        #        snare_weight = np.array([self.animal_density[i, j] for i, j in self.snare_state]) * 0.6
+        #        po_reward += np.sum(snare_weight)
 
         # poacher reward shaping: encourage to go back home when snares are run out 
         # if not self.home_flag and no_snare and not self.catch_flag:
@@ -557,58 +568,62 @@ class Env(object):
         #     if self.poacher_first_home:
         #         po_reward += 0.5
         #     self.poacher_first_home = False
-        if cfr:
-            return pa_reward, po_reward, remove_num
+        # if cfr:
+        #     return pa_reward, po_reward, remove_num
+        # print("REWARDS:", po_reward, pa_reward)
         return pa_reward, po_reward
 
-    def get_reward_test(self, cfr = False, number = None):
+    def get_reward_test(self):
 
-        pa_reward, po_reward = 0.0, 0.0
-        remove_cnt = 0
+        pa_reward, po_reward = self.get_reward_train()
+        return pa_reward, po_reward
 
-        ### Patroller will clear the snare if find one
-        if (self.pa_loc[0], self.pa_loc[1]) in self.snare_state:
-            while (self.pa_loc[0], self.pa_loc[1]) in self.snare_state:
-                remove_cnt += 1
-                pa_reward += 2
-                self.snare_state.remove((self.pa_loc[0], self.pa_loc[1]))
+        # remove_cnt = 0
 
-            if self.gui:
-                for snare_obj in self.snare_object[(self.pa_loc[0], self.pa_loc[1])]:
-                    self.canvas.delete(snare_obj)
-                del self.snare_object[(self.pa_loc[0], self.pa_loc[1])]
+        # ### Patroller will clear the snare if find one
+        # if (self.pa_loc[0], self.pa_loc[1]) in self.snare_state:
+        #     while (self.pa_loc[0], self.pa_loc[1]) in self.snare_state:
+        #         remove_cnt += 1
+        #         pa_reward += 2
+        #         self.snare_state.remove((self.pa_loc[0], self.pa_loc[1]))
+        #
+        #     if self.gui:
+        #         for snare_obj in self.snare_object[(self.pa_loc[0], self.pa_loc[1])]:
+        #             self.canvas.delete(snare_obj)
+        #         del self.snare_object[(self.pa_loc[0], self.pa_loc[1])]
 
         ### kill animals
-        kill_list = self.kill_animal(number = number)
-        if not self.catch_flag and not self.home_flag:
-            po_reward += 2 * len(kill_list)
-        pa_reward -= 2 * len(kill_list)
-        for row, col in kill_list:
-            self.snare_state.remove((row, col))
-            if self.gui:
-                assert (row, col) in self.snare_object and len(self.snare_object[(row, col)]) > 0
-                self.canvas.delete(self.snare_object[(row, col)][0])
-                self.snare_object[(row, col)].pop(0)
-                if len(self.snare_object[(row, col)]) == 0:
-                    del self.snare_object[(row, col)]
+        # kill_list = self.kill_animal(number = number)
+        # print("Kill list:", kill_list)
+        # if not self.catch_flag and not self.home_flag:
+        #     po_reward += 2 * len(kill_list)
+        # pa_reward -= 2 * len(kill_list)
+        # for row, col in kill_list:
+        #     self.snare_state.remove((row, col))
+        #     if self.gui:
+        #         assert (row, col) in self.snare_object and len(self.snare_object[(row, col)]) > 0
+        #         self.canvas.delete(self.snare_object[(row, col)][0])
+        #         self.snare_object[(row, col)].pop(0)
+        #         if len(self.snare_object[(row, col)]) == 0:
+        #             del self.snare_object[(row, col)]
 
         # only get this negative reward of being caught for the first time 
-        if not self.catch_flag and not self.home_flag:
-            # If get caught
-            if list(self.pa_loc) == list(self.po_loc):
-                self.catch_flag = 1
-                po_reward -= 8
-                pa_reward += 8
-                if self.gui:
-                    self.canvas.delete(self.po_ball)
-
-        if self.args.zero_sum == 0:
-            return pa_reward, po_reward
-        else:
-            if not cfr:
-                return pa_reward, -pa_reward
-            else:
-                return pa_reward, -pa_reward, remove_cnt
+        # if not self.catch_flag and not self.home_flag:
+        #     # If get caught
+        #     if list(self.pa_loc) == list(self.po_loc):
+        #         self.catch_flag = 1
+        #         po_reward -= 8
+        #         pa_reward += 8
+        #         if self.gui:
+        #             self.canvas.delete(self.po_ball)
+        #
+        # if self.args.zero_sum == 0:
+        #     return pa_reward, po_reward
+        # else:
+        #     if not cfr:
+        #         return pa_reward, -pa_reward
+        #     else:
+        #         return pa_reward, -pa_reward, remove_cnt
 
         # return pa_reward, -pa_reward
 
@@ -830,7 +845,7 @@ class Env(object):
         return row >= 0 and row <= (self.row_num - 1) and col >= 0 and col <= (self.column_num - 1)
 
 
-    def get_po_initial_loc(self, idx = None, poacher_map = False):
+    def get_po_initial_loc(self, idx = None, poacher_map = True):
         if poacher_map:
             candidate = [[0, 0], [3, 0], [6, 0], [6,6]]
         else:
@@ -840,6 +855,7 @@ class Env(object):
             return candidate[idx]
 
         index = random.randint(0, 3)
+        # print("Candidate:", candidate[index], poacher_map)
         return candidate[index]
 
     ##################################################################################

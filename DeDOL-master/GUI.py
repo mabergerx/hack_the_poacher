@@ -149,8 +149,8 @@ sess.run(tf.global_variables_initializer())
 args.po_location = None
 ### load the DQN models you have trained
 if args.load:
-    poachers[0] = Poacher_h(args,animal_density)
-    patrollers[0] = Patroller_h(args, animal_density)
+    # poachers[0] = Poacher_h(args, animal_density)
+    # patrollers[0] = Patroller_h(args, animal_density)
 
     poachers[1].load(sess, args.po_load_path)
     patrollers[1].load(sess, args.pa_load_path)
