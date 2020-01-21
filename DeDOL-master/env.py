@@ -86,7 +86,7 @@ class Env(object):
         self.po_initial_loc = self.get_po_initial_loc(self.args.po_location)
         if mode is not None:
             if self.row_num == 7:
-                self.po_initial_loc = self.po_initial_loc(mode, poacher_map = True)
+                self.po_initial_loc = self.get_po_initial_loc(mode, poacher_map = True)
             else:
                 self.po_initial_loc = self.get_po_initial_loc(mode)
         self.po_loc = self.po_initial_loc
@@ -197,10 +197,11 @@ class Env(object):
         
         self.update_time()
 
-        if (self.catch_flag and len(self.snare_state) == 0):
-            txt = self.canvas.create_text(270,280,fill='#%02x%02x%02x' % (255, 111, 0),font='System 30 bold',text='Poacher caught')
-        if (self.home_flag and len(self.snare_state) == 0):
-            self.canvas.create_text(260,280,fill='#%02x%02x%02x' % (255, 111, 0),font='System 30 bold',text='Poacher went home')
+        if self.canvas:
+            if (self.catch_flag and len(self.snare_state) == 0):
+                txt = self.canvas.create_text(270,280,fill='#%02x%02x%02x' % (255, 111, 0),font='System 30 bold',text='Poacher caught')
+            if (self.home_flag and len(self.snare_state) == 0):
+                self.canvas.create_text(260,280,fill='#%02x%02x%02x' % (255, 111, 0),font='System 30 bold',text='Poacher went home')
         if (self.catch_flag and len(self.snare_state) == 0) or (self.home_flag and len(self.snare_state) == 0):
             self.end_game = True
         else:
@@ -453,7 +454,7 @@ class Env(object):
             for row, col in self.snare_state:
                 if random.random() < (self.animal_density[row, col]):
                     kill_list.append([row, col])
-                    print("-------killed an animal--------")
+                    # print("-------killed an animal--------")
                     self.poacher_snare_num -= 1
             return kill_list
         else:
