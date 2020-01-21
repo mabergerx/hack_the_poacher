@@ -723,12 +723,12 @@ class Env(object):
         return field
         
     def observation_grid(observer_loc, target_loc):
-        dist = np.absolute(np.subtract(obs_coords, target_coords))
+        dist = sum(np.absolute(np.subtract(obs_coords, target_coords)))
         coordinate = np.zeros([self.row_num, self.column_num])
         
         if dist==1:
             coordinate[target_loc] = 1
-    return coordinate
+        return coordinate
         
     
     def get_pa_state(self):
