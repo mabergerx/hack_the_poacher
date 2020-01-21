@@ -721,7 +721,16 @@ class Env(object):
 
 
         return field
-
+        
+    def observation_grid(observer_loc, target_loc):
+        dist = np.absolute(np.subtract(obs_coords, target_coords))
+        coordinate = np.zeros([self.row_num, self.column_num])
+        
+        if dist==1:
+            coordinate[target_loc] = 1
+    return coordinate
+        
+    
     def get_pa_state(self):
         state = self.pa_self_memory
 
@@ -731,6 +740,7 @@ class Env(object):
 
         ani_den = np.expand_dims(self.animal_density, axis=2)
         state = np.concatenate((state, ani_den), axis=2)
+            
 
         if self.po_bleeb:
             coordinate = np.zeros([self.row_num, self.column_num])
@@ -744,12 +754,16 @@ class Env(object):
             if self.canvas:
                 self.show_Filter_In_Grid(coordinate)
             state = np.concatenate((state, coordinate), axis=2)
-
+            
         coordinate = np.zeros([self.row_num, self.column_num])
         coordinate[self.pa_loc[0], self.pa_loc[1]] = 1
         coordinate = np.expand_dims(coordinate, axis=2)
         state = np.concatenate((state, coordinate), axis=2)
-
+        
+        coordinate = self.observation_grid(self.pa_loc, self.po_loc)
+        coordinate = np.expand_dims(coordinate, axis=2)
+        state = np.concatenate((state, coordinate), axis=2)
+                                    
         visit_num_norm = np.expand_dims(self.pa_visit_number / 10., axis=2)
         state = np.concatenate((state, visit_num_norm), axis=2)
 
@@ -761,6 +775,8 @@ class Env(object):
         # print("Tupel")
         # print((self.row_num, self.column_num, self.args.pa_state_size))
         assert state.shape == (self.row_num, self.column_num, self.args.pa_state_size)
+        print("________al")
+        print(state)
         return state
 
     def show_Filter_In_Grid(self, ohe_coord):
@@ -806,6 +822,10 @@ class Env(object):
         time_left = np.ones([self.row_num, self.column_num]) * float(self.time) / (self.args.max_time / 2.)
         time_left = np.expand_dims(time_left, axis=2)
         state = np.concatenate((state, time_left), axis=2)
+        
+        coordinate = self.observation_grid(self.po_loc, self.pa_loc)
+        coordinate = np.expand_dims(coordinate, axis=2)
+        state = np.concatenate((state, coordinate), axis=2)
 
         initial_loc = np.zeros([self.row_num, self.column_num])
         initial_loc[self.po_initial_loc[0], self.po_initial_loc[1]] = 1.
