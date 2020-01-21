@@ -22,6 +22,7 @@ class Env(object):
         self.filter_bleeb = self.args.filter_bleeb
         self.tourist_noise = self.args.tourist_noise
         self.po_scan_rate = self.args.po_scan_rate
+        self.see_surrounding = self.args.see_surrounding
         self.row_num = self.args.row_num
         self.column_num = self.args.column_num
         self.animal_density = animal_density
@@ -723,12 +724,12 @@ class Env(object):
 
         return field
         
-    def observation_grid(observer_loc, target_loc):
+    def observation_grid(self, obs_coords, target_coords):
         dist = sum(np.absolute(np.subtract(obs_coords, target_coords)))
         coordinate = np.zeros([self.row_num, self.column_num])
         
         if dist==1:
-            coordinate[target_loc] = 1
+            coordinate[target_coords] = 1
         return coordinate
         
     
@@ -761,9 +762,10 @@ class Env(object):
         coordinate = np.expand_dims(coordinate, axis=2)
         state = np.concatenate((state, coordinate), axis=2)
         
-        coordinate = self.observation_grid(self.pa_loc, self.po_loc)
-        coordinate = np.expand_dims(coordinate, axis=2)
-        state = np.concatenate((state, coordinate), axis=2)
+        if self.see_surrounding:
+            coordinate = self.observation_grid(self.pa_loc, self.po_loc)
+            coordinate = np.expand_dims(coordinate, axis=2)
+            state = np.concatenate((state, coordinate), axis=2)
                                     
         visit_num_norm = np.expand_dims(self.pa_visit_number / 10., axis=2)
         state = np.concatenate((state, visit_num_norm), axis=2)
@@ -776,8 +778,6 @@ class Env(object):
         # print("Tupel")
         # print((self.row_num, self.column_num, self.args.pa_state_size))
         assert state.shape == (self.row_num, self.column_num, self.args.pa_state_size)
-        print("________al")
-        print(state)
         return state
 
     def show_Filter_In_Grid(self, ohe_coord):
