@@ -36,7 +36,14 @@ pa_strat_num, po_strat_num = 0, 0
 
 argparser = argparse.ArgumentParser()
 ########################################################################################
-###Changes by us
+### Presets
+argparser.add_argument('--exac_loc_always_no_noise', type=bool, default=False)
+argparser.add_argument('--exac_loc_always_with_noise', type=bool, default=False)
+argparser.add_argument('--blur_loc_always_no_noise', type=bool, default=False)
+argparser.add_argument('--blur_loc_always_with_noise', type=bool, default=False)
+argparser.add_argument('--exac_loc_50_no_noise', type=bool, default=False)
+
+### Changes by us
 argparser.add_argument('--footsteps', type=bool, default=False)
 argparser.add_argument('--po_bleeb', type=bool, default=False)
 argparser.add_argument('--filter_bleeb', type=bool, default=False)
@@ -116,6 +123,54 @@ if args.po_state_size == -1:
 
 if args.pa_state_size == -1:
     args.pa_state_size = 12 + (8 * args.footsteps) + (1 * args.po_bleeb) + (1 * args.see_surrounding)
+
+#### PRESETS ####
+if args.exac_loc_always_no_noise:
+    args.po_bleeb = True
+    args.po_scan_rate = 1
+    args.tourist_noise = 0
+    args.filter_bleep = False
+    
+    args.see_surrounding = True
+    args.footsteps = False
+    
+elif args.exac_loc_always_with_noise:
+    args.po_bleeb = True
+    args.po_scan_rate = 1
+    args.tourist_noise = 0.05
+    args.filter_bleep = False
+    
+    args.see_surrounding = True
+    args.footsteps = False
+
+elif args.blur_loc_always_no_noise:
+    args.po_bleeb = True
+    args.po_scan_rate = 1
+    args.tourist_noise = 0
+    args.filter_bleep = True
+    
+    args.see_surrounding = True
+    args.footsteps = False
+    
+elif args.blur_loc_always_with_noise:
+    args.po_bleeb = True
+    args.po_scan_rate = 1
+    args.tourist_noise = 0.05
+    args.filter_bleep = True
+    
+    args.see_surrounding = True
+    args.footsteps = False
+    
+elif args.exac_loc_50_no_noise:
+    args.po_bleeb = True
+    args.po_scan_rate = 0.5
+    args.tourist_noise = 0
+    args.filter_bleep = False
+    
+    args.see_surrounding = True
+    args.footsteps = False
+
+### END PRESETS ####    
 
 if args.row_num == 10:
     args.column_num = 10
