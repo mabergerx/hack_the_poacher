@@ -751,7 +751,6 @@ class Env(object):
         
         if dist==1:
             coordinate[target_coords] = 1
-            print(obs_coords, coordinate)
         return coordinate
         
     

@@ -121,12 +121,6 @@ args = argparser.parse_args()
 if not args.po_bleeb and args.filter_bleeb:
     raise ValueError('filter_bleeb cannot be true, while po_bleeb is false')
 
-if args.po_state_size == -1:
-    args.po_state_size = 14 + (8 * args.footsteps) + (1 * args.see_surrounding) + (1 * args.extra_sensor_po)
-
-if args.pa_state_size == -1:
-    args.pa_state_size = 12 + (8 * args.footsteps) + (1 * args.po_bleeb) + (1 * args.see_surrounding) + (1 * args.extra_sensor_pa)
-
 #### PRESETS ####
 if args.exac_loc_always_no_noise:
     args.po_bleeb = True
@@ -199,6 +193,12 @@ elif args.exac_loc_50_no_noise:
     args.row_num = 7
     args.column_num = 7
 
+if args.po_state_size == -1:
+    args.po_state_size = 14 + (8 * args.footsteps) + (1 * args.see_surrounding) + (1 * args.extra_sensor_po)
+
+if args.pa_state_size == -1:
+    args.pa_state_size = 12 + (8 * args.footsteps) + (1 * args.po_bleeb) + (1 * args.see_surrounding) + (1 * args.extra_sensor_pa)
+    
 ### END PRESETS ####    
 
 if args.row_num == 10:
