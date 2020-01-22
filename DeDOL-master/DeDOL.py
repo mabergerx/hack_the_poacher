@@ -127,7 +127,7 @@ if args.row_num == 10:
     if args.po_location is not None:
         args.pa_episode_num = 2000
         args.po_episode_num = 2000
-
+# test
 # if args.row_num == 7:
 #     args.column_num = 7
 #     args.max_time = 100
