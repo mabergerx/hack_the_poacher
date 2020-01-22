@@ -5,6 +5,12 @@ import copy
 from tkinter import *
 from math import floor
 
+if args.extra_sensor_pa:
+    from extra_sensor import extra_sensor_pa
+
+if args.extra_sensor_po:
+    from extra_sensor import extra_sensor_po
+
 class Env(object):
     def __init__(self, args, animal_density, cell_length, canvas, gui):
         '''
@@ -767,6 +773,11 @@ class Env(object):
             coordinate = self.observation_grid(tuple(i for i in self.pa_loc), tuple(i for i in self.po_loc))
             coordinate = np.expand_dims(coordinate, axis=2)
             state = np.concatenate((state, coordinate), axis=2)
+            
+        if self.args.extra_sensor_pa:
+            coordinate = extra_sensor_pa(self.pa_loc, self.po_loc, self.animal_density, self.row_num, self.column_num)
+            coordinate = np.expand_dims(coordinate, axis=2)
+            state = np.concatenate((state, coordinate), axis=2)
                                     
         visit_num_norm = np.expand_dims(self.pa_visit_number / 10., axis=2)
         state = np.concatenate((state, visit_num_norm), axis=2)
@@ -827,6 +838,11 @@ class Env(object):
         
         if self.see_surrounding:
             coordinate = self.observation_grid(tuple(i for i in self.po_loc), tuple(i for i in self.pa_loc))
+            coordinate = np.expand_dims(coordinate, axis=2)
+            state = np.concatenate((state, coordinate), axis=2)
+            
+        if self.args.extra_sensor_po:
+            coordinate = extra_sensor_po(self.po_loc, self.pa_loc, self.animal_density, self.row_num, self.column_num)
             coordinate = np.expand_dims(coordinate, axis=2)
             state = np.concatenate((state, coordinate), axis=2)
 

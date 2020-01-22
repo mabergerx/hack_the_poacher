@@ -45,6 +45,9 @@ argparser.add_argument('--see_surrounding', type=bool, default=False)
 argparser.add_argument('--tourist_noise', type=float, default=0.01)
 argparser.add_argument('--po_scan_rate', type=float, default=0.10)
 
+argparser.add_argument('--extra_sensor_pa', type=bool, default=False)
+argparser.add_argument('--extra_sensor_po', type=bool, default=False)
+
 ### Test parameters
 argparser.add_argument('--pa_load_path', type=str, default='./Results5x5/')
 argparser.add_argument('--po_load_path', type=str, default='./Results5x5/')
@@ -113,10 +116,10 @@ if not args.po_bleeb and args.filter_bleeb:
     raise ValueError('filter_bleeb cannot be true, while po_bleeb is false')
 
 if args.po_state_size == -1:
-    args.po_state_size = 14 + (8 * args.footsteps) + (1 * args.see_surrounding)
+    args.po_state_size = 14 + (8 * args.footsteps) + (1 * args.see_surrounding) + (1 * args.extra_sensor_po)
 
 if args.pa_state_size == -1:
-    args.pa_state_size = 12 + (8 * args.footsteps) + (1 * args.po_bleeb) + (1 * args.see_surrounding)
+    args.pa_state_size = 12 + (8 * args.footsteps) + (1 * args.po_bleeb) + (1 * args.see_surrounding) + (1 * args.extra_sensor_pa)
 
 if args.row_num == 7:
     args.column_num = 7
