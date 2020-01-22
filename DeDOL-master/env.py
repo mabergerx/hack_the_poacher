@@ -5,13 +5,6 @@ import copy
 from tkinter import *
 from math import floor
 
-if args.extra_sensor_pa:
-    from extra_sensor import extra_sensor_pa
-
-if args.extra_sensor_po:
-    from extra_sensor import extra_sensor_po
-
-
 class Env(object):
     def __init__(self, args, animal_density, cell_length, canvas, gui):
         '''
@@ -40,6 +33,12 @@ class Env(object):
         self.poacher_snare_num = args.snare_num
         self.canvas = None
         self.end_game = False
+
+        if args.extra_sensor_pa:
+            from extra_sensor import extra_sensor_pa
+
+        if args.extra_sensor_po:
+            from extra_sensor import extra_sensor_po
 
         self.radar_objs = {}
 
