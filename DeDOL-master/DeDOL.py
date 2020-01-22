@@ -136,6 +136,12 @@ if args.exac_loc_always_no_noise:
     
     args.see_surrounding = True
     args.footsteps = False
+
+    args.map_type = 'poacher'
+    args.naive = True
+    args.row_num = 7
+    args.column_num = 7
+
     
 elif args.exac_loc_always_with_noise:
     args.po_bleeb = True
@@ -146,6 +152,11 @@ elif args.exac_loc_always_with_noise:
     args.see_surrounding = True
     args.footsteps = False
 
+    args.map_type = 'poacher'
+    args.naive = True
+    args.row_num = 7
+    args.column_num = 7
+
 elif args.blur_loc_always_no_noise:
     args.po_bleeb = True
     args.po_scan_rate = 1
@@ -154,6 +165,11 @@ elif args.blur_loc_always_no_noise:
     
     args.see_surrounding = True
     args.footsteps = False
+
+    args.map_type = 'poacher'
+    args.naive = True
+    args.row_num = 7
+    args.column_num = 7
     
 elif args.blur_loc_always_with_noise:
     args.po_bleeb = True
@@ -163,6 +179,11 @@ elif args.blur_loc_always_with_noise:
     
     args.see_surrounding = True
     args.footsteps = False
+
+    args.map_type = 'poacher'
+    args.naive = True
+    args.row_num = 7
+    args.column_num = 7
     
 elif args.exac_loc_50_no_noise:
     args.po_bleeb = True
@@ -172,6 +193,11 @@ elif args.exac_loc_50_no_noise:
     
     args.see_surrounding = True
     args.footsteps = False
+
+    args.map_type = 'poacher'
+    args.naive = True
+    args.row_num = 7
+    args.column_num = 7
 
 ### END PRESETS ####    
 
