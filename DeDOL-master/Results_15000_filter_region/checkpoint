@@ -1,2 +1,0 @@
-model_checkpoint_path: "15000_Epi_7x7_filter_regioniteration_2_po_model.ckpt"
-all_model_checkpoint_paths: "15000_Epi_7x7_filter_regioniteration_2_po_model.ckpt"
