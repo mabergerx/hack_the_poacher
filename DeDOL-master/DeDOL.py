@@ -5,6 +5,7 @@ import tensorflow.compat.v1 as tf
 tf.disable_v2_behavior()
 import os
 from threading import Thread
+import json
 import time
 
 from patroller_cnn import Patroller_CNN
@@ -122,6 +123,7 @@ if not args.po_bleeb and args.filter_bleeb:
     raise ValueError('filter_bleeb cannot be true, while po_bleeb is false')
 
 #### PRESETS ####
+
 if args.exac_loc_always_no_noise:
     args.po_bleeb = True
     args.po_scan_rate = 1
@@ -192,14 +194,15 @@ elif args.exac_loc_50_no_noise:
     args.naive = True
     args.row_num = 7
     args.column_num = 7
+    
+#### END PRESETS ####
 
+# calc state size
 if args.po_state_size == -1:
     args.po_state_size = 14 + (8 * args.footsteps) + (1 * args.see_surrounding) + (1 * args.extra_sensor_po)
 
 if args.pa_state_size == -1:
     args.pa_state_size = 12 + (8 * args.footsteps) + (1 * args.po_bleeb) + (1 * args.see_surrounding) + (1 * args.extra_sensor_pa)
-    
-### END PRESETS ####    
 
 if args.row_num == 10:
     args.column_num = 10
@@ -263,26 +266,8 @@ if args.po_location is not None:
 if args.save_path and (not os.path.exists(args.save_path)):
     os.makedirs(args.save_path)
 
-paralog = open(args.save_path + 'paralog.txt', 'w')
-paralog.write('row_num {0} \n'.format(args.row_num))
-paralog.write('snare_num {0} \n'.format(args.snare_num))
-paralog.write('max_time {0} \n'.format(args.max_time))
-paralog.write('animal density seed {0} \n'.format(args.ani_den_seed))
-paralog.write('pa_initial_episode_num {0} \n'.format(args.pa_episode_num))
-paralog.write('po_initial_episode_num {0} \n'.format(args.po_episode_num))
-paralog.write('epi_num_incr {0} \n'.format(args.epi_num_incr))
-paralog.write('final_incr_iter {0} \n'.format(args.final_incr_iter))
-paralog.write('pa_replay_buffer_size {0} \n'.format(args.pa_replay_buffer_size))
-paralog.write('po_replay_buffer_size {0} \n'.format(args.po_replay_buffer_size))
-paralog.write('pa_initial_lr {0} \n'.format(args.pa_initial_lr))
-paralog.write('po_initial_lr {0} \n'.format(args.po_initial_lr))
-paralog.write('test_episode_num {0} \n'.format(args.test_episode_num))
-paralog.write('Delta {0} \n'.format(args.Delta))
-paralog.write('po_location {0} \n'.format(str(args.po_location)))
-paralog.write('map_type {0} \n'.format(str(args.map_type)))
-paralog.write('naive {0} \n'.format(str(args.naive)))
-paralog.flush()
-paralog.close()
+with open(args.save_path + 'train_args.json', 'w') as f:
+    f.write(json.dumps(vars(args))
 
 ################## for initialization ###########################
 global log_file
