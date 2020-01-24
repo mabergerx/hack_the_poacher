@@ -33,7 +33,7 @@ eps_pa, eps_po = [], []
 pa_strat_num, po_strat_num = 0, 0
 
 
-def main(wizard_args):
+def main(wizard_args=None):
 
     argparser = argparse.ArgumentParser()
     ########################################################################################
@@ -65,7 +65,7 @@ def main(wizard_args):
     argparser.add_argument('--row_num', type=int, default=3)
     argparser.add_argument('--column_num', type=int, default=3)
     argparser.add_argument('--ani_den_seed', type=int, default=66)
-    argparser.add_argument('--max_time', type=int, default=4)
+    argparser.add_argument('--max_time', type=int, default=100)
 
     ### Patroller
     argparser.add_argument('--pa_state_size', type=int, default=-1)
@@ -124,8 +124,6 @@ def main(wizard_args):
     #########################################################################################
     args = argparser.parse_args()
 
-    print("ARGS:", args)
-
     if not args.po_bleeb and args.filter_bleeb:
         raise ValueError('filter_bleeb cannot be true, while po_bleeb is false')
 
@@ -176,26 +174,11 @@ def main(wizard_args):
         args.see_surrounding = True
         args.footsteps = False
 
-    if args.po_state_size == -1:
-        args.po_state_size = 14 + (8 * args.footsteps) + (1 * args.see_surrounding) + (1 * args.extra_sensor_po)
-
-    if args.pa_state_size == -1:
-        args.pa_state_size = 12 + (8 * args.footsteps) + (1 * args.po_bleeb) + (1 * args.see_surrounding) + (
-                    1 * args.extra_sensor_pa)
-
     ### END PRESETS ####
 
     if args.row_num == 7:
         args.column_num = 7
         args.max_time = 75
-
-    elif args.row_num == 5:
-        args.column_num = 5
-        args.max_time = 25
-
-    elif args.row_num == 3:
-        args.column_num = 3
-        args.max_time = 3
 
 
     if wizard_args:
@@ -204,6 +187,13 @@ def main(wizard_args):
     else:
         pass
 
+
+    if args.po_state_size == -1:
+        args.po_state_size = 14 + (8 * args.footsteps) + (1 * args.see_surrounding) + (1 * args.extra_sensor_po)
+
+    if args.pa_state_size == -1:
+        args.pa_state_size = 12 + (8 * args.footsteps) + (1 * args.po_bleeb) + (1 * args.see_surrounding) + (
+                    1 * args.extra_sensor_pa)
     ################## for initialization ###########################
     global log_file
 
@@ -240,4 +230,4 @@ def main(wizard_args):
 
 
 if __name__ == "__main__":
-    main("hi")
+    main()

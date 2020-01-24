@@ -1,0 +1,17 @@
+row_num 7 
+snare_num 3 
+max_time 100 
+animal density seed 66 
+pa_initial_episode_num 100 
+po_initial_episode_num 100 
+epi_num_incr 0 
+final_incr_iter 10 
+pa_replay_buffer_size 200000 
+po_replay_buffer_size 100000 
+pa_initial_lr 0.0001 
+po_initial_lr 5e-05 
+test_episode_num 5000 
+Delta 0.0 
+po_location None 
+map_type poacher 
+naive True 
