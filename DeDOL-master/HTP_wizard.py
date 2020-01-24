@@ -170,16 +170,16 @@ def handle_custom(answers):
 def build_params(params):
     # Which file do we run?
     if answers['gui'] == 'Train a model':
-        params.append("DeDOL.py")
+        params.append("python3 DeDOL.py--save_path ./" + str(answers['model_name']))
     else:
-        params.append("GUI.py")
+        params.append("python3 GUI.py --load True --pa_load_path./" + str(answers['model_name']))
 
-    # Save path/load path
-    params.append(path + "\\" + answers['model_name'])
+    params.append("--map_type poacher --row_num 7 --column_num 7 --naive True")
 
     # Episode numbers
     if "episodes" in answers.keys(): 
-        params.append(answers["episodes"])
+        params.append("--pa_episode_num " + str(answers["episodes"]))
+        params.append("--po_episode_num " + str(answers["episodes"]))
 
     if "model_settings" in answers.keys():
         if answers["model_settings"] != "Custom":
@@ -194,12 +194,21 @@ def build_params(params):
             load_model_settings(answers['model_name'])
 
 def add_radar_arguments(params):
-    params.append(answers["footsteps"])
-    params.append(answers["radar"])
+    params.append("--footsteps " + str(answers["footsteps"]))
+    params.append("--po_bleeb " + str(answers["radar"]))
     if answers["radar"]:
-        params.append(answers["detection_rate"])
-        params.append(answers["blur"])
-        params.append(answers["tourist_noise"])
+        params.append("--po_scan_rate " + str(answers["detection_rate"]))
+        params.append("--filter_bleeb " + str(answers["blur"]))
+        params.append("--tourist_noise " + str(answers["tourist_noise"]))
+
+###############
+#### TO DO ####
+###############
+# Loads the missing arguments of the models preset
+def load_model_settings(path):
+    print()
+
+
 
 answers = prompt(questions, style=style)
 print('Order receipt:')
@@ -209,3 +218,5 @@ params = []
 
 build_params(params)
 print(params)
+final = ' '.join(params)
+print(final)
