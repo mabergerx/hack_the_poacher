@@ -126,7 +126,7 @@ if args.exac_loc_always_no_noise:
     args.po_bleeb = True
     args.po_scan_rate = 1
     args.tourist_noise = 0
-    args.filter_bleep = False
+    args.filter_bleeb = False
     
     args.see_surrounding = True
     args.footsteps = False
@@ -141,7 +141,7 @@ elif args.exac_loc_always_with_noise:
     args.po_bleeb = True
     args.po_scan_rate = 1
     args.tourist_noise = 0.05
-    args.filter_bleep = False
+    args.filter_bleeb = False
     
     args.see_surrounding = True
     args.footsteps = False
@@ -155,7 +155,7 @@ elif args.blur_loc_always_no_noise:
     args.po_bleeb = True
     args.po_scan_rate = 1
     args.tourist_noise = 0
-    args.filter_bleep = True
+    args.filter_bleeb = True
     
     args.see_surrounding = True
     args.footsteps = False
@@ -169,7 +169,7 @@ elif args.blur_loc_always_with_noise:
     args.po_bleeb = True
     args.po_scan_rate = 1
     args.tourist_noise = 0.05
-    args.filter_bleep = True
+    args.filter_bleeb = True
     
     args.see_surrounding = True
     args.footsteps = False
@@ -183,7 +183,7 @@ elif args.exac_loc_50_no_noise:
     args.po_bleeb = True
     args.po_scan_rate = 0.5
     args.tourist_noise = 0
-    args.filter_bleep = False
+    args.filter_bleeb = False
     
     args.see_surrounding = True
     args.footsteps = False
