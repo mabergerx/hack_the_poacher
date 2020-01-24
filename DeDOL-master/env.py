@@ -122,7 +122,7 @@ class Env(object):
                 
         if self.gui:
             self.canvas.delete("all")
-            self.canvas['bg'] = 'white'
+            self.canvas['bg'] = "#%02x%02x%02x" % (218, 235, 213)
             self.make_grid()
 
             img = PhotoImage(file='po.png')
@@ -640,7 +640,8 @@ class Env(object):
             rec = self.canvas.create_rectangle(loc[1] * self.cell_length,
                                                loc[0] * self.cell_length,
                                                loc[1] * self.cell_length + self.quarter_cell,
-                                               loc[0] * self.cell_length + self.quarter_cell, fill="white")
+                                               loc[0] * self.cell_length + self.quarter_cell, fill='white')
+            
 
             if (loc[0], loc[1]) not in self.snare_object:
                 self.snare_object[(loc[0], loc[1])] = [rec]

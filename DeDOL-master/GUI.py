@@ -192,7 +192,7 @@ elif args.row_num == 3:
 ################## for initialization ###########################
 global log_file
 
-log_file = open('./Results_33_random/log.txt', 'w')
+#log_file = open('./Results_33_random/log.txt', 'w')
 
 animal_density = generate_map(args)
 env = Env(args, animal_density, cell_length=None, canvas=None, gui=False)
