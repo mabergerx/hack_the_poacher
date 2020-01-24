@@ -7,7 +7,8 @@ from os import listdir, getcwd
 
 options = ["Custom"]
 path = getcwd()
-files = listdir(path)
+# get only folders
+files = list(filter(lambda x: not("." in x or "LICENSE" in x) , listdir(path)))
 options += files
 
 basic_color = "#96ff55"
@@ -183,7 +184,7 @@ def build_params(params):
 
     if "model_settings" in answers.keys():
         if answers["model_settings"] != "Custom":
-            load_model_settings(answers['model_name'])
+            load_model_settings(answers['model_settings'])
         else:
             add_radar_arguments(params);
         
@@ -206,7 +207,17 @@ def add_radar_arguments(params):
 ###############
 # Loads the missing arguments of the models preset
 def load_model_settings(path):
-    print()
+    # load_args
+    import json
+    print(path + "\\train_args.jaon")
+    with open(path + "\\train_args.json", "r") as f:
+        args = json.loads(f).items()
+        params.append("--footsteps " + str(args["footsteps"]))
+        params.append("--po_bleeb " + str(args["po_bleeb"]))
+        params.append("--po_scan_rate " + str(args["po_scan_rate"]))
+        params.append("--filter_bleeb " + str(args["filter_bleeb"]))
+        params.append("--tourist_noise " + str(args["tourist_noise"]))
+            
 
 
 
