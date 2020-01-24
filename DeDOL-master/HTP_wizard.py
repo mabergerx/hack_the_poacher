@@ -2,6 +2,8 @@ from __future__ import print_function, unicode_literals
 from PyInquirer import style_from_dict, Token, prompt
 from PyInquirer import Validator, ValidationError
 from examples import custom_style_3
+import GUI
+# import DeDOL
 
 from os import listdir, getcwd
 
@@ -170,7 +172,7 @@ def handle_custom(answers):
 def build_params(params):
     # Which file do we run?
     if answers['gui'] == 'Train a model':
-        params.append("python3 DeDOL.py--save_path ./" + str(answers['model_name']))
+        params.append("python3 DeDOL.py --save_path ./" + str(answers['model_name']))
     else:
         params.append("python3 GUI.py --load True --pa_load_path./" + str(answers['model_name']))
 
@@ -193,6 +195,7 @@ def build_params(params):
         else:
             load_model_settings(answers['model_name'])
 
+
 def add_radar_arguments(params):
     params.append("--footsteps " + str(answers["footsteps"]))
     params.append("--po_bleeb " + str(answers["radar"]))
@@ -200,6 +203,7 @@ def add_radar_arguments(params):
         params.append("--po_scan_rate " + str(answers["detection_rate"]))
         params.append("--filter_bleeb " + str(answers["blur"]))
         params.append("--tourist_noise " + str(answers["tourist_noise"]))
+
 
 ###############
 #### TO DO ####
@@ -209,14 +213,18 @@ def load_model_settings(path):
     print()
 
 
-
 answers = prompt(questions, style=style)
-print('Order receipt:')
+# print('Order receipt:')
 print(answers)
 
-params = []
+# params = []
 
-build_params(params)
-print(params)
-final = ' '.join(params)
-print(final)
+# build_params(params)
+# # print(params)
+# final = ' '.join(params)
+# print(final)
+
+
+
+
+
