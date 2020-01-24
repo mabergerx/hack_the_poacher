@@ -34,6 +34,7 @@ class Poacher(object):
 
             # Build Graph
             with tf.variable_scope('conv-maxpool-0'):
+
                 if self.args.row_num == 7:
                     filter_shape = [4, 4, self.in_channel, 16]
                 elif self.args.row_num == 5:

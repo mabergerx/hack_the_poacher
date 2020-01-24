@@ -122,28 +122,24 @@ args = argparser.parse_args()
 if not args.po_bleeb and args.filter_bleeb:
     raise ValueError('filter_bleeb cannot be true, while po_bleeb is false')
 
-if args.po_state_size == -1:
-    args.po_state_size = 14 + (8 * args.footsteps) + (1 * args.see_surrounding) + (1 * args.extra_sensor_po)
-
-if args.pa_state_size == -1:
-    args.pa_state_size = 12 + (8 * args.footsteps) + (1 * args.po_bleeb) + (1 * args.see_surrounding) + (1 * args.extra_sensor_pa)
     
 #### PRESETS ####
+
 
 if args.exac_loc_always_no_noise:
     args.po_bleeb = True
     args.po_scan_rate = 1
     args.tourist_noise = 0
-    args.filter_bleep = False
+    args.filter_bleeb = False
     
     args.see_surrounding = True
-    args.footsteps = False
+    args.footsteps = True
     
 elif args.exac_loc_always_with_noise:
     args.po_bleeb = True
     args.po_scan_rate = 1
     args.tourist_noise = 0.05
-    args.filter_bleep = False
+    args.filter_bleeb = False
     
     args.see_surrounding = True
     args.footsteps = False
@@ -152,7 +148,7 @@ elif args.blur_loc_always_no_noise:
     args.po_bleeb = True
     args.po_scan_rate = 1
     args.tourist_noise = 0
-    args.filter_bleep = True
+    args.filter_bleeb = True
     
     args.see_surrounding = True
     args.footsteps = False
@@ -161,7 +157,7 @@ elif args.blur_loc_always_with_noise:
     args.po_bleeb = True
     args.po_scan_rate = 1
     args.tourist_noise = 0.05
-    args.filter_bleep = True
+    args.filter_bleeb = True
     
     args.see_surrounding = True
     args.footsteps = False
@@ -170,10 +166,20 @@ elif args.exac_loc_50_no_noise:
     args.po_bleeb = True
     args.po_scan_rate = 0.5
     args.tourist_noise = 0
-    args.filter_bleep = False
+    args.filter_bleeb = False
     
     args.see_surrounding = True
     args.footsteps = False
+
+
+if args.po_state_size == -1:
+
+    args.po_state_size = 14 + (8 * args.footsteps) + (1 * args.see_surrounding) + (1 * args.extra_sensor_po)
+
+if args.pa_state_size == -1:
+
+    args.pa_state_size = 12 + (8 * args.footsteps) + (1 * args.po_bleeb) + (1 * args.see_surrounding) + (1 * args.extra_sensor_pa)
+
 
 ### END PRESETS ####  
 
@@ -192,7 +198,7 @@ elif args.row_num == 3:
 ################## for initialization ###########################
 global log_file
 
-log_file = open('./Results_33_random/log.txt', 'w')
+# log_file = open('./Results_33_random/log.txt', 'w')
 
 animal_density = generate_map(args)
 env = Env(args, animal_density, cell_length=None, canvas=None, gui=False)
