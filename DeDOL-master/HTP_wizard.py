@@ -3,9 +3,9 @@ from PyInquirer import style_from_dict, Token, prompt
 from PyInquirer import Validator, ValidationError
 from examples import custom_style_3
 from GUI import main as GUImain
-import re
 from DeDOL import main as DeDOLmain
-
+import re
+import json
 from os import listdir, getcwd
 
 options = ["Custom"]
@@ -284,17 +284,22 @@ def add_radar_arguments(params):
 #### TO DO ####
 ###############
 # Loads the missing arguments of the models preset
-# def load_model_settings(path):
-#     # load_args
-#     import json
-#     print(path + "\\train_args.jaon")
-#     with open(path + "\\train_args.json", "r") as f:
-#         args = json.loads(f).items()
-#         params.append("--footsteps " + str(args["footsteps"]))
-#         params.append("--po_bleeb " + str(args["po_bleeb"]))
-#         params.append("--po_scan_rate " + str(args["po_scan_rate"]))
-#         params.append("--filter_bleeb " + str(args["filter_bleeb"]))
-#         params.append("--tourist_noise " + str(args["tourist_noise"]))
+def load_model_settings(path):
+    # load_args
+    # print(path + "\\train_args.json")
+    with open(path + "\\train_args.json", "r") as f:
+        args = json.load(f).items()
+        params["footsteps"] = args["footsteps"]
+        params["po_bleeb"] = args["po_bleeb"]
+        params["po_scan_rate"] = args["po_scan_rate"]
+        params["filter_bleeb"] = args["filter_bleeb"]
+        params["tourist_noise"] = args["tourist_noise"]
+
+        # params.append("--footsteps " + str(args["footsteps"]))
+        # params.append("--po_bleeb " + str(args["po_bleeb"]))
+        # params.append("--po_scan_rate " + str(args["po_scan_rate"]))
+        # params.append("--filter_bleeb " + str(args["filter_bleeb"]))
+        # params.append("--tourist_noise " + str(args["tourist_noise"]))
 #
 
 
