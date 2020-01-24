@@ -9,7 +9,8 @@ from os import listdir, getcwd
 
 options = ["Custom"]
 path = getcwd()
-files = listdir(path)
+# get only folders
+files = list(filter(lambda x: not("." in x or "LICENSE" in x) , listdir(path)))
 options += files
 
 basic_color = "#96ff55"
@@ -172,11 +173,25 @@ def handle_custom(answers):
 def build_params(params):
     # Which file do we run?
     if answers['gui'] == 'Train a model':
-        params.append("python3 DeDOL.py --save_path ./" + str(answers['model_name']))
+# <<<<<<< HEAD
+#         params.append("python3 DeDOL.py --save_path ./" + str(answers['model_name']))
+# =======
+        # params.append("python3 DeDOL.py--save_path ./" + str(answers['model_name']))
+        params['save_path'] = answers['model_name']
+# >>>>>>> e153c0f8db0108f7fc0f64b52c03ef41db7e94db
     else:
-        params.append("python3 GUI.py --load True --pa_load_path./" + str(answers['model_name']))
+        #params.append("python3 GUI.py --load True --pa_load_path./" + str(answers['model_name']))
+        params['load'] = True
+        ### TO DO ###
+        # load patroller path and load poacher path for model (don't forget to remove everything after .ckpt)
+        params['pa_load_path'] = answers['model_name'] + "/" + answers['model_name'] + iteration_1_epoch_99999_pa_model.ckpt
 
-    params.append("--map_type poacher --row_num 7 --column_num 7 --naive True")
+    # params.append("--map_type poacher --row_num 7 --column_num 7 --naive True")
+    params["map_type"] = "poacher"
+    params["row_num"] = 7
+    params["column_num"] = 7
+    params["naive"] = True
+
 
     # Episode numbers
     if "episodes" in answers.keys(): 
@@ -185,7 +200,7 @@ def build_params(params):
 
     if "model_settings" in answers.keys():
         if answers["model_settings"] != "Custom":
-            load_model_settings(answers['model_name'])
+            load_model_settings(answers['model_settings'])
         else:
             add_radar_arguments(params);
         
@@ -210,13 +225,24 @@ def add_radar_arguments(params):
 ###############
 # Loads the missing arguments of the models preset
 def load_model_settings(path):
-    print()
+    # load_args
+    import json
+    print(path + "\\train_args.jaon")
+    with open(path + "\\train_args.json", "r") as f:
+        args = json.loads(f).items()
+        params.append("--footsteps " + str(args["footsteps"]))
+        params.append("--po_bleeb " + str(args["po_bleeb"]))
+        params.append("--po_scan_rate " + str(args["po_scan_rate"]))
+        params.append("--filter_bleeb " + str(args["filter_bleeb"]))
+        params.append("--tourist_noise " + str(args["tourist_noise"]))
+            
 
 
 answers = prompt(questions, style=style)
 # print('Order receipt:')
 print(answers)
 
+# <<<<<<< HEAD
 # params = []
 
 # build_params(params)
@@ -227,4 +253,7 @@ print(answers)
 
 
 
+# =======
+# params = {}
+# >>>>>>> e153c0f8db0108f7fc0f64b52c03ef41db7e94db
 
