@@ -2,12 +2,16 @@ from __future__ import print_function, unicode_literals
 from PyInquirer import style_from_dict, Token, prompt
 from PyInquirer import Validator, ValidationError
 from examples import custom_style_3
-
+from GUI import main as GUImain
+from DeDOL import main as DeDOLmain
+import re
+import json
 from os import listdir, getcwd
 
 options = ["Custom"]
 path = getcwd()
-files = listdir(path)
+# get only folders
+files = list(filter(lambda x: not("." in x or "LICENSE" in x) , listdir(path)))
 options += files
 
 basic_color = "#96ff55"
@@ -33,6 +37,7 @@ class NumberValidation(Validator):
                 message='Please enter a number.',
                 cursor_position=len(document.text))
 
+
 class ZeroOneValidation(Validator):
     def validate(self, document):
         try:
@@ -46,6 +51,7 @@ class ZeroOneValidation(Validator):
                 message='Please enter a valid number.',
                 cursor_position=len(document.text)
                 )
+
 
 class NotEmptyValidation(Validator):
     def validate(self, document):
@@ -157,7 +163,7 @@ def check_radar(answers):
     if 'radar' in answers.keys():
         return answers['radar']
     else:
-        False
+        return False
 
 def handle_custom(answers):
     if 'model_settings' in answers.keys():
@@ -165,47 +171,157 @@ def handle_custom(answers):
     elif 'change_arguments' in answers.keys():
         return answers['change_arguments']
     else:
-        False
+        return False
+
+
+def find_pa_checkpoint(path):
+    files = listdir(path)
+    biggest_number = 0
+    latest_checkpoint = None
+    for f in files:
+        if "pa_model" in f:
+            getal = max([int(d) for d in f.split("_") if d.isdigit()])
+            if getal > biggest_number:
+                biggest_number = getal
+                latest_checkpoint = f
+    return ".".join(latest_checkpoint.split(".")[:-1])
+
+
+def find_po_checkpoint(path):
+    files = listdir(path)
+    biggest_number = 0
+    latest_checkpoint = None
+    for f in files:
+        if "po_model" in f:
+            getal = max([int(d) for d in f.split("_") if d.isdigit()])
+            if getal > biggest_number:
+                biggest_number = getal
+                latest_checkpoint = f
+    return ".".join(latest_checkpoint.split(".")[:-1])
+
 
 def build_params(params):
     # Which file do we run?
     if answers['gui'] == 'Train a model':
-        params.append("DeDOL.py")
-    else:
-        params.append("GUI.py")
 
-    # Save path/load path
-    params.append(path + "\\" + answers['model_name'])
+#         params.append("python3 DeDOL.py --save_path ./" + str(answers['model_name']))
+
+        # params.append("python3 DeDOL.py--save_path ./" + str(answers['model_name']))
+        params['save_path'] = answers['model_name']
+        params["naive"] = True
+
+    else:
+        #params.append("python3 GUI.py --load True --pa_load_path./" + str(answers['model_name']))
+        params['load'] = True
+        ### TO DO ###
+        # load patroller path and load poacher path for model (don't forget to remove everything after .ckpt)
+
+        params['pa_load_path'] = "./" + answers['model_name'] + "/" + find_pa_checkpoint("./" + answers['model_name'])
+        params['po_load_path'] = "./" + answers['model_name'] + "/" + find_po_checkpoint("./" + answers['model_name'])
+
+    # params.append("--map_type poacher --row_num 7 --column_num 7 --naive True")
+    params["map_type"] = "poacher"
+    params["row_num"] = 7
+    params["column_num"] = 7
 
     # Episode numbers
-    if "episodes" in answers.keys(): 
-        params.append(answers["episodes"])
+    if "episodes" in answers.keys():
 
-    if "model_settings" in answers.keys():
-        if answers["model_settings"] != "Custom":
-            load_model_settings(answers['model_name'])
-        else:
-            add_radar_arguments(params);
-        
-    if "change_arguments" in answers.keys():
-        if answers["change_arguments"]:
-            add_radar_arguments(params)
-        else:
-            load_model_settings(answers['model_name'])
+        params["pa_episode_num"] = answers["episodes"]
+        params["po_episode_num"] = answers["episodes"]
+
+        # params.append("--pa_episode_num " + str(answers["episodes"]))
+        # params.append("--po_episode_num " + str(answers["episodes"]))
+
+    return params
+
+    # if "model_settings" in answers.keys():
+    #     if answers["model_settings"] != "Custom":
+    #         load_model_settings(answers['model_settings'])
+    #     else:
+    #         add_radar_arguments(params);
+    #
+    # if "change_arguments" in answers.keys():
+    #     if answers["change_arguments"]:
+    #         add_radar_arguments(params)
+    #     else:
+    #         load_model_settings(answers['model_name'])
+
 
 def add_radar_arguments(params):
-    params.append(answers["footsteps"])
-    params.append(answers["radar"])
-    if answers["radar"]:
-        params.append(answers["detection_rate"])
-        params.append(answers["blur"])
-        params.append(answers["tourist_noise"])
+
+    if "footsteps" in answers:
+        params["footsteps"] = answers["footsteps"]
+    else:
+        params["footsteps"] = True
+
+    if "po_bleeb" in answers:
+        params["po_bleeb"] = answers["radar"]
+    else:
+        params["po_bleeb"] = True
+
+
+    # params.append("--footsteps " + str(answers["footsteps"]))
+    # params.append("--po_bleeb " + str(answers["radar"]))
+    if "radar" in answers:
+        params["po_scan_rate"] = float(answers["detection_rate"])
+        params["filter_bleeb"] = answers["blur"]
+        params["tourist_noise"] = float(answers["tourist_noise"])
+    else:
+        params["po_scan_rate"] = 1
+        params["filter_bleeb"] = False
+        params["tourist_noise"] = 0
+
+
+        # params.append("--po_scan_rate " + str(answers["detection_rate"]))
+        # params.append("--filter_bleeb " + str(answers["blur"]))
+        # params.append("--tourist_noise " + str(answers["tourist_noise"]))
+
+    return params
+
+
+###############
+#### TO DO ####
+###############
+# Loads the missing arguments of the models preset
+def load_model_settings(path):
+    # load_args
+    # print(path + "\\train_args.json")
+    with open(path + "\\train_args.json", "r") as f:
+        args = json.load(f).items()
+        params["footsteps"] = args["footsteps"]
+        params["po_bleeb"] = args["po_bleeb"]
+        params["po_scan_rate"] = args["po_scan_rate"]
+        params["filter_bleeb"] = args["filter_bleeb"]
+        params["tourist_noise"] = args["tourist_noise"]
+
+        # params.append("--footsteps " + str(args["footsteps"]))
+        # params.append("--po_bleeb " + str(args["po_bleeb"]))
+        # params.append("--po_scan_rate " + str(args["po_scan_rate"]))
+        # params.append("--filter_bleeb " + str(args["filter_bleeb"]))
+        # params.append("--tourist_noise " + str(args["tourist_noise"]))
+#
+
 
 answers = prompt(questions, style=style)
-print('Order receipt:')
-print(answers)
+# print('Order receipt:')
+# print(answers)
 
-params = []
-
-build_params(params)
+# <<<<<<< HEAD
+params = build_params({})
+params = add_radar_arguments(params)
 print(params)
+# final = ' '.join(params)
+# print(final)
+
+
+if answers['gui'] == "Visualise a trained model":
+    GUImain(params)
+else:
+    DeDOLmain(params)
+
+
+# =======
+# params = {}
+# >>>>>>> e153c0f8db0108f7fc0f64b52c03ef41db7e94db
+
