@@ -1,0 +1,27 @@
+pa_payoff:
+[[-2.4348]]
+po_payoff:
+[[2.5668]]
+pa_strat:
+[1]
+po_strat:
+[1]
+
+NEW_ITERATION: 1
+last_pa_ne_utility:-2.4348
+last_po_ne_utility:2.5668
+Iteration 1 poacher best response utility 6.5364 poacher best response type DQN 
+In DO pa_best_utility:9.2824
+In DO po_best_utility:18.116
+pa_payoff:
+[[ -2.4348 -11.4532]
+ [  9.1508  -4.3176]]
+po_payoff:
+[[ 2.5668 18.2452]
+ [-8.9888  9.5956]]
+pa_strategy:
+[0. 1.]
+po_strategy:
+[0. 1.]
+Using time: 
+70054.63766312599
