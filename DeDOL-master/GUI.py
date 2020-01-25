@@ -118,9 +118,6 @@ def main(wizard_args=None):
     argparser.add_argument('--PER', type=bool, default=False)
 
 
-
-
-
     #########################################################################################
     args = argparser.parse_args()
 
@@ -128,6 +125,21 @@ def main(wizard_args=None):
         raise ValueError('filter_bleeb cannot be true, while po_bleeb is false')
 
     #### PRESETS ####
+    print("HUH", args)
+    print("WIZARD:", wizard_args)
+    # print("JAAA", args.exac_loc_always_with_noise)
+    #
+
+    # if args.row_num == 7:
+    #     args.column_num = 7
+    #     args.max_time = 75
+
+
+    if wizard_args:
+        for k, v in wizard_args.items():
+            setattr(args, k, v)
+    else:
+        pass
 
     if args.exac_loc_always_no_noise:
         args.po_bleeb = True
@@ -139,6 +151,7 @@ def main(wizard_args=None):
         args.footsteps = True
 
     elif args.exac_loc_always_with_noise:
+        print("JA DIT TRIGGERED")
         args.po_bleeb = True
         args.po_scan_rate = 1
         args.tourist_noise = 0.05
@@ -174,19 +187,6 @@ def main(wizard_args=None):
         args.see_surrounding = True
         args.footsteps = False
 
-    ### END PRESETS ####
-
-    if args.row_num == 7:
-        args.column_num = 7
-        args.max_time = 75
-
-
-    if wizard_args:
-        for k, v in wizard_args.items():
-            setattr(args, k, v)
-    else:
-        pass
-
 
     if args.po_state_size == -1:
         args.po_state_size = 14 + (8 * args.footsteps) + (1 * args.see_surrounding) + (1 * args.extra_sensor_po)
@@ -194,6 +194,9 @@ def main(wizard_args=None):
     if args.pa_state_size == -1:
         args.pa_state_size = 12 + (8 * args.footsteps) + (1 * args.po_bleeb) + (1 * args.see_surrounding) + (
                     1 * args.extra_sensor_pa)
+
+
+    print("ARGS IN GUI:", args)
     ################## for initialization ###########################
     global log_file
 

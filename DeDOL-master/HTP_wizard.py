@@ -138,7 +138,7 @@ questions = [
         # TRAINING & GUI
         'type': 'input',
         'name': 'detection_rate',
-        'message': 'What is the rate of succesful detections of the datasystem? (A number between 0 and 1)',
+        'message': 'What is the rate of successful detections of the datasystem? (A number between 0 and 1)',
         'when': lambda answers: check_radar(answers),
         'validate': ZeroOneValidation
     },
@@ -146,7 +146,7 @@ questions = [
         # TRAINING & GUI
         'type': 'confirm',
         'name': 'blur',
-        'message': 'Are the recieved signals blured/spread out?',
+        'message': 'Are the received signals blured/spread out?',
         'when': lambda answers: check_radar(answers)
     },
     {
@@ -156,6 +156,13 @@ questions = [
         'message': 'How much tourist noise is visible in the datasystem? (A number between 0 and 1)',
         'when': lambda answers: check_radar(answers),
         'validate': ZeroOneValidation
+    },
+    {
+        # TRAINING & GUI
+        'type': 'confirm',
+        'name': 'see_surrounding',
+        'message': 'Are the agents able to see 8 cells around themselves at all times?',
+        'when': lambda answers: check_radar(answers)
     }
 ]
 
@@ -233,19 +240,19 @@ def build_params(params):
         # params.append("--pa_episode_num " + str(answers["episodes"]))
         # params.append("--po_episode_num " + str(answers["episodes"]))
 
-    return params
-
-    # if "model_settings" in answers.keys():
-    #     if answers["model_settings"] != "Custom":
-    #         load_model_settings(answers['model_settings'])
-    #     else:
-    #         add_radar_arguments(params);
+    if "model_settings" in answers.keys():
+        if answers["model_settings"] != "Custom":
+            load_model_settings(params, answers['model_settings'])
+        else:
+            add_radar_arguments(params)
     #
-    # if "change_arguments" in answers.keys():
-    #     if answers["change_arguments"]:
-    #         add_radar_arguments(params)
-    #     else:
-    #         load_model_settings(answers['model_name'])
+    if "change_arguments" in answers.keys():
+        if answers["change_arguments"]:
+            add_radar_arguments(params)
+        else:
+            load_model_settings(params, answers['model_name'])
+
+    return params
 
 
 def add_radar_arguments(params):
@@ -267,10 +274,12 @@ def add_radar_arguments(params):
         params["po_scan_rate"] = float(answers["detection_rate"])
         params["filter_bleeb"] = answers["blur"]
         params["tourist_noise"] = float(answers["tourist_noise"])
+        params["see_surrounding"] = answers["see_surrounding"]
     else:
         params["po_scan_rate"] = 1
         params["filter_bleeb"] = False
         params["tourist_noise"] = 0
+        params["see_surrounding"] = False
 
 
         # params.append("--po_scan_rate " + str(answers["detection_rate"]))
@@ -284,17 +293,29 @@ def add_radar_arguments(params):
 #### TO DO ####
 ###############
 # Loads the missing arguments of the models preset
-def load_model_settings(path):
+def load_model_settings(params, path):
     # load_args
     # print(path + "\\train_args.json")
-    with open(path + "\\train_args.json", "r") as f:
-        args = json.load(f).items()
+    with open(path + "/train_args.json", "r") as f:
+        args = json.load(f)
+        # print("FROM FILE:", args)
         params["footsteps"] = args["footsteps"]
         params["po_bleeb"] = args["po_bleeb"]
         params["po_scan_rate"] = args["po_scan_rate"]
         params["filter_bleeb"] = args["filter_bleeb"]
         params["tourist_noise"] = args["tourist_noise"]
+        params["see_surrounding"] = args["see_surrounding"]
+        params["exac_loc_always_no_noise"] = args["exac_loc_always_no_noise"]
+        params["exac_loc_always_with_noise"] = args["exac_loc_always_with_noise"]
+        params["blur_loc_always_no_noise"] = args["blur_loc_always_no_noise"]
+        params["blur_loc_always_with_noise"] = args["blur_loc_always_with_noise"]
+        params["exac_loc_50_no_noise"] = args["exac_loc_always_no_noise_no_vis"]
+        params["exac_loc_always_with_noise_no_vis"] = args["exac_loc_always_with_noise_no_vis"]
+        params["blur_loc_always_no_noise_no_vis"] = args["blur_loc_always_no_noise_no_vis"]
+        params["blur_loc_always_with_noise_no_vis"] = args["blur_loc_always_with_noise_no_vis"]
+        params["exac_loc_50_no_noise_no_vis"] = args["exac_loc_50_no_noise_no_vis"]
 
+    return params
         # params.append("--footsteps " + str(args["footsteps"]))
         # params.append("--po_bleeb " + str(args["po_bleeb"]))
         # params.append("--po_scan_rate " + str(args["po_scan_rate"]))
@@ -310,7 +331,7 @@ answers = prompt(questions, style=style)
 # <<<<<<< HEAD
 params = build_params({})
 params = add_radar_arguments(params)
-print(params)
+# print("PARAMS:", params)
 # final = ' '.join(params)
 # print(final)
 
