@@ -84,7 +84,7 @@ argparser.add_argument('--po_act_temp', type=float, default=5.0)
 argparser.add_argument('--po_home_dir_w', type=float, default=3.0)
 
 ### Training
-argparser.add_argument('--map_type', type = str, default = 'random')
+argparser.add_argument('--map_type', type = str, default = 'poacher')
 argparser.add_argument('--advanced_training', type = bool, default = True)
 argparser.add_argument('--save_path', type=str, default='./Results33Parandom/')
 
@@ -131,48 +131,147 @@ if args.exac_loc_always_no_noise:
     args.po_scan_rate = 1
     args.tourist_noise = 0
     args.filter_bleeb = False
-    
+
     args.see_surrounding = True
-    args.footsteps = True
-    
+    args.footsteps = False
+
+    args.map_type = 'poacher'
+    args.naive = True
+    args.row_num = 7
+    args.column_num = 7
+
 elif args.exac_loc_always_with_noise:
     args.po_bleeb = True
     args.po_scan_rate = 1
     args.tourist_noise = 0.05
     args.filter_bleeb = False
-    
+
     args.see_surrounding = True
     args.footsteps = False
+
+    args.map_type = 'poacher'
+    args.naive = True
+    args.row_num = 7
+    args.column_num = 7
 
 elif args.blur_loc_always_no_noise:
     args.po_bleeb = True
     args.po_scan_rate = 1
     args.tourist_noise = 0
     args.filter_bleeb = True
-    
+
     args.see_surrounding = True
     args.footsteps = False
-    
+
+    args.map_type = 'poacher'
+    args.naive = True
+    args.row_num = 7
+    args.column_num = 7
+
 elif args.blur_loc_always_with_noise:
     args.po_bleeb = True
     args.po_scan_rate = 1
     args.tourist_noise = 0.05
     args.filter_bleeb = True
-    
+
     args.see_surrounding = True
     args.footsteps = False
-    
+
+    args.map_type = 'poacher'
+    args.naive = True
+    args.row_num = 7
+    args.column_num = 7
+
 elif args.exac_loc_50_no_noise:
     args.po_bleeb = True
     args.po_scan_rate = 0.5
     args.tourist_noise = 0
     args.filter_bleeb = False
-    
+
     args.see_surrounding = True
     args.footsteps = False
 
+    args.map_type = 'poacher'
+    args.naive = True
+    args.row_num = 7
+    args.column_num = 7
+
+elif args.exac_loc_always_no_noise_no_vis:
+    args.po_bleeb = True
+    args.po_scan_rate = 1
+    args.tourist_noise = 0
+    args.filter_bleeb = False
+
+    args.see_surrounding = False
+    args.footsteps = False
+
+    args.map_type = 'poacher'
+    args.naive = True
+    args.row_num = 7
+    args.column_num = 7
+
+
+elif args.exac_loc_always_with_noise_no_vis:
+    args.po_bleeb = True
+    args.po_scan_rate = 1
+    args.tourist_noise = 0.05
+    args.filter_bleeb = False
+
+    args.see_surrounding = False
+    args.footsteps = False
+
+    args.map_type = 'poacher'
+    args.naive = True
+    args.row_num = 7
+    args.column_num = 7
+
+elif args.blur_loc_always_no_noise_no_vis:
+    args.po_bleeb = True
+    args.po_scan_rate = 1
+    args.tourist_noise = 0
+    args.filter_bleeb = True
+
+    args.see_surrounding = False
+    args.footsteps = False
+
+    args.map_type = 'poacher'
+    args.naive = True
+    args.row_num = 7
+    args.column_num = 7
+
+elif args.blur_loc_always_with_noise_no_vis:
+    args.po_bleeb = True
+    args.po_scan_rate = 1
+    args.tourist_noise = 0.05
+    args.filter_bleeb = True
+
+    args.see_surrounding = False
+    args.footsteps = False
+
+    args.map_type = 'poacher'
+    args.naive = True
+    args.row_num = 7
+    args.column_num = 7
+
+elif args.exac_loc_50_no_noise_no_vis:
+    args.po_bleeb = True
+    args.po_scan_rate = 0.5
+    args.tourist_noise = 0
+    args.filter_bleeb = False
+
+    args.see_surrounding = False
+    args.footsteps = False
+
+    args.map_type = 'poacher'
+    args.naive = True
+    args.row_num = 7
+    args.column_num = 7
 
 if args.po_state_size == -1:
+
+    # print(args.footsteps)
+    # print(args.see_surrounding)
+    # print(args.extra_sensor_po)
 
     args.po_state_size = 14 + (8 * args.footsteps) + (1 * args.see_surrounding) + (1 * args.extra_sensor_po)
 
@@ -180,6 +279,8 @@ if args.pa_state_size == -1:
 
     args.pa_state_size = 12 + (8 * args.footsteps) + (1 * args.po_bleeb) + (1 * args.see_surrounding) + (1 * args.extra_sensor_pa)
 
+print("Footsteps:", args.footsteps)
+print(args.po_state_size)
 
 ### END PRESETS ####  
 

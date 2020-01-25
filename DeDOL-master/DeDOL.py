@@ -87,7 +87,7 @@ argparser.add_argument('--Delta', type = float, default = 0.0, help = 'the explo
 argparser.add_argument('--naive', type = bool, default = False, help = 'whehter using naive PSRO') 
 argparser.add_argument('--advanced_training', type = bool, default = True, 
             help = 'whether using dueling double DQN with graident clipping') 
-argparser.add_argument('--map_type', type = str, default = 'random')
+argparser.add_argument('--map_type', type = str, default = 'poacher')
 argparser.add_argument('--po_location', type = int, default = None, help = '0, 1, 2, 3 for local modes; None for global mode')
 argparser.add_argument('--save_path', type=str, default='./Results_33_random/')
 
