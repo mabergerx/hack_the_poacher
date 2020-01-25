@@ -366,6 +366,10 @@ def main(wizard_args=None):
     paralog.write('Delta {0} \n'.format(args.Delta))
     paralog.write('po_location {0} \n'.format(str(args.po_location)))
     paralog.write('map_type {0} \n'.format(str(args.map_type)))
+
+    paralog.write('filter_bleeb {0} \n'.format(str(args.naive)))
+    paralog.write('po_bleeb {0} \n'.format(str(args.naive)))
+    paralog.write('naive {0} \n'.format(str(args.naive)))
     paralog.write('naive {0} \n'.format(str(args.naive)))
     paralog.flush()
     paralog.close()
