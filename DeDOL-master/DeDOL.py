@@ -23,6 +23,7 @@ from DeDOL_util import PRDsolver
 from patroller_randomsweeping import RandomSweepingPatroller
 from maps import Mountainmap, generate_map
 from GUI_util import test_gui
+import json
 
 
 global eps_pa
@@ -342,14 +343,18 @@ def main(wizard_args=None):
     else:
         pass
 
-    if args.po_location is not None:
-        args.save_path = './Results_' + str(args.row_num) + str(args.column_num) + '_' \
-            + args.map_type + '_mode' + str(args.po_location) + '/'
+    # args.save_path = './' + str(args.pa_episode_num) + "_" + "filterbleeb:" + str(args.filter_bleeb) + "_touristnoise:" + \
+    #                  str(args.tourist_noise) + "_footsteps:" + str(args.footsteps) + "_seesurrounding:" + str(args.see_surrounding) + \
+    #                  "_poscanrate:" + str(args.po_scan_rate) + "_" + str(args.row_num) + "x" + str(args.column_num)
 
     if args.save_path and (not os.path.exists(args.save_path)):
         os.makedirs(args.save_path)
 
-    paralog = open(args.save_path + 'paralog.txt', 'w')
+
+    with open(args.save_path + '/train_args.json', 'w') as f:
+        f.write(json.dumps(vars(args)))
+
+    paralog = open(args.save_path + '/paralog.txt', 'w')
     paralog.write('row_num {0} \n'.format(args.row_num))
     paralog.write('snare_num {0} \n'.format(args.snare_num))
     paralog.write('max_time {0} \n'.format(args.max_time))
@@ -377,7 +382,7 @@ def main(wizard_args=None):
     ################## for initialization ###########################
     global log_file
 
-    log_file = open(args.save_path + 'log.txt', 'w')
+    log_file = open(args.save_path + '/log.txt', 'w')
 
     animal_density = generate_map(args)
     env_pa = Env(args, animal_density, cell_length=None, canvas=None, gui=False)
