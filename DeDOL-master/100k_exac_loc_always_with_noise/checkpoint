@@ -1,0 +1,2 @@
+model_checkpoint_path: "100k_exac_loc_always_with_noiseiteration_2_epoch_99999_po_model.ckpt"
+all_model_checkpoint_paths: "100k_exac_loc_always_with_noiseiteration_2_epoch_99999_po_model.ckpt"
