@@ -829,7 +829,7 @@ class Env(object):
                     self.place_radar_rec((y, x), "black")
                     #self.canvas.delete()
                 else:
-                    self.place_radar_rec((y, x), "yellow")
+                    self.place_radar_rec((y, x), "gold")
 
 
     def place_radar_rec(self, loc, color):
