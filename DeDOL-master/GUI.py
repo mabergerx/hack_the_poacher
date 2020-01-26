@@ -44,6 +44,12 @@ def main(wizard_args=None):
     argparser.add_argument('--blur_loc_always_with_noise', type=bool, default=False)
     argparser.add_argument('--exac_loc_50_no_noise', type=bool, default=False)
 
+    argparser.add_argument('--exac_loc_always_no_noise_no_vis', type=bool, default=False)
+    argparser.add_argument('--exac_loc_always_with_noise_no_vis', type=bool, default=False)
+    argparser.add_argument('--blur_loc_always_no_noise_no_vis', type=bool, default=False)
+    argparser.add_argument('--blur_loc_always_with_noise_no_vis', type=bool, default=True)
+    argparser.add_argument('--exac_loc_50_no_noise_no_vis', type=bool, default=False)
+
     ### Changes by us
     argparser.add_argument('--footsteps', type=bool, default=False)
     argparser.add_argument('--po_bleeb', type=bool, default=False)
@@ -172,7 +178,7 @@ def main(wizard_args=None):
     elif args.blur_loc_always_with_noise:
         args.po_bleeb = True
         args.po_scan_rate = 1
-        args.tourist_noise = 0.05
+        args.tourist_noise = 0
         args.filter_bleeb = True
 
         args.see_surrounding = True
@@ -186,6 +192,77 @@ def main(wizard_args=None):
 
         args.see_surrounding = True
         args.footsteps = False
+
+    elif args.exac_loc_always_no_noise_no_vis:
+        args.po_bleeb = True
+        args.po_scan_rate = 1
+        args.tourist_noise = 0
+        args.filter_bleeb = False
+
+        args.see_surrounding = False
+        args.footsteps = False
+
+        args.map_type = 'poacher'
+        args.naive = True
+        args.row_num = 7
+        args.column_num = 7
+
+
+    elif args.exac_loc_always_with_noise_no_vis:
+        args.po_bleeb = True
+        args.po_scan_rate = 1
+        args.tourist_noise = 0.05
+        args.filter_bleeb = False
+
+        args.see_surrounding = False
+        args.footsteps = False
+
+        args.map_type = 'poacher'
+        args.naive = True
+        args.row_num = 7
+        args.column_num = 7
+
+    elif args.blur_loc_always_no_noise_no_vis:
+        args.po_bleeb = True
+        args.po_scan_rate = 1
+        args.tourist_noise = 0
+        args.filter_bleeb = True
+
+        args.see_surrounding = False
+        args.footsteps = False
+
+        args.map_type = 'poacher'
+        args.naive = True
+        args.row_num = 7
+        args.column_num = 7
+
+    elif args.blur_loc_always_with_noise_no_vis:
+        args.po_bleeb = True
+        args.po_scan_rate = 1
+        args.tourist_noise = 0
+        args.filter_bleeb = True
+
+        args.see_surrounding = False
+        args.footsteps = False
+
+        args.map_type = 'poacher'
+        args.naive = True
+        args.row_num = 7
+        args.column_num = 7
+
+    elif args.exac_loc_50_no_noise_no_vis:
+        args.po_bleeb = True
+        args.po_scan_rate = 0.5
+        args.tourist_noise = 0
+        args.filter_bleeb = False
+
+        args.see_surrounding = False
+        args.footsteps = False
+
+        args.map_type = 'poacher'
+        args.naive = True
+        args.row_num = 7
+        args.column_num = 7
 
 
     if args.po_state_size == -1:
