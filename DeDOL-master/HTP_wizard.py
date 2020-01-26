@@ -1,6 +1,7 @@
 from __future__ import print_function, unicode_literals
 from PyInquirer import style_from_dict, Token, prompt
 from PyInquirer import Validator, ValidationError
+from pyfiglet import Figlet
 from examples import custom_style_3
 from GUI import main as GUImain
 from DeDOL import main as DeDOLmain
@@ -67,11 +68,16 @@ class NotEmptyValidation(Validator):
             raise ValidationError(
                 message='Please don\'t use \'.\' in the model name.',
                 cursor_position=len(document.text))
-            
 
-print("+---------------------------------+")
-print("| HACK THE POACHER - DeDOL-master |")
-print("+---------------------------------+")
+fi = Figlet(font="slant")
+#
+# print("+---------------------------------+")
+# print("| HACK THE POACHER - DeDOL-master |")
+# print("+---------------------------------+")
+
+print("+--------------------------------------------+")
+print(fi.renderText("Hack the Poacher"))
+print("+--------------------------------------------+")
 
 questions = [
     {
