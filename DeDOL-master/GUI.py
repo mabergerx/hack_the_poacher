@@ -163,6 +163,7 @@ def main(wizard_args=None):
         args.tourist_noise = 0.05
         args.filter_bleeb = False
 
+#log_file = open('./Results_33_random/log.txt', 'w')
         args.see_surrounding = True
         args.footsteps = False
 

@@ -68,14 +68,29 @@ class Env(object):
 
         for row in range(self.args.row_num):
             for col in range(self.args.column_num):
-                color = hex_string(int(255 - 255 * self.animal_density[row, col]))  # Black means high density
+                color = hex_string(int(255 - 255 * self.animal_density[row, col]))
+                coord = col * self.cell_length + 2.5*self.quarter_cell,row * self.cell_length + 2.5*self.quarter_cell,col * self.cell_length + 5.5*self.quarter_cell,row * self.cell_length + 5.5* self.quarter_cell
+                arc = self.canvas.create_arc(coord, start=90, extent=90, fill=color, outline="")
+#                self.canvas.create_oval(col * self.cell_length + 2.5 * self.quarter_cell,
+#                                             row * self.cell_length + 2.5 * self.quarter_cell,
+#                                             col * self.cell_length + self.cell_length,
+#                                             row * self.cell_length + self.cell_length,
+#                                             outline="", fill=color)
                 if self.animal_density[row,col] <= 0:
-                    color = '#854400'
-                self.canvas.create_rectangle(col * self.cell_length + 3 * self.quarter_cell,
-                                             row * self.cell_length + 3 * self.quarter_cell,
+                    color = "#%02x%02x%02x" % (98, 211, 245)    
+                    if row == 5 and col == 4:
+                        color = "dark olive green"
+                    elif row == 3 and col == 2:
+                        color = "dark olive green"
+                    elif row == 5 and col == 6:
+                        color = "dark olive green"
+                    else:
+                        color = "#%02x%02x%02x" % (98, 211, 245)
+                    self.canvas.create_rectangle(col * self.cell_length,
+                                             row * self.cell_length,
                                              col * self.cell_length + self.cell_length,
                                              row * self.cell_length + self.cell_length,
-                                             outline="black", fill=color)
+                                             fill=color)
 
     def reset_game(self, mode = None):
         '''
@@ -122,7 +137,7 @@ class Env(object):
                 
         if self.gui:
             self.canvas.delete("all")
-            self.canvas['bg'] = 'white'
+            self.canvas['bg'] = "#%02x%02x%02x" % (218, 235, 213)
             self.make_grid()
 
             img = PhotoImage(file='po.png')
@@ -202,11 +217,15 @@ class Env(object):
         
         self.update_time()
 
-        if self.canvas:
+        if self.gui:
             if (self.catch_flag and len(self.snare_state) == 0):
-                txt = self.canvas.create_text(270,280,fill='#%02x%02x%02x' % (255, 111, 0),font='System 30 bold',text='Poacher caught')
+                self.canvas.create_text(270,280,fill='#%02x%02x%02x' % (255, 111, 0),font='System 30 bold',text='Poacher caught', tags="text")
+                #does not work..
+                self.canvas.tag_raise("text")
             if (self.home_flag and len(self.snare_state) == 0):
-                self.canvas.create_text(260,280,fill='#%02x%02x%02x' % (255, 111, 0),font='System 30 bold',text='Poacher went home')
+                self.canvas.create_text(260,280,fill='#%02x%02x%02x' % (255, 111, 0),font='System 30 bold',text='Poacher went home', tags="text")
+                #does not work..
+                self.canvas.tag_raise("text")
         if (self.catch_flag and len(self.snare_state) == 0) or (self.home_flag and len(self.snare_state) == 0):
             self.end_game = True
         else:
@@ -632,35 +651,32 @@ class Env(object):
         #         return pa_reward, -pa_reward, remove_cnt
 
         # return pa_reward, -pa_reward
-
-    def delete_snare(self, loc):
-        if (loc[0], loc[1]) in self.snare_state:
-            self.snare_state.remove((loc[0], loc[1]))
-        if self.gui:
-            rec = self.canvas.create_rectangle(loc[1] * self.cell_length,
-                                               loc[0] * self.cell_length,
-                                               loc[1] * self.cell_length + self.quarter_cell,
-                                               loc[0] * self.cell_length + self.quarter_cell, fill="white")
-
-            if (loc[0], loc[1]) not in self.snare_object:
-                self.snare_object[(loc[0], loc[1])] = [rec]
-            else:
-                self.snare_object[(loc[0], loc[1])].append(rec)
-
     def place_snare(self, loc):
+        print("Placed snare at", loc)
         if (loc[0], loc[1]) not in self.snare_state:
             self.snare_state.append((loc[0], loc[1]))
         if self.gui:
             rec = self.canvas.create_rectangle(loc[1] * self.cell_length,
                                                loc[0] * self.cell_length,
                                                loc[1] * self.cell_length + self.quarter_cell,
-                                               loc[0] * self.cell_length + self.quarter_cell, fill="red")
+                                               loc[0] * self.cell_length + self.quarter_cell, fill="red", tags="poach_rec")
 
             if (loc[0], loc[1]) not in self.snare_object:
                 self.snare_object[(loc[0], loc[1])] = [rec]
             else:
                 self.snare_object[(loc[0], loc[1])].append(rec)
-
+        
+        
+    def delete_snare(self, loc):
+        
+#        print("REC:", self.rec)
+#        print(self.canvas.find_all())
+        
+        if (loc[0], loc[1]) in self.snare_state:
+            self.snare_state.remove((loc[0], loc[1]))
+        if self.gui:
+            self.canvas.delete("poach_rec")
+            
     def get_local_ani_den(self, loc):
         if self.in_bound(loc[0], loc[1]):
             den = [self.animal_density[loc[0], loc[1]]]
@@ -810,17 +826,17 @@ class Env(object):
         for y, row in enumerate(ohe_coord):
             for x, i in enumerate(row):
                 if i[0] == 0:
-                    self.place_radar_rec((y, x), "white")
-
+                    self.place_radar_rec((y, x), "black")
+                    #self.canvas.delete()
                 else:
-                    self.place_radar_rec((y, x), "yellow")
+                    self.place_radar_rec((y, x), "gold")
 
 
     def place_radar_rec(self, loc, color):
-        rec = self.canvas.create_rectangle(loc[1] * self.cell_length,
-                                     loc[0] * self.cell_length + 3 * self.quarter_cell,
-                                     loc[1] * self.cell_length + self.quarter_cell,
-                                     loc[0] * self.cell_length + self.cell_length, fill=color)
+        rec = self.canvas.create_rectangle(loc[1]* self.cell_length,
+                                     loc[0] * self.cell_length,
+                                     loc[1] * self.cell_length + self.cell_length,
+                                     loc[0] * self.cell_length + self.cell_length, outline=color, width=3)
         self.radar_objs[loc] = rec
 
     def get_po_state(self):
