@@ -1,0 +1,2 @@
+model_checkpoint_path: "iteration_1_epoch_295600_po_model.ckpt"
+all_model_checkpoint_paths: "iteration_1_epoch_295600_po_model.ckpt"
