@@ -69,8 +69,8 @@ class Env(object):
         for row in range(self.args.row_num):
             for col in range(self.args.column_num):
                 color = hex_string(int(255 - 255 * self.animal_density[row, col]))
-                coord = col * self.cell_length + 2.5 * self.quarter_cell,row * self.cell_length + 2.5 * self.quarter_cell,col * self.cell_length + self.cell_length,row * self.cell_length + self.cell_length
-                arc = self.canvas.create_arc(coord, start=0, extent=90, fill=color)
+                coord = col * self.cell_length + 2.5*self.quarter_cell,row * self.cell_length + 2.5*self.quarter_cell,col * self.cell_length + 5.5*self.quarter_cell,row * self.cell_length + 5.5* self.quarter_cell
+                arc = self.canvas.create_arc(coord, start=90, extent=90, fill=color)
 #                self.canvas.create_oval(col * self.cell_length + 2.5 * self.quarter_cell,
 #                                             row * self.cell_length + 2.5 * self.quarter_cell,
 #                                             col * self.cell_length + self.cell_length,
