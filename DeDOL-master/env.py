@@ -652,7 +652,7 @@ class Env(object):
 
         # return pa_reward, -pa_reward
     def place_snare(self, loc):
-        print("Placed snare at", loc)
+        # print("Placed snare at", loc)
         if (loc[0], loc[1]) not in self.snare_state:
             self.snare_state.append((loc[0], loc[1]))
         if self.gui:
@@ -899,14 +899,14 @@ class Env(object):
 
     def get_po_initial_loc(self, idx = None, poacher_map = True):
         if poacher_map:
-            candidate = [[0, 0], [3, 0], [6, 0], [6,6]]
+            candidate = [[0, 0], [3, 0], [6, 0]]
         else:
             candidate = [[0, 0], [0, self.column_num - 1], [self.row_num - 1, self.column_num - 1], [self.row_num - 1, 0]]
 
         if idx is not None:
             return candidate[idx]
 
-        index = random.randint(0, 3)
+        index = random.randint(0, 2)
         # print("Candidate:", candidate[index], poacher_map)
         return candidate[index]
 

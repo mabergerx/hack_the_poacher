@@ -47,11 +47,11 @@ def main(wizard_args=None):
     argparser.add_argument('--exac_loc_always_no_noise_no_vis', type=bool, default=False)
     argparser.add_argument('--exac_loc_always_with_noise_no_vis', type=bool, default=False)
     argparser.add_argument('--blur_loc_always_no_noise_no_vis', type=bool, default=False)
-    argparser.add_argument('--blur_loc_always_with_noise_no_vis', type=bool, default=True)
+    argparser.add_argument('--blur_loc_always_with_noise_no_vis', type=bool, default=False)
     argparser.add_argument('--exac_loc_50_no_noise_no_vis', type=bool, default=False)
 
     ### Changes by us
-    argparser.add_argument('--footsteps', type=bool, default=False)
+    argparser.add_argument('--footsteps', type=bool, default=True)
     argparser.add_argument('--po_bleeb', type=bool, default=False)
     argparser.add_argument('--filter_bleeb', type=bool, default=False)
     argparser.add_argument('--see_surrounding', type=bool, default=False)
@@ -71,7 +71,7 @@ def main(wizard_args=None):
     argparser.add_argument('--row_num', type=int, default=3)
     argparser.add_argument('--column_num', type=int, default=3)
     argparser.add_argument('--ani_den_seed', type=int, default=66)
-    argparser.add_argument('--max_time', type=int, default=100)
+    argparser.add_argument('--max_time', type=int, default=50)
 
     ### Patroller
     argparser.add_argument('--pa_state_size', type=int, default=-1)
@@ -131,8 +131,8 @@ def main(wizard_args=None):
         raise ValueError('filter_bleeb cannot be true, while po_bleeb is false')
 
     #### PRESETS ####
-    print("HUH", args)
-    print("WIZARD:", wizard_args)
+    # print("HUH", args)
+    # print("WIZARD:", wizard_args)
     # print("JAAA", args.exac_loc_always_with_noise)
     #
 
@@ -154,15 +154,18 @@ def main(wizard_args=None):
         args.filter_bleeb = False
 
         args.see_surrounding = True
-        args.footsteps = True
+        args.footsteps = False
 
     elif args.exac_loc_always_with_noise:
-        print("JA DIT TRIGGERED")
+        # print("JA DIT TRIGGERED")
         args.po_bleeb = True
         args.po_scan_rate = 1
-        args.tourist_noise = 0.05
+        args.tourist_noise = 0
         args.filter_bleeb = False
 
+        args.column_num = 7
+        args.row_num = 7
+        args.map_type = "poacher"
 #log_file = open('./Results_33_random/log.txt', 'w')
         args.see_surrounding = True
         args.footsteps = False
@@ -173,15 +176,21 @@ def main(wizard_args=None):
         args.tourist_noise = 0
         args.filter_bleeb = True
 
+        args.column_num = 7
+        args.row_num = 7
+        args.map_type = "poacher"
         args.see_surrounding = True
         args.footsteps = False
 
     elif args.blur_loc_always_with_noise:
         args.po_bleeb = True
         args.po_scan_rate = 1
-        args.tourist_noise = 0
-        args.filter_bleeb = True
+        args.tourist_noise = 0.01
+        args.filter_bleeb = False
 
+        args.column_num = 7
+        args.row_num = 7
+        args.map_type = "poacher"
         args.see_surrounding = True
         args.footsteps = False
 
