@@ -1,0 +1,2 @@
+model_checkpoint_path: "100k_vlur_loc_always_with_noiseiteration_1_epoch_99999_pa_model.ckpt"
+all_model_checkpoint_paths: "100k_vlur_loc_always_with_noiseiteration_1_epoch_99999_pa_model.ckpt"
