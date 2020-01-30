@@ -1,5 +1,5 @@
 {
-  "exac_loc_always_no_noise": true,
+  "exac_loc_always_no_noise": false,
   "exac_loc_always_with_noise": false,
   "blur_loc_always_no_noise": false,
   "blur_loc_always_with_noise": false,
@@ -13,7 +13,7 @@
   "po_bleeb": true,
   "filter_bleeb": true,
   "see_surrounding": false,
-  "tourist_noise": 1.0,
+  "tourist_noise": 0.01,
   "po_scan_rate": 1.0,
   "extra_sensor_pa": false,
   "extra_sensor_po": false,
