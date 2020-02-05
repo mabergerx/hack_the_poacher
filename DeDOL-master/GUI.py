@@ -185,7 +185,7 @@ def main(wizard_args=None):
     elif args.blur_loc_always_with_noise:
         args.po_bleeb = True
         args.po_scan_rate = 1
-        args.tourist_noise = 0.01
+        args.tourist_noise = 0.05
         args.filter_bleeb = False
 
         args.column_num = 7
