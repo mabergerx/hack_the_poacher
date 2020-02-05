@@ -39,7 +39,7 @@ def main(wizard_args=None):
     ########################################################################################
     ### Presets
     argparser.add_argument('--exac_loc_always_no_noise', type=bool, default=False)
-    argparser.add_argument('--exac_loc_always_with_noise', type=bool, default=False)
+    argparser.add_argument('--exac_loc_always_with_noise', type=bool, default=True)
     argparser.add_argument('--blur_loc_always_no_noise', type=bool, default=False)
     argparser.add_argument('--blur_loc_always_with_noise', type=bool, default=False)
     argparser.add_argument('--exac_loc_50_no_noise', type=bool, default=False)
@@ -51,7 +51,7 @@ def main(wizard_args=None):
     argparser.add_argument('--exac_loc_50_no_noise_no_vis', type=bool, default=False)
 
     ### Changes by us
-    argparser.add_argument('--footsteps', type=bool, default=True)
+    argparser.add_argument('--footsteps', type=bool, default=False)
     argparser.add_argument('--po_bleeb', type=bool, default=False)
     argparser.add_argument('--filter_bleeb', type=bool, default=False)
     argparser.add_argument('--see_surrounding', type=bool, default=False)
@@ -160,7 +160,7 @@ def main(wizard_args=None):
         # print("JA DIT TRIGGERED")
         args.po_bleeb = True
         args.po_scan_rate = 1
-        args.tourist_noise = 0
+        args.tourist_noise = 0.05
         args.filter_bleeb = False
 
         args.column_num = 7
