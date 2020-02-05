@@ -44,7 +44,7 @@ def main(wizard_args=None):
     argparser.add_argument('--blur_loc_always_with_noise', type=bool, default=False)
     argparser.add_argument('--exac_loc_50_no_noise', type=bool, default=False)
 
-    argparser.add_argument('--exac_loc_always_no_noise_no_vis', type=bool, default=True) #no files for this
+    argparser.add_argument('--exac_loc_always_no_noise_no_vis', type=bool, default=False) #no files for this
     argparser.add_argument('--exac_loc_always_with_noise_no_vis', type=bool, default=False) #no files for this
     argparser.add_argument('--blur_loc_always_no_noise_no_vis', type=bool, default=False)
     argparser.add_argument('--blur_loc_always_with_noise_no_vis', type=bool, default=False)
