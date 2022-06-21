@@ -4,7 +4,7 @@ cvxopt==1.2.3
 gast==0.2.2
 grpcio==1.26.0
 nashpy==0.0.19
-numpy==1.17.4
+numpy==1.21.0
 oauthlib==3.1.0
 protobuf==3.15.0
 requests==2.22.0
