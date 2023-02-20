@@ -157,7 +157,6 @@ def main(wizard_args=None):
         args.footsteps = False
 
     elif args.exac_loc_always_with_noise:
-        # print("JA DIT TRIGGERED")
         args.po_bleeb = True
         args.po_scan_rate = 1
         args.tourist_noise = 0.05
